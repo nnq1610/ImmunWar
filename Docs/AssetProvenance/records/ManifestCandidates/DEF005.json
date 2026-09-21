@@ -1,0 +1,47 @@
+{
+    "schemaVersion": 1,
+    "recordKind": "ShippableAsset",
+    "assetId": "DEF005",
+    "manifestCategory": "Defender",
+    "purpose": "Platelet",
+    "runtimePath": "Assets/ImmunWar/Art/Defenders/P1/DEF_Platelet.png",
+    "fallbackAssetId": "DEF005_FALLBACK",
+    "releaseCritical": false,
+    "sourceType": "ai_generated",
+    "creatorOrProvider": "OpenAI image generation",
+    "sourceUrlOrJobId": "exec-d8ea5d33-eb34-452d-b1dd-f541a69aed71",
+    "acquiredOrGeneratedAtUtc": "2026-09-18T16:20:00Z",
+    "generation": {
+        "provider": "OpenAI",
+        "model": "built-in image generation",
+        "modelVersion": null,
+        "prompt": "Friendly platelet repair defender recolored to golden-peach and amber with teal accents while preserving the approved v2 silhouette and shield.",
+        "settings": "transparent PNG; square; targeted color edit",
+        "referenceAssetIds": ["DEF005-v2"]
+    },
+    "status": "Approved",
+    "rights": {
+        "commercialUse": "Allowed",
+        "modification": "Allowed",
+        "embeddedRedistribution": "Allowed",
+        "attribution": "N/A",
+        "aiInputUse": "Allowed",
+        "territoryOrPlatformLimits": null
+    },
+    "evidence": {
+        "evidenceType": "AIProviderTerms",
+        "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+        "urlOrOrderId": "https://openai.com/policies/service-terms/",
+        "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+        "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+        "attributionText": null
+    },
+    "rawSha256": "c3cdffafcabe3441aa9d2b0a2dd883cd9819603c2a17ea6743b3aadcb49cdc58",
+    "approvedExportSha256": "c3cdffafcabe3441aa9d2b0a2dd883cd9819603c2a17ea6743b3aadcb49cdc58",
+    "recheckAtUtc": "2027-03-19T00:00:00Z",
+    "review": {
+        "reviewer": "Project owner (standing image approval confirmed in Codex session)",
+        "reviewedAtUtc": "2026-09-19T00:14:08Z",
+        "notes": "Selected under the project owner's standing image approval. Friendly palette, role readability, alpha, provenance, and runtime hash verified."
+    }
+}

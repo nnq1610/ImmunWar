@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07a8a2bd0a1efde44957de559fa8ecdf, type: 3}
+  m_Name: PlayableArtCatalog
+  m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.UI.PlayableArtCatalog
+  hit: {fileID: 21300000, guid: e3ce5d18210046b4982cd147491a2cce, type: 3}
+  pulse: {fileID: 21300000, guid: 7ab3f5f632351db42a85ddcd23da72ff, type: 3}
+  atp: {fileID: 21300000, guid: 3d8dbf967718ed146a62e81d52758b18, type: 3}
+  lungMap: {fileID: 21300000, guid: 7ac01e487d6233842ace9df2604c2028, type: 3}
+  brainMap: {fileID: 21300000, guid: 9fe8ab5792b737c4f9fca36f903b76ae, type: 3}
+  stomachMap: {fileID: 21300000, guid: bd2b29221dd92b64fa0b2cf8e96b6b10, type: 3}
+  primaryButton: {fileID: 2128587150, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
+  secondaryButton: {fileID: -792469008, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
+  dangerButton: {fileID: -1933676131, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
+  panel: {fileID: -427036146, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
+  organCard: {fileID: -1767134267, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
+  macrophageIdle:
+  - {fileID: -447582603, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  - {fileID: 1959997171, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  - {fileID: -1283819911, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  - {fileID: -115378010, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  macrophageAttack:
+  - {fileID: -1695077961, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  - {fileID: 1101040234, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  - {fileID: 74582500, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  - {fileID: 560286784, guid: a2b64317405631f41a3967faf4603747, type: 3}
+  virusMove:
+  - {fileID: 1203355552, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  - {fileID: 1493755728, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  - {fileID: 1472062283, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  - {fileID: 2098591585, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  - {fileID: 1193181346, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  - {fileID: 1356934085, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  - {fileID: -796661490, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  - {fileID: 68254829, guid: 9aca92aa292e2d14592abab9ade25b0c, type: 3}
+  macrophageController: {fileID: 9100000, guid: b8c935f8351b64f49a6ab79ea7299b3d, type: 2}
+  virusController: {fileID: 9100000, guid: 251e2fd863142594d9b320d08534cd7b, type: 2}
+  defenderAnimations:
+  - unitId: def_tcell
+    idleOrMove:
+    - {fileID: 502736331, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    - {fileID: -1482185088, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    - {fileID: -378246583, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    - {fileID: 494521083, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    action:
+    - {fileID: -905239588, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    - {fileID: -1674487134, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    - {fileID: 1593479561, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    - {fileID: -327966516, guid: 3f9cf62fb3b246840a56c9d403ed796e, type: 3}
+    controller: {fileID: 9100000, guid: 0e4129b9dbd089d46ab410508fdc9fed, type: 2}
+  - unitId: def_energy
+    idleOrMove:
+    - {fileID: -414401069, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    - {fileID: -1929455633, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    - {fileID: -856430164, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    - {fileID: 2016348519, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    action:
+    - {fileID: 1634529263, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    - {fileID: 58683669, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    - {fileID: 1983782344, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    - {fileID: -1848719954, guid: 07c9ff1136632a544967eb7fbe42ac51, type: 3}
+    controller: {fileID: 9100000, guid: c8a512ad7ae6c984593f175e32742438, type: 2}
+  - unitId: def_bcell
+    idleOrMove:
+    - {fileID: -906864388, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    - {fileID: -260349369, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    - {fileID: -28273612, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    - {fileID: -1996526337, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    action:
+    - {fileID: 2059319867, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    - {fileID: 1991909447, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    - {fileID: 176452962, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    - {fileID: 1898243927, guid: f445b7db04d2f52488e3c4e42922a7a9, type: 3}
+    controller: {fileID: 9100000, guid: ce34726b353155446b050d755e519ea3, type: 2}
+  - unitId: def_nk
+    idleOrMove:
+    - {fileID: -335940925, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    - {fileID: -1463303188, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    - {fileID: -1784256654, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    - {fileID: -1999346426, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    action:
+    - {fileID: 981104051, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    - {fileID: -907179597, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    - {fileID: 1276954754, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    - {fileID: 373786651, guid: 14f1f678f64d3b440b57e192a9073d02, type: 3}
+    controller: {fileID: 9100000, guid: 8e4084a031766f04f9ec10d7f2b99f1e, type: 2}
+  - unitId: def_platelet
+    idleOrMove:
+    - {fileID: -637349863, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    - {fileID: 1379998561, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    - {fileID: -1745163937, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    - {fileID: 1537673604, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    action:
+    - {fileID: 1352536638, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    - {fileID: -2014490139, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    - {fileID: -1174080225, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    - {fileID: 1230749469, guid: 427196ee627dc1c4b91acbb818a066d3, type: 3}
+    controller: {fileID: 9100000, guid: 14521de50aae02540a2d7562b15bfd55, type: 2}
+  enemyAnimations:
+  - unitId: ene_bacteria
+    idleOrMove:
+    - {fileID: -43750228, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    - {fileID: -489638399, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    - {fileID: 646970918, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    - {fileID: -1629473738, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    - {fileID: -1837368077, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    - {fileID: 1582998308, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    - {fileID: 612415605, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    - {fileID: -1245883312, guid: 0dafe666cf143114da2ead09a91fd70f, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: 333b220a04e51d443b0ea63bc3bd3f82, type: 2}
+  - unitId: ene_mutant
+    idleOrMove:
+    - {fileID: 1575749514, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    - {fileID: 933366574, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    - {fileID: -1233621738, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    - {fileID: 413014961, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    - {fileID: 346288376, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    - {fileID: 1399378818, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    - {fileID: 336329679, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    - {fileID: -1321123118, guid: 9c529279d2feed84d98193d3c3fd668b, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: d6e9979bd67d3bf4798403780da77214, type: 2}
+  - unitId: ene_super_pathogen
+    idleOrMove:
+    - {fileID: -1441529748, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    - {fileID: 1598016162, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    - {fileID: 1157517290, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    - {fileID: -800623549, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    - {fileID: 891066992, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    - {fileID: -823460329, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    - {fileID: -815974157, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    - {fileID: -716725289, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: 3dc4af5ffca10dd4b94efd14adf85edd, type: 2}

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93fbb9112fc45e24e98a4cf4411685d8, type: 3}
+  m_Name: LungMap
+  m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.OrganMapConfig
+  id: map_lung
+  displayNameKey: map.lung
+  nextMapId: map_brain
+  startingAtp: 100
+  maximumVitality: 100
+  routes:
+  - {fileID: 11400000, guid: 08216557259c38d4eb982ddcb7b78104, type: 2}
+  nodes:
+  - {fileID: 11400000, guid: e31cbec760798224ea186b5cf387379d, type: 2}
+  - {fileID: 11400000, guid: cc6fe343130b647448d21e90f8e2b177, type: 2}
+  - {fileID: 11400000, guid: 569db1b58cd02594c9140abcd7134960, type: 2}
+  - {fileID: 11400000, guid: 4507e35669246464d93bb26c4a84d638, type: 2}
+  - {fileID: 11400000, guid: a06cb8a452a23e84a9aec7e9b4d91dfd, type: 2}
+  - {fileID: 11400000, guid: 91bbf31923144204c85a1944446c4a63, type: 2}
+  waveSet: {fileID: 11400000, guid: 9b542daadaa58a14581d028d5ac2fdd1, type: 2}
+  presentation: {fileID: 0}

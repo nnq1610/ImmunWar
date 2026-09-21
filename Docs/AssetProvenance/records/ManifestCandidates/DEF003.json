@@ -1,0 +1,47 @@
+{
+    "schemaVersion": 1,
+    "recordKind": "ShippableAsset",
+    "assetId": "DEF003",
+    "manifestCategory": "Defender",
+    "purpose": "B-Cell",
+    "runtimePath": "Assets/ImmunWar/Art/Defenders/P1/DEF_BCell.png",
+    "fallbackAssetId": "DEF003_FALLBACK",
+    "releaseCritical": false,
+    "sourceType": "ai_generated",
+    "creatorOrProvider": "OpenAI image generation",
+    "sourceUrlOrJobId": "exec-308c60ea-2814-49ac-9076-b9b3f302ff12",
+    "acquiredOrGeneratedAtUtc": "2026-09-18T15:55:00Z",
+    "generation": {
+        "provider": "OpenAI",
+        "model": "built-in image generation",
+        "modelVersion": null,
+        "prompt": "Friendly B lymphocyte with a clear Y-shaped antibody motif, turquoise and emerald palette, matching the approved P0 character style.",
+        "settings": "transparent PNG; square; project P0 style references",
+        "referenceAssetIds": ["DEF001", "DEF002", "DEF006", "ENE001"]
+    },
+    "status": "Approved",
+    "rights": {
+        "commercialUse": "Allowed",
+        "modification": "Allowed",
+        "embeddedRedistribution": "Allowed",
+        "attribution": "N/A",
+        "aiInputUse": "Allowed",
+        "territoryOrPlatformLimits": null
+    },
+    "evidence": {
+        "evidenceType": "AIProviderTerms",
+        "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+        "urlOrOrderId": "https://openai.com/policies/service-terms/",
+        "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+        "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+        "attributionText": null
+    },
+    "rawSha256": "b3c5944f0bd9b1db1a0df1a81ac34842bfdb54ea79059a0ce107edbee6b5f56d",
+    "approvedExportSha256": "b3c5944f0bd9b1db1a0df1a81ac34842bfdb54ea79059a0ce107edbee6b5f56d",
+    "recheckAtUtc": "2027-03-18T00:00:00Z",
+    "review": {
+        "reviewer": "Project owner (confirmed in Codex session)",
+        "reviewedAtUtc": "2026-09-18T16:09:15Z",
+        "notes": "Approved by the project owner; antibody motif, friendly faction palette, alpha, provenance, and approved runtime hash verified."
+    }
+}

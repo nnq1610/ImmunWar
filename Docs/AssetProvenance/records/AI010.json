@@ -1,0 +1,49 @@
+﻿{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AI010",
+    "manifestCategory":  "character",
+    "purpose":  "Bacteria movement animation sheet",
+    "runtimePath":  "Assets/ImmunWar/Art/Batch/Characters/bacteria_sheet.png",
+    "fallbackAssetId":  null,
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation via Codex",
+    "sourceUrlOrJobId":  "exec-ba221b4e-a130-46fe-82b6-20491760f1be",
+    "acquiredOrGeneratedAtUtc":  "2026-09-20T14:32:25Z",
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "image_gen",
+                       "modelVersion":  null,
+                       "prompt":  "Consistent Immune War glossy cellular game art based on existing project reference: Bacteria movement animation sheet; transparent 4x2 motion frames for units or themed 16:9 organ map plate.",
+                       "settings":  "Image editing with project reference assets where applicable",
+                       "referenceAssetIds":  [
+                                                 "ENE_Bacteria"
+                                             ]
+                   },
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI Terms of Use effective 2026-01-01",
+                     "urlOrOrderId":  "https://openai.com/policies/row-terms-of-use/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-terms-2026-09-19.txt",
+                     "snapshotSha256":  "5e32a72a7c3bf0bf58fd0ca13de43d6afe1d0f9fcba5b7fe5587c28182826279",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "d3f2d459f56fb0ac6bc3142c388c6dbde6b6c7cd2d6b2fef46b541ea669c52b1",
+    "approvedExportSha256":  "d3f2d459f56fb0ac6bc3142c388c6dbde6b6c7cd2d6b2fef46b541ea669c52b1",
+    "recheckAtUtc":  null,
+    "review":  {
+                   "reviewer":  "Codex visual and technical review for requested import",
+                   "reviewedAtUtc":  "2026-09-20T14:32:25Z",
+                   "notes":  "Visually inspected output at native resolution, checked grid count and alpha, and approved for the requested project batch import."
+               }
+}

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93fbb9112fc45e24e98a4cf4411685d8, type: 3}
+  m_Name: BrainMap
+  m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.OrganMapConfig
+  id: map_brain
+  displayNameKey: map.brain
+  nextMapId: map_stomach
+  startingAtp: 120
+  maximumVitality: 100
+  routes:
+  - {fileID: 11400000, guid: 31b0852de7a791d4fb106ed50fc887db, type: 2}
+  nodes:
+  - {fileID: 11400000, guid: e44dcd1fc799e4848a434bd8f809b281, type: 2}
+  - {fileID: 11400000, guid: 44ef8d3e74c2c3a4fb7ddfc62a4ff77c, type: 2}
+  - {fileID: 11400000, guid: b2e96b0a1535a5a4cafa5a6aed6fd18f, type: 2}
+  - {fileID: 11400000, guid: eb4cb475f1c729d44903cf397083a9f4, type: 2}
+  - {fileID: 11400000, guid: 5dab5692fc7b8d340a9548446fd85317, type: 2}
+  waveSet: {fileID: 11400000, guid: e18d2de5e3c30344db4635c2d92c5cde, type: 2}
+  presentation: {fileID: 0}

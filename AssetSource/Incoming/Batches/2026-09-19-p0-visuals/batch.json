@@ -1,0 +1,77 @@
+﻿{
+    "schemaVersion":  1,
+    "batchId":  "2026-09-19-p0-visuals",
+    "entries":  [
+                    {
+                        "assetId":  "AI001",
+                        "source":  "macrophage_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/macrophage_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "mac_idle_0",
+                                            "mac_idle_1",
+                                            "mac_idle_2",
+                                            "mac_idle_3",
+                                            "mac_attack_0",
+                                            "mac_attack_1",
+                                            "mac_attack_2",
+                                            "mac_attack_3"
+                                        ],
+                        "catalogSlot":  "macrophage"
+                    },
+                    {
+                        "assetId":  "AI002",
+                        "source":  "virus_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/virus_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  8,
+                        "spriteNames":  [
+                                            "virus_move_0",
+                                            "virus_move_1",
+                                            "virus_move_2",
+                                            "virus_move_3",
+                                            "virus_move_4",
+                                            "virus_move_5",
+                                            "virus_move_6",
+                                            "virus_move_7"
+                                        ],
+                        "catalogSlot":  "virus"
+                    },
+                    {
+                        "assetId":  "AI003",
+                        "source":  "lung_map.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Environment/lung_map.png",
+                        "kind":  "map",
+                        "columns":  1,
+                        "rows":  1,
+                        "fps":  1,
+                        "spriteNames":  [
+                                            "lung_map"
+                                        ],
+                        "catalogSlot":  "lungMap"
+                    },
+                    {
+                        "assetId":  "AI004",
+                        "source":  "ui_kit_transparent.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/UI/ui_kit.png",
+                        "kind":  "ui",
+                        "columns":  3,
+                        "rows":  2,
+                        "fps":  1,
+                        "spriteNames":  [
+                                            "button_primary",
+                                            "button_secondary",
+                                            "button_danger",
+                                            "panel",
+                                            "badge",
+                                            "organ_card"
+                                        ],
+                        "catalogSlot":  "uiKit"
+                    }
+                ]
+}

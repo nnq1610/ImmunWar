@@ -1,0 +1,39 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AUD015",
+    "manifestCategory":  "Audio",
+    "purpose":  "Boss Phase",
+    "runtimePath":  "Assets/ImmunWar/Audio/SFX/Boss/SFX_Boss_Phase_01.wav",
+    "fallbackAssetId":  "AUD015_FALLBACK",
+    "releaseCritical":  false,
+    "sourceType":  "in_house",
+    "creatorOrProvider":  "Immune War procedural audio generator",
+    "sourceUrlOrJobId":  "ProductionAudioGenerator/2026-09-19",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T01:00:00Z",
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "N/A",
+                   "territoryOrPlatformLimits":  ""
+               },
+    "evidence":  {
+                     "evidenceType":  "CreatorDeclaration",
+                     "nameAndVersion":  "Immune War in-house procedural declaration 2026-09-18",
+                     "urlOrOrderId":  "",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/in-house-procedural-declaration.md",
+                     "snapshotSha256":  "0d7bf91b8f5dda6d0bd4743ea41398dc41d0a5be8ea098e2122d158b8ec974ce",
+                     "attributionText":  ""
+                 },
+    "rawSha256":  "879bfedfba514fc18ab7b31bfdff3b48c3d22889e2b1f12d3e45f1f5f0160673",
+    "approvedExportSha256":  "879bfedfba514fc18ab7b31bfdff3b48c3d22889e2b1f12d3e45f1f5f0160673",
+    "recheckAtUtc":  "2027-03-19T01:12:25Z",
+    "review":  {
+                   "reviewer":  "Project owner (explicit audio listening approval in Codex session)",
+                   "reviewedAtUtc":  "2026-09-19T01:12:25Z",
+                   "notes":  "Approved by the project owner after human listening review; PCM format, provenance, and runtime hash verified."
+               }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "ImmuneWar",
+  "maps": [
+    {
+      "name": "Gameplay",
+      "id": "99e79947-0ee7-48b0-a68d-94b0df56ef62",
+      "actions": [
+        { "name": "Point", "type": "PassThrough", "id": "24999300-152b-4f76-a401-b989a28dd145", "expectedControlType": "Vector2", "processors": "", "interactions": "", "initialStateCheck": false },
+        { "name": "PrimaryClick", "type": "Button", "id": "94a7d6f1-cf54-4ee4-843c-fd99cbe10967", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+        { "name": "Cancel", "type": "Button", "id": "8948381b-23cb-452d-9ef2-79de2b5e9374", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+        { "name": "Pause", "type": "Button", "id": "54142046-2c9b-47f4-87a1-ae169934397a", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+        { "name": "ActivateFever", "type": "Button", "id": "8a13da67-a0eb-464b-a38d-d983953ed31a", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false }
+      ],
+      "bindings": [
+        { "name": "", "id": "e5bda101-39aa-4fa6-8762-5b59f474532b", "path": "<Mouse>/position", "interactions": "", "processors": "", "groups": "KeyboardMouse", "action": "Point", "isComposite": false, "isPartOfComposite": false },
+        { "name": "", "id": "d9090a58-5860-421d-987d-fb1ef6171106", "path": "<Mouse>/leftButton", "interactions": "", "processors": "", "groups": "KeyboardMouse", "action": "PrimaryClick", "isComposite": false, "isPartOfComposite": false },
+        { "name": "", "id": "f59b9d7d-d5a1-4fc9-a116-48d9933c1e20", "path": "<Mouse>/rightButton", "interactions": "", "processors": "", "groups": "KeyboardMouse", "action": "Cancel", "isComposite": false, "isPartOfComposite": false },
+        { "name": "", "id": "4532833d-ea71-4183-b9c6-d7b224fd6ddb", "path": "<Keyboard>/escape", "interactions": "", "processors": "", "groups": "KeyboardMouse", "action": "Pause", "isComposite": false, "isPartOfComposite": false },
+        { "name": "", "id": "a4aa8e2a-e0d6-4ba4-935a-417164348687", "path": "<Keyboard>/f", "interactions": "", "processors": "", "groups": "KeyboardMouse", "action": "ActivateFever", "isComposite": false, "isPartOfComposite": false }
+      ]
+    },
+    {
+      "name": "Menu",
+      "id": "22ab3673-11b7-49fb-9628-35b5ad8e7de9",
+      "actions": [
+        { "name": "Submit", "type": "Button", "id": "bc265cd0-f06f-4a1b-9aa3-13df109fc626", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false },
+        { "name": "Cancel", "type": "Button", "id": "57c366a9-ddf1-4cd5-9b32-e0a5a90d1e3d", "expectedControlType": "Button", "processors": "", "interactions": "", "initialStateCheck": false }
+      ],
+      "bindings": [
+        { "name": "", "id": "95e70b7b-25dd-420b-886d-774c2019259c", "path": "<Keyboard>/enter", "interactions": "", "processors": "", "groups": "KeyboardMouse", "action": "Submit", "isComposite": false, "isPartOfComposite": false },
+        { "name": "", "id": "9a2ef924-fd51-4547-a4e5-c152c4313b7b", "path": "<Keyboard>/escape", "interactions": "", "processors": "", "groups": "KeyboardMouse", "action": "Cancel", "isComposite": false, "isPartOfComposite": false }
+      ]
+    }
+  ],
+  "controlSchemes": [
+    {
+      "name": "KeyboardMouse",
+      "bindingGroup": "KeyboardMouse",
+      "devices": [
+        { "devicePath": "<Keyboard>", "isOptional": false, "isOR": false },
+        { "devicePath": "<Mouse>", "isOptional": false, "isOR": false }
+      ]
+    }
+  ]
+}
+

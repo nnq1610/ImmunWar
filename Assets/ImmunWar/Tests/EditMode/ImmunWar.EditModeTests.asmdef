@@ -1,0 +1,24 @@
+{
+  "name": "ImmunWar.EditModeTests",
+  "rootNamespace": "ImmunWar.Tests.EditMode",
+  "references": [
+    "ImmunWar.Runtime",
+    "ImmunWar.Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

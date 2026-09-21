@@ -1,0 +1,518 @@
+{
+  "schemaVersion": 1,
+  "sourceManifest": "09_ASSET_MANIFEST.xlsx",
+  "normalizedRuntimeRoot": "Assets/ImmunWar",
+  "generatedAtUtc": "2026-09-18T00:00:00Z",
+  "assets": [
+    {
+      "assetId": "DEF001",
+      "category": "Defender",
+      "name": "Macrophage",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/DEF001",
+      "runtimePath": "Assets/ImmunWar/Art/Defenders/P0/DEF_Macrophage.png",
+      "recordPath": "Docs/AssetProvenance/records/DEF001.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "DEF002",
+      "category": "Defender",
+      "name": "T-Cell",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/DEF002",
+      "runtimePath": "Assets/ImmunWar/Art/Defenders/P0/DEF_TCell.png",
+      "recordPath": "Docs/AssetProvenance/records/DEF002.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "DEF003",
+      "category": "Defender",
+      "name": "B-Cell",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/DEF003",
+      "runtimePath": "Assets/ImmunWar/Art/Defenders/P1/DEF_BCell.png",
+      "recordPath": "Docs/AssetProvenance/records/DEF003.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "DEF004",
+      "category": "Defender",
+      "name": "NK Cell",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/DEF004",
+      "runtimePath": "Assets/ImmunWar/Art/Defenders/P1/DEF_NKCell.png",
+      "recordPath": "Docs/AssetProvenance/records/DEF004.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "DEF005",
+      "category": "Defender",
+      "name": "Platelet",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/DEF005",
+      "runtimePath": "Assets/ImmunWar/Art/Defenders/P1/DEF_Platelet.png",
+      "recordPath": "Docs/AssetProvenance/records/DEF005.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "DEF006",
+      "category": "Defender",
+      "name": "Energy Cell",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/DEF006",
+      "runtimePath": "Assets/ImmunWar/Art/Defenders/P0/DEF_EnergyCell.png",
+      "recordPath": "Docs/AssetProvenance/records/DEF006.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENE001",
+      "category": "Enemy",
+      "name": "Basic Virus",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/ENE001",
+      "runtimePath": "Assets/ImmunWar/Art/Enemies/P0/ENE_Virus.png",
+      "recordPath": "Docs/AssetProvenance/records/ENE001.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENE002",
+      "category": "Enemy",
+      "name": "Bacteria",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/ENE002",
+      "runtimePath": "Assets/ImmunWar/Art/Enemies/P1/ENE_Bacteria.png",
+      "recordPath": "Docs/AssetProvenance/records/ENE002.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENE003",
+      "category": "Enemy",
+      "name": "Mutant Virus",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/ENE003",
+      "runtimePath": "Assets/ImmunWar/Art/Enemies/P1/ENE_MutantVirus.png",
+      "recordPath": "Docs/AssetProvenance/records/ENE003.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENE004",
+      "category": "Enemy",
+      "name": "Super Pathogen",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/ENE004",
+      "runtimePath": "Assets/ImmunWar/Art/Enemies/Boss/ENE_Boss.png",
+      "recordPath": "Docs/AssetProvenance/records/ENE004.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV001",
+      "category": "Environment",
+      "name": "Vessel Straight",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/ENV001",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Straight.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV001.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV002",
+      "category": "Environment",
+      "name": "Vessel Curve",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/ENV002",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Curve.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV002.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV003",
+      "category": "Environment",
+      "name": "Vessel Junction 3-way",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/ENV003",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Junction3.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV003.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV004",
+      "category": "Environment",
+      "name": "Defense Node Base",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/ENV004",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Lung/ENV_DefenseNode.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV004.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV005",
+      "category": "Environment",
+      "name": "Infection Decal",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/ENV005",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Final/ENV_InfectionDecal.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV005.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV006",
+      "category": "Environment",
+      "name": "Lung Landmark",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/ENV006",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Lung/ENV_Lung.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV006.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV007",
+      "category": "Environment",
+      "name": "Brain Landmark",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/ENV007",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Brain/ENV_Brain.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV007.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV008",
+      "category": "Environment",
+      "name": "Stomach Landmark",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/ENV008",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Stomach/ENV_Stomach.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV008.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "ENV009",
+      "category": "Environment",
+      "name": "Blood Cell Decoration",
+      "priority": "P2",
+      "sourcePath": "AssetSource/Working/ENV009",
+      "runtimePath": "Assets/ImmunWar/Art/Environment/Final/ENV_BloodCell.png",
+      "recordPath": "Docs/AssetProvenance/records/ENV009.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX001",
+      "category": "VFX",
+      "name": "T-Cell Pulse",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/VFX001",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/P0/VFX_TCellPulse.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX001.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX002",
+      "category": "VFX",
+      "name": "Antibody",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/VFX002",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/Tactical/VFX_Antibody.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX002.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX003",
+      "category": "VFX",
+      "name": "Hit Burst",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/VFX003",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/P0/VFX_Hit.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX003.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX004",
+      "category": "VFX",
+      "name": "Heal Sparkle",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/VFX004",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/Tactical/VFX_Heal.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX004.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX005",
+      "category": "VFX",
+      "name": "Infection Cloud",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/VFX005",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/Tactical/VFX_Infection.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX005.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX006",
+      "category": "VFX",
+      "name": "Mutation Burst",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/VFX006",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/Tactical/VFX_Mutation.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX006.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX007",
+      "category": "VFX",
+      "name": "ATP Orb",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/VFX007",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/P0/VFX_ATP.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX007.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "VFX008",
+      "category": "VFX",
+      "name": "Fever Overlay",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/VFX008",
+      "runtimePath": "Assets/ImmunWar/Art/VFX/Tactical/VFX_FeverOverlay.png",
+      "recordPath": "Docs/AssetProvenance/records/VFX008.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI001",
+      "category": "UI",
+      "name": "Macrophage Icon",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/UI001",
+      "runtimePath": "Assets/ImmunWar/Art/UI/P0/UI_Icon_Macrophage.png",
+      "recordPath": "Docs/AssetProvenance/records/UI001.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI002",
+      "category": "UI",
+      "name": "T-Cell Icon",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/UI002",
+      "runtimePath": "Assets/ImmunWar/Art/UI/P0/UI_Icon_TCell.png",
+      "recordPath": "Docs/AssetProvenance/records/UI002.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI003",
+      "category": "UI",
+      "name": "B-Cell Icon",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/UI003",
+      "runtimePath": "Assets/ImmunWar/Art/UI/Tactical/UI_Icon_BCell.png",
+      "recordPath": "Docs/AssetProvenance/records/UI003.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI004",
+      "category": "UI",
+      "name": "NK Cell Icon",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/UI004",
+      "runtimePath": "Assets/ImmunWar/Art/UI/Tactical/UI_Icon_NKCell.png",
+      "recordPath": "Docs/AssetProvenance/records/UI004.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI005",
+      "category": "UI",
+      "name": "Platelet Icon",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/UI005",
+      "runtimePath": "Assets/ImmunWar/Art/UI/Tactical/UI_Icon_Platelet.png",
+      "recordPath": "Docs/AssetProvenance/records/UI005.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI006",
+      "category": "UI",
+      "name": "Energy Cell Icon",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/UI006",
+      "runtimePath": "Assets/ImmunWar/Art/UI/P0/UI_Icon_EnergyCell.png",
+      "recordPath": "Docs/AssetProvenance/records/UI006.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI007",
+      "category": "UI",
+      "name": "ATP Icon",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/UI007",
+      "runtimePath": "Assets/ImmunWar/Art/UI/P0/UI_ATP.png",
+      "recordPath": "Docs/AssetProvenance/records/UI007.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI008",
+      "category": "UI",
+      "name": "Vitality Icon Set",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/UI008",
+      "runtimePath": "Assets/ImmunWar/Art/UI/Final/UI_Vitality_Set.png",
+      "recordPath": "Docs/AssetProvenance/records/UI008.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "UI009",
+      "category": "UI",
+      "name": "Fever Icon",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/UI009",
+      "runtimePath": "Assets/ImmunWar/Art/UI/Tactical/UI_Fever.png",
+      "recordPath": "Docs/AssetProvenance/records/UI009.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD001",
+      "category": "Audio",
+      "name": "Menu BGM",
+      "priority": "P2",
+      "sourcePath": "AssetSource/Working/AUD001",
+      "runtimePath": "Assets/ImmunWar/Audio/Music/BGM_Menu.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD001.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD002",
+      "category": "Audio",
+      "name": "Battle BGM",
+      "priority": "P2",
+      "sourcePath": "AssetSource/Working/AUD002",
+      "runtimePath": "Assets/ImmunWar/Audio/Music/BGM_Battle.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD002.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD003",
+      "category": "Audio",
+      "name": "UI Click",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD003",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Final/SFX_UI_Click_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD003.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD004",
+      "category": "Audio",
+      "name": "UI Error",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD004",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Final/SFX_UI_Error_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD004.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD005",
+      "category": "Audio",
+      "name": "T-Cell Attack",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/AUD005",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/P0/SFX_TCell_Attack_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD005.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD006",
+      "category": "Audio",
+      "name": "Virus Death",
+      "priority": "P0",
+      "sourcePath": "AssetSource/Working/AUD006",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/P0/SFX_Virus_Death_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD006.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD007",
+      "category": "Audio",
+      "name": "B-Cell Antibody",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD007",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_BCell_Antibody_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD007.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD008",
+      "category": "Audio",
+      "name": "NK Attack",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD008",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_NK_Attack_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD008.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD009",
+      "category": "Audio",
+      "name": "Platelet Heal",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD009",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Platelet_Heal_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD009.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD010",
+      "category": "Audio",
+      "name": "Energy Generate",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD010",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_ATP_Generate_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD010.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD011",
+      "category": "Audio",
+      "name": "Infection Start",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD011",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Infection_Start_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD011.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD012",
+      "category": "Audio",
+      "name": "Infection Cleanse",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD012",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Infection_Cleanse_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD012.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD013",
+      "category": "Audio",
+      "name": "Fever Activate",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD013",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Fever_Activate_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD013.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD014",
+      "category": "Audio",
+      "name": "Vitality Damage",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD014",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Vitality_Damage_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD014.json",
+      "status": "Planned"
+    },
+    {
+      "assetId": "AUD015",
+      "category": "Audio",
+      "name": "Boss Phase",
+      "priority": "P1",
+      "sourcePath": "AssetSource/Working/AUD015",
+      "runtimePath": "Assets/ImmunWar/Audio/SFX/Boss/SFX_Boss_Phase_01.wav",
+      "recordPath": "Docs/AssetProvenance/records/AUD015.json",
+      "status": "Planned"
+    }
+  ]
+}

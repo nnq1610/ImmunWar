@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "ShippableAsset",
+  "assetId": "DEF006",
+  "manifestCategory": "Defender",
+  "purpose": "ATP economy cell",
+  "runtimePath": "Assets/ImmunWar/Art/Defenders/P0/DEF_EnergyCell.png",
+  "fallbackAssetId": "PLACEHOLDER_DEF006",
+  "releaseCritical": true,
+  "sourceType": "ai_generated",
+  "creatorOrProvider": "OpenAI image generation",
+  "sourceUrlOrJobId": "exec-d5134c31-48b0-40f1-8c87-c2f1e02fb772",
+  "acquiredOrGeneratedAtUtc": "2026-09-18T08:55:00Z",
+  "generation": {
+    "provider": "OpenAI",
+    "model": "built-in image generation",
+    "modelVersion": null,
+    "prompt": "Friendly ATP economy cell with golden mitochondria and lightning motif, transparent background, no references.",
+    "settings": "transparent PNG; square",
+    "referenceAssetIds": []
+  },
+  "status": "Approved",
+  "rights": {
+    "commercialUse": "Allowed",
+    "modification": "Allowed",
+    "embeddedRedistribution": "Allowed",
+    "attribution": "N/A",
+    "aiInputUse": "Allowed",
+    "territoryOrPlatformLimits": null
+  },
+  "evidence": {
+    "evidenceType": "AIProviderTerms",
+    "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+    "urlOrOrderId": "https://openai.com/policies/service-terms/",
+    "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+    "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+    "attributionText": null
+  },
+  "rawSha256": "481a3f1626991240a4a51a6d5186d8c590537d11e581f3ed50402847fe6a7cf2",
+  "approvedExportSha256": "481a3f1626991240a4a51a6d5186d8c590537d11e581f3ed50402847fe6a7cf2",
+  "recheckAtUtc": "2027-03-18T00:00:00Z",
+  "review": {
+    "reviewer": "Project owner (confirmed in Codex session)",
+    "reviewedAtUtc": "2026-09-18T16:09:15Z",
+    "notes": "Approved by the project owner after visual review recommendation; technical PNG, alpha, provenance, and hash checks passed."
+  }
+}

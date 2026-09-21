@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "VFX005",
+    "manifestCategory":  "VFX",
+    "purpose":  "Infection Cloud",
+    "runtimePath":  "Assets/ImmunWar/Art/VFX/Tactical/VFX_Infection.png",
+    "fallbackAssetId":  "VFX005_FALLBACK",
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation",
+    "sourceUrlOrJobId":  "exec-fc4a400a-88b9-45c9-bcb4-6a28b1447390",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T00:36:00Z",
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI terms reviewed 2026-09-18",
+                     "urlOrOrderId":  "https://openai.com/policies/service-terms/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+                     "snapshotSha256":  "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "7a4f53f8bb2b1c5e7722b1470b514ee1866ddb4f08e4ac58485ddf1d500a3d6f",
+    "approvedExportSha256":  "7a4f53f8bb2b1c5e7722b1470b514ee1866ddb4f08e4ac58485ddf1d500a3d6f",
+    "recheckAtUtc":  "2027-03-19T00:36:00Z",
+    "review":  {
+                   "reviewer":  "Project owner (standing image approval confirmed in Codex session)",
+                   "reviewedAtUtc":  "2026-09-19T00:36:00Z",
+                   "notes":  "Selected by Codex under the project owner standing image approval; alpha, provenance, and runtime hash verified."
+               },
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "built-in image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Toxic-green infection cloud with purple microbe specks.",
+                       "settings":  "transparent PNG; square; selected under standing image approval",
+                       "referenceAssetIds":  [
+                                                 "ENE002"
+                                             ]
+                   }
+}

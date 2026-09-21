@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd5e200019477c449b3fbc2dfda6de40, type: 3}
+  m_Name: BrainWaves
+  m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.WaveSet
+  id: waves_brain
+  waves:
+  - groups:
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_brain_main
+      count: 9
+      intervalTicks: 24

@@ -1,0 +1,31 @@
+#EXTM3U
+#EXTINF:24,AUD001 - Menu music
+../../Assets/ImmunWar/Audio/Music/BGM_Menu.wav
+#EXTINF:24,AUD002 - Battle music
+../../Assets/ImmunWar/Audio/Music/BGM_Battle.wav
+#EXTINF:0.14,AUD003 - UI click
+../../Assets/ImmunWar/Audio/SFX/Final/SFX_UI_Click_01.wav
+#EXTINF:0.34,AUD004 - UI error
+../../Assets/ImmunWar/Audio/SFX/Final/SFX_UI_Error_01.wav
+#EXTINF:0.28,AUD005 - T-Cell attack
+../../Assets/ImmunWar/Audio/SFX/P0/SFX_TCell_Attack_01.wav
+#EXTINF:0.48,AUD006 - Virus death
+../../Assets/ImmunWar/Audio/SFX/P0/SFX_Virus_Death_01.wav
+#EXTINF:0.46,AUD007 - B-Cell antibody
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_BCell_Antibody_01.wav
+#EXTINF:0.24,AUD008 - NK attack
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_NK_Attack_01.wav
+#EXTINF:0.72,AUD009 - Platelet heal
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_Platelet_Heal_01.wav
+#EXTINF:0.52,AUD010 - ATP generated
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_ATP_Generate_01.wav
+#EXTINF:0.68,AUD011 - Infection starts
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_Infection_Start_01.wav
+#EXTINF:0.62,AUD012 - Infection cleansed
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_Infection_Cleanse_01.wav
+#EXTINF:1.1,AUD013 - Fever activated
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_Fever_Activate_01.wav
+#EXTINF:0.42,AUD014 - Vitality damaged
+../../Assets/ImmunWar/Audio/SFX/Tactical/SFX_Vitality_Damage_01.wav
+#EXTINF:1.25,AUD015 - Boss phase transition
+../../Assets/ImmunWar/Audio/SFX/Boss/SFX_Boss_Phase_01.wav

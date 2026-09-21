@@ -1,0 +1,39 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AUD011",
+    "manifestCategory":  "Audio",
+    "purpose":  "Infection Start",
+    "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Infection_Start_01.wav",
+    "fallbackAssetId":  "AUD011_FALLBACK",
+    "releaseCritical":  false,
+    "sourceType":  "in_house",
+    "creatorOrProvider":  "Immune War procedural audio generator",
+    "sourceUrlOrJobId":  "ProductionAudioGenerator/2026-09-19",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T01:00:00Z",
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "N/A",
+                   "territoryOrPlatformLimits":  ""
+               },
+    "evidence":  {
+                     "evidenceType":  "CreatorDeclaration",
+                     "nameAndVersion":  "Immune War in-house procedural declaration 2026-09-18",
+                     "urlOrOrderId":  "",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/in-house-procedural-declaration.md",
+                     "snapshotSha256":  "0d7bf91b8f5dda6d0bd4743ea41398dc41d0a5be8ea098e2122d158b8ec974ce",
+                     "attributionText":  ""
+                 },
+    "rawSha256":  "f8b2f8813dea3b0efab4787c0dc987c8bc8aea3927dbc97e0615c666c1eb998a",
+    "approvedExportSha256":  "f8b2f8813dea3b0efab4787c0dc987c8bc8aea3927dbc97e0615c666c1eb998a",
+    "recheckAtUtc":  "2027-03-19T01:12:24Z",
+    "review":  {
+                   "reviewer":  "Project owner (explicit audio listening approval in Codex session)",
+                   "reviewedAtUtc":  "2026-09-19T01:12:24Z",
+                   "notes":  "Approved by the project owner after human listening review; PCM format, provenance, and runtime hash verified."
+               }
+}

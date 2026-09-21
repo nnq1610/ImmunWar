@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "ShippableAsset",
+  "assetId": "ENE001",
+  "manifestCategory": "Enemy",
+  "purpose": "Basic virus pressure enemy",
+  "runtimePath": "Assets/ImmunWar/Art/Enemies/P0/ENE_Virus.png",
+  "fallbackAssetId": "PLACEHOLDER_ENE001",
+  "releaseCritical": true,
+  "sourceType": "ai_generated",
+  "creatorOrProvider": "OpenAI image generation",
+  "sourceUrlOrJobId": "exec-1b83d616-afd4-43ea-9b77-ab772f2df89a",
+  "acquiredOrGeneratedAtUtc": "2026-09-18T08:55:00Z",
+  "generation": {
+    "provider": "OpenAI",
+    "model": "built-in image generation",
+    "modelVersion": null,
+    "prompt": "Fictional family-friendly red spiky basic virus enemy, transparent background, no references.",
+    "settings": "transparent PNG; square",
+    "referenceAssetIds": []
+  },
+  "status": "Approved",
+  "rights": {
+    "commercialUse": "Allowed",
+    "modification": "Allowed",
+    "embeddedRedistribution": "Allowed",
+    "attribution": "N/A",
+    "aiInputUse": "Allowed",
+    "territoryOrPlatformLimits": null
+  },
+  "evidence": {
+    "evidenceType": "AIProviderTerms",
+    "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+    "urlOrOrderId": "https://openai.com/policies/service-terms/",
+    "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+    "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+    "attributionText": null
+  },
+  "rawSha256": "434c4fd70721b56074a84b584bf1dcfc80999c7271d8c1f55ea214a775fd3c85",
+  "approvedExportSha256": "434c4fd70721b56074a84b584bf1dcfc80999c7271d8c1f55ea214a775fd3c85",
+  "recheckAtUtc": "2027-03-18T00:00:00Z",
+  "review": {
+    "reviewer": "Project owner (confirmed in Codex session)",
+    "reviewedAtUtc": "2026-09-18T16:09:15Z",
+    "notes": "Approved by the project owner after visual review recommendation; technical PNG, alpha, provenance, and hash checks passed."
+  }
+}

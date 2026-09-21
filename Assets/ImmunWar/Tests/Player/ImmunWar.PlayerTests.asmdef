@@ -1,0 +1,8 @@
+{
+  "name": "ImmunWar.PlayerTests",
+  "rootNamespace": "ImmunWar.Tests.Player",
+  "references": [],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

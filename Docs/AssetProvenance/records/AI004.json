@@ -1,0 +1,49 @@
+﻿{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AI004",
+    "manifestCategory":  "ui",
+    "purpose":  "Menu and battle UI skins",
+    "runtimePath":  "Assets/ImmunWar/Art/Batch/UI/ui_kit.png",
+    "fallbackAssetId":  null,
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation via Codex",
+    "sourceUrlOrJobId":  "exec-a839317c-7653-44b3-8758-9a9c01810f4b",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T13:23:28Z",
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "image_gen",
+                       "modelVersion":  null,
+                       "prompt":  "Batch generation using existing Immune War P0 reference art; create consistent transparent animation frames, lung background, and UI kit.",
+                       "settings":  "Image editing with project reference assets where applicable",
+                       "referenceAssetIds":  [
+
+                                             ]
+                   },
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI Terms of Use effective 2026-01-01",
+                     "urlOrOrderId":  "https://openai.com/policies/row-terms-of-use/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-terms-2026-09-19.txt",
+                     "snapshotSha256":  "5e32a72a7c3bf0bf58fd0ca13de43d6afe1d0f9fcba5b7fe5587c28182826279",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "7ecfddb8b68338ca2a93f41237a813de81f79c856be290003e480dcd69ba8607",
+    "approvedExportSha256":  "7ecfddb8b68338ca2a93f41237a813de81f79c856be290003e480dcd69ba8607",
+    "recheckAtUtc":  null,
+    "review":  {
+                   "reviewer":  "Codex visual and technical review for requested import",
+                   "reviewedAtUtc":  "2026-09-19T13:23:28Z",
+                   "notes":  "Inspected generated sheet or plate at native game scale; checked style, frame count or transparency and planned Unity import. Owner requested batch generation and project integration."
+               }
+}

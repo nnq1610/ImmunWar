@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "ENV008",
+    "manifestCategory":  "Environment",
+    "purpose":  "Stomach Landmark",
+    "runtimePath":  "Assets/ImmunWar/Art/Environment/Stomach/ENV_Stomach.png",
+    "fallbackAssetId":  "ENV008_FALLBACK",
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation",
+    "sourceUrlOrJobId":  "exec-62dec8d3-86f0-47d9-838f-964a311e28cf",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T00:48:00Z",
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI terms reviewed 2026-09-18",
+                     "urlOrOrderId":  "https://openai.com/policies/service-terms/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+                     "snapshotSha256":  "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "3827b911b4f845ad3c2a5b4382a975bb92364ff394995d1a77881cacbecdedfe",
+    "approvedExportSha256":  "3827b911b4f845ad3c2a5b4382a975bb92364ff394995d1a77881cacbecdedfe",
+    "recheckAtUtc":  "2027-03-19T00:48:00Z",
+    "review":  {
+                   "reviewer":  "Project owner (standing image approval confirmed in Codex session)",
+                   "reviewedAtUtc":  "2026-09-19T00:48:00Z",
+                   "notes":  "Selected by Codex under the project owner standing image approval; alpha, provenance, and runtime hash verified."
+               },
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "built-in image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Stylized medically recognizable stomach landmark with cyan immune highlights.",
+                       "settings":  "transparent PNG; square; selected under standing image approval",
+                       "referenceAssetIds":  [
+
+                                             ]
+                   }
+}

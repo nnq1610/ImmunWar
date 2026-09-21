@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "ShippableAsset",
+  "assetId": "ENV002",
+  "manifestCategory": "Environment",
+  "purpose": "Vessel Curve",
+  "runtimePath": "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Curve.png",
+  "fallbackAssetId": "PLACEHOLDER_ENV002",
+  "releaseCritical": true,
+  "sourceType": "ai_generated",
+  "creatorOrProvider": "OpenAI image generation",
+  "sourceUrlOrJobId": "exec-06fafb57-da8f-4b88-8e03-517e3718b882",
+  "acquiredOrGeneratedAtUtc": "2026-09-19T00:20:00Z",
+  "generation": {"provider":"OpenAI","model":"built-in image generation","modelVersion":null,"prompt":"Top-down 90-degree lung blood-vessel curve tile with transparent exterior.","settings":"transparent PNG; square; P0 style references","referenceAssetIds":["DEF001","ENE001"]},
+  "status": "Approved",
+  "rights": {
+    "commercialUse": "Allowed",
+    "modification": "Allowed",
+    "embeddedRedistribution": "Allowed",
+    "attribution": "N/A",
+    "aiInputUse": "Allowed",
+    "territoryOrPlatformLimits": null
+  },
+  "evidence": {
+    "evidenceType": "AIProviderTerms",
+    "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+    "urlOrOrderId": "https://openai.com/policies/service-terms/",
+    "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+    "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+    "attributionText": null
+  },
+  "rawSha256": "3d40989e409ac3098125b033216bef4633f2dc7b41230c164108af72b0cbfdeb",
+  "approvedExportSha256": "3d40989e409ac3098125b033216bef4633f2dc7b41230c164108af72b0cbfdeb",
+  "recheckAtUtc": "2027-03-19T00:00:00Z",
+  "review": {
+    "reviewer": "Project owner (standing image approval confirmed in Codex session)",
+    "reviewedAtUtc": "2026-09-19T00:20:00Z",
+    "notes": "Selected under standing image approval; path readability, alpha, provenance, and runtime hash verified."
+  }
+}

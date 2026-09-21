@@ -1,0 +1,203 @@
+IMMUNE WAR - THIRD-PARTY ASSET NOTICES
+Generated from approved provenance records.
+
+AI001 - Macrophage idle and attack animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI002 - Basic Virus route movement animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI003 - Lung battle and menu background
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI004 - Menu and battle UI skins
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI005 - T cell idle and attack animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI006 - Energy cell idle and action animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI007 - B cell idle and attack animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI008 - Natural killer idle and attack animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI009 - Platelet idle and repair animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI010 - Bacteria movement animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI011 - Mutant movement animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI012 - Super pathogen movement animation sheet
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI013 - Brain battle map plate
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI014 - Stomach battle map plate
+Provider: OpenAI image generation via Codex
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+ENV001 - Vessel Straight
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV002 - Vessel Curve
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV003 - Vessel Junction
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV004 - Defense Node
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+DEF003 - B-Cell
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+DEF004 - NK Cell
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+DEF005 - Platelet
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENE002 - Bacteria
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENE003 - Mutant Virus
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENE004 - Super Pathogen
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV005 - Infection Decal
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV006 - Lung Landmark
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV007 - Brain Landmark
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV008 - Stomach Landmark
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENV009 - Blood Cell Decoration
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+UI003 - B-Cell Icon
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+UI004 - NK Cell Icon
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+UI005 - Platelet Icon
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+UI008 - Vitality Icon Set
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+UI009 - Fever Icon
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX002 - Antibody
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX004 - Heal Sparkle
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX005 - Infection Cloud
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX006 - Mutation Burst
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX008 - Fever Overlay
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+UI001 - Macrophage Icon
+Provider: OpenAI image generation / derived crop
+Source/terms: https://openai.com/policies/service-terms/
+
+UI002 - T-Cell Icon
+Provider: OpenAI image generation / derived crop
+Source/terms: https://openai.com/policies/service-terms/
+
+UI006 - Energy Cell Icon
+Provider: OpenAI image generation / derived crop
+Source/terms: https://openai.com/policies/service-terms/
+
+UI007 - ATP Icon
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX001 - T-Cell Pulse
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX003 - Hit Burst
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+VFX007 - ATP Orb
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+DEF001 - Macrophage tank/blocker
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+DEF002 - Cytotoxic T-cell DPS
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+DEF006 - ATP economy cell
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+
+ENE001 - Basic virus pressure enemy
+Provider: OpenAI image generation
+Source/terms: https://openai.com/policies/service-terms/
+

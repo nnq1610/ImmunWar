@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8b0e637f65714d4d90a5a7fbf2b0743, type: 3}
+  m_Name: Mutant
+  m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
+  id: ene_mutant
+  displayNameKey: ene_mutant
+  maxHealth: 120
+  moveSpeed: 0.7
+  organDamage: 16
+  atpReward: 13
+  mutations:
+  - {fileID: 11400000, guid: f29534b5f100103478211915baca3d02, type: 2}
+  - {fileID: 11400000, guid: 28de73343a5dda549984e508152038ba, type: 2}
+  bossPhases: []
+  presentation: {fileID: 11400000, guid: 5e8293f5554ac98459895c48856bc073, type: 2}

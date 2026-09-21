@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "ShippableAsset",
+  "assetId": "VFX001",
+  "manifestCategory": "VFX",
+  "purpose": "T-Cell Pulse",
+  "runtimePath": "Assets/ImmunWar/Art/VFX/P0/VFX_TCellPulse.png",
+  "fallbackAssetId": "PLACEHOLDER_VFX001",
+  "releaseCritical": true,
+  "sourceType": "ai_generated",
+  "creatorOrProvider": "OpenAI image generation",
+  "sourceUrlOrJobId": "exec-2d7d97d8-9620-434d-bb7c-7709b57eec50",
+  "acquiredOrGeneratedAtUtc": "2026-09-19T00:28:00Z",
+  "generation": {"provider":"OpenAI","model":"built-in image generation","modelVersion":null,"prompt":"Directional cyan T-Cell plasma pulse with biological rings and transparent background.","settings":"transparent PNG; square; P0 style references","referenceAssetIds":["DEF002","DEF006","ENE001"]},
+  "status": "Approved",
+  "rights": {
+    "commercialUse": "Allowed",
+    "modification": "Allowed",
+    "embeddedRedistribution": "Allowed",
+    "attribution": "N/A",
+    "aiInputUse": "Allowed",
+    "territoryOrPlatformLimits": null
+  },
+  "evidence": {
+    "evidenceType": "AIProviderTerms",
+    "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+    "urlOrOrderId": "https://openai.com/policies/service-terms/",
+    "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+    "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+    "attributionText": null
+  },
+  "rawSha256": "3d78fbde5356564f78a7d6f10277508489360f9c40ad66a6697f7f763d0d4a00",
+  "approvedExportSha256": "3d78fbde5356564f78a7d6f10277508489360f9c40ad66a6697f7f763d0d4a00",
+  "recheckAtUtc": "2027-03-19T00:00:00Z",
+  "review": {
+    "reviewer": "Project owner (standing image approval confirmed in Codex session)",
+    "reviewedAtUtc": "2026-09-19T00:28:00Z",
+    "notes": "Selected under standing image approval; direction, readability, alpha, provenance, and hash verified."
+  }
+}

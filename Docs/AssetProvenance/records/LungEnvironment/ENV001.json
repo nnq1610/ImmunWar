@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "ShippableAsset",
+  "assetId": "ENV001",
+  "manifestCategory": "Environment",
+  "purpose": "Vessel Straight",
+  "runtimePath": "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Straight.png",
+  "fallbackAssetId": "PLACEHOLDER_ENV001",
+  "releaseCritical": true,
+  "sourceType": "ai_generated",
+  "creatorOrProvider": "OpenAI image generation",
+  "sourceUrlOrJobId": "exec-f5598fb4-66c6-4ee5-a223-de5cf58ee6c7",
+  "acquiredOrGeneratedAtUtc": "2026-09-19T00:20:00Z",
+  "generation": {"provider":"OpenAI","model":"built-in image generation","modelVersion":null,"prompt":"Top-down seamless straight lung blood-vessel tile with transparent exterior.","settings":"transparent PNG; square; P0 style references","referenceAssetIds":["DEF001","ENE001"]},
+  "status": "Approved",
+  "rights": {
+    "commercialUse": "Allowed",
+    "modification": "Allowed",
+    "embeddedRedistribution": "Allowed",
+    "attribution": "N/A",
+    "aiInputUse": "Allowed",
+    "territoryOrPlatformLimits": null
+  },
+  "evidence": {
+    "evidenceType": "AIProviderTerms",
+    "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+    "urlOrOrderId": "https://openai.com/policies/service-terms/",
+    "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+    "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+    "attributionText": null
+  },
+  "rawSha256": "b3694a0f0fb51d2d41ca5b73af46e1fcd8850bbccb05137ca22fe060a972bc1f",
+  "approvedExportSha256": "b3694a0f0fb51d2d41ca5b73af46e1fcd8850bbccb05137ca22fe060a972bc1f",
+  "recheckAtUtc": "2027-03-19T00:00:00Z",
+  "review": {
+    "reviewer": "Project owner (standing image approval confirmed in Codex session)",
+    "reviewedAtUtc": "2026-09-19T00:20:00Z",
+    "notes": "Selected under standing image approval; path readability, alpha, provenance, and runtime hash verified."
+  }
+}

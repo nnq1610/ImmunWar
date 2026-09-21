@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "ENE004",
+    "manifestCategory":  "Enemy",
+    "purpose":  "Super Pathogen",
+    "runtimePath":  "Assets/ImmunWar/Art/Enemies/Boss/ENE_Boss.png",
+    "fallbackAssetId":  "ENE004_FALLBACK",
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation",
+    "sourceUrlOrJobId":  "exec-abe33757-3bcf-49f5-81dd-1235f29d0395",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T00:48:00Z",
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI terms reviewed 2026-09-18",
+                     "urlOrOrderId":  "https://openai.com/policies/service-terms/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+                     "snapshotSha256":  "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "d537522aff221c44eb6a24d4186cc2ec0e75a4e3331e8aba463e81e7cba1f585",
+    "approvedExportSha256":  "d537522aff221c44eb6a24d4186cc2ec0e75a4e3331e8aba463e81e7cba1f585",
+    "recheckAtUtc":  "2027-03-19T00:48:00Z",
+    "review":  {
+                   "reviewer":  "Project owner (standing image approval confirmed in Codex session)",
+                   "reviewedAtUtc":  "2026-09-19T00:48:00Z",
+                   "notes":  "Selected by Codex under the project owner standing image approval; alpha, provenance, and runtime hash verified."
+               },
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "built-in image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Super Pathogen boss with layered magenta armor, toxic core, and orange warning nodules.",
+                       "settings":  "transparent PNG; square; selected under standing image approval",
+                       "referenceAssetIds":  [
+                                                 "ENE003"
+                                             ]
+                   }
+}

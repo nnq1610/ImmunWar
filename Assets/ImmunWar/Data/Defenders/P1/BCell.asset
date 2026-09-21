@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f2285f79bafee345821319c742988b0, type: 3}
+  m_Name: BCell
+  m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.DefenderConfig
+  id: def_bcell
+  displayNameKey: def_bcell
+  role: 2
+  atpCost: 30
+  maxHealth: 95
+  attackDamage: 6
+  attackInterval: 1.1
+  range: 3
+  ability: {fileID: 11400000, guid: 4d4084cf87167c841922dc6d0cb3cab7, type: 2}
+  presentation: {fileID: 11400000, guid: c693ee958fda6594b9ef32acdeb824c2, type: 2}

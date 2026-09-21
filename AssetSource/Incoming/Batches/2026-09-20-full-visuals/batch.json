@@ -1,0 +1,192 @@
+﻿{
+    "schemaVersion":  1,
+    "batchId":  "2026-09-20-full-visuals",
+    "entries":  [
+                    {
+                        "assetId":  "AI005",
+                        "source":  "tcell_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/tcell_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "tcell_sheet_idle_0",
+                                            "tcell_sheet_idle_1",
+                                            "tcell_sheet_idle_2",
+                                            "tcell_sheet_idle_3",
+                                            "tcell_sheet_action_0",
+                                            "tcell_sheet_action_1",
+                                            "tcell_sheet_action_2",
+                                            "tcell_sheet_action_3"
+                                        ],
+                        "catalogSlot":  "def_tcell"
+                    },
+                    {
+                        "assetId":  "AI006",
+                        "source":  "energy_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/energy_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "energy_sheet_idle_0",
+                                            "energy_sheet_idle_1",
+                                            "energy_sheet_idle_2",
+                                            "energy_sheet_idle_3",
+                                            "energy_sheet_action_0",
+                                            "energy_sheet_action_1",
+                                            "energy_sheet_action_2",
+                                            "energy_sheet_action_3"
+                                        ],
+                        "catalogSlot":  "def_energy"
+                    },
+                    {
+                        "assetId":  "AI007",
+                        "source":  "bcell_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/bcell_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "bcell_sheet_idle_0",
+                                            "bcell_sheet_idle_1",
+                                            "bcell_sheet_idle_2",
+                                            "bcell_sheet_idle_3",
+                                            "bcell_sheet_action_0",
+                                            "bcell_sheet_action_1",
+                                            "bcell_sheet_action_2",
+                                            "bcell_sheet_action_3"
+                                        ],
+                        "catalogSlot":  "def_bcell"
+                    },
+                    {
+                        "assetId":  "AI008",
+                        "source":  "nk_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/nk_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "nk_sheet_idle_0",
+                                            "nk_sheet_idle_1",
+                                            "nk_sheet_idle_2",
+                                            "nk_sheet_idle_3",
+                                            "nk_sheet_action_0",
+                                            "nk_sheet_action_1",
+                                            "nk_sheet_action_2",
+                                            "nk_sheet_action_3"
+                                        ],
+                        "catalogSlot":  "def_nk"
+                    },
+                    {
+                        "assetId":  "AI009",
+                        "source":  "platelet_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/platelet_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "platelet_sheet_idle_0",
+                                            "platelet_sheet_idle_1",
+                                            "platelet_sheet_idle_2",
+                                            "platelet_sheet_idle_3",
+                                            "platelet_sheet_action_0",
+                                            "platelet_sheet_action_1",
+                                            "platelet_sheet_action_2",
+                                            "platelet_sheet_action_3"
+                                        ],
+                        "catalogSlot":  "def_platelet"
+                    },
+                    {
+                        "assetId":  "AI010",
+                        "source":  "bacteria_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/bacteria_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "bacteria_sheet_move_0",
+                                            "bacteria_sheet_move_1",
+                                            "bacteria_sheet_move_2",
+                                            "bacteria_sheet_move_3",
+                                            "bacteria_sheet_move_4",
+                                            "bacteria_sheet_move_5",
+                                            "bacteria_sheet_move_6",
+                                            "bacteria_sheet_move_7"
+                                        ],
+                        "catalogSlot":  "ene_bacteria"
+                    },
+                    {
+                        "assetId":  "AI011",
+                        "source":  "mutant_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/mutant_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "mutant_sheet_move_0",
+                                            "mutant_sheet_move_1",
+                                            "mutant_sheet_move_2",
+                                            "mutant_sheet_move_3",
+                                            "mutant_sheet_move_4",
+                                            "mutant_sheet_move_5",
+                                            "mutant_sheet_move_6",
+                                            "mutant_sheet_move_7"
+                                        ],
+                        "catalogSlot":  "ene_mutant"
+                    },
+                    {
+                        "assetId":  "AI012",
+                        "source":  "boss_sheet.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Characters/boss_sheet.png",
+                        "kind":  "character",
+                        "columns":  4,
+                        "rows":  2,
+                        "fps":  6,
+                        "spriteNames":  [
+                                            "boss_sheet_move_0",
+                                            "boss_sheet_move_1",
+                                            "boss_sheet_move_2",
+                                            "boss_sheet_move_3",
+                                            "boss_sheet_move_4",
+                                            "boss_sheet_move_5",
+                                            "boss_sheet_move_6",
+                                            "boss_sheet_move_7"
+                                        ],
+                        "catalogSlot":  "ene_super_pathogen"
+                    },
+                    {
+                        "assetId":  "AI013",
+                        "source":  "brain_map.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Environment/brain_map.png",
+                        "kind":  "map",
+                        "columns":  1,
+                        "rows":  1,
+                        "fps":  1,
+                        "spriteNames":  [
+                                            "brain_map"
+                                        ],
+                        "catalogSlot":  "brainMap"
+                    },
+                    {
+                        "assetId":  "AI014",
+                        "source":  "stomach_map.png",
+                        "destination":  "Assets/ImmunWar/Art/Batch/Environment/stomach_map.png",
+                        "kind":  "map",
+                        "columns":  1,
+                        "rows":  1,
+                        "fps":  1,
+                        "spriteNames":  [
+                                            "stomach_map"
+                                        ],
+                        "catalogSlot":  "stomachMap"
+                    }
+                ]
+}

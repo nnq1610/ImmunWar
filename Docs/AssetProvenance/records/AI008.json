@@ -1,0 +1,49 @@
+﻿{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AI008",
+    "manifestCategory":  "character",
+    "purpose":  "Natural killer idle and attack animation sheet",
+    "runtimePath":  "Assets/ImmunWar/Art/Batch/Characters/nk_sheet.png",
+    "fallbackAssetId":  null,
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation via Codex",
+    "sourceUrlOrJobId":  "exec-8ffb0f01-4fd1-46bf-8d9d-be51d60e34b7",
+    "acquiredOrGeneratedAtUtc":  "2026-09-20T14:32:25Z",
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "image_gen",
+                       "modelVersion":  null,
+                       "prompt":  "Consistent Immune War glossy cellular game art based on existing project reference: Natural killer idle and attack animation sheet; transparent 4x2 motion frames for units or themed 16:9 organ map plate.",
+                       "settings":  "Image editing with project reference assets where applicable",
+                       "referenceAssetIds":  [
+                                                 "DEF_NKCell"
+                                             ]
+                   },
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI Terms of Use effective 2026-01-01",
+                     "urlOrOrderId":  "https://openai.com/policies/row-terms-of-use/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-terms-2026-09-19.txt",
+                     "snapshotSha256":  "5e32a72a7c3bf0bf58fd0ca13de43d6afe1d0f9fcba5b7fe5587c28182826279",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "d1ec5e7c07b4f1b69fca45c886f0765f33059fb19e2fd2e739618fbff93a0329",
+    "approvedExportSha256":  "d1ec5e7c07b4f1b69fca45c886f0765f33059fb19e2fd2e739618fbff93a0329",
+    "recheckAtUtc":  null,
+    "review":  {
+                   "reviewer":  "Codex visual and technical review for requested import",
+                   "reviewedAtUtc":  "2026-09-20T14:32:25Z",
+                   "notes":  "Visually inspected output at native resolution, checked grid count and alpha, and approved for the requested project batch import."
+               }
+}

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93fbb9112fc45e24e98a4cf4411685d8, type: 3}
+  m_Name: StomachMap
+  m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.OrganMapConfig
+  id: map_stomach
+  displayNameKey: map.stomach
+  nextMapId: 
+  startingAtp: 120
+  maximumVitality: 100
+  routes:
+  - {fileID: 11400000, guid: 00604994584e4dd4eae08c9a12c81ac1, type: 2}
+  nodes:
+  - {fileID: 11400000, guid: 45eda295e75e6b1479036ff7e3d52f2a, type: 2}
+  - {fileID: 11400000, guid: afc9a6905c5e2f34a9fed51d0b7067b6, type: 2}
+  - {fileID: 11400000, guid: c15195fb4fc50474385943bdbdfe14aa, type: 2}
+  - {fileID: 11400000, guid: 1ba2c4e13a47c5b479f84aeae6cf4cf7, type: 2}
+  - {fileID: 11400000, guid: 4dd558c0e301c804dbafd2c2ee29998e, type: 2}
+  waveSet: {fileID: 11400000, guid: 3f8aa4bbf024d2b4fa8c0b076363cd23, type: 2}
+  presentation: {fileID: 0}

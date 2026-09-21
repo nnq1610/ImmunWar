@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "ShippableAsset",
+  "assetId": "VFX007",
+  "manifestCategory": "VFX",
+  "purpose": "ATP Orb",
+  "runtimePath": "Assets/ImmunWar/Art/VFX/P0/VFX_ATP.png",
+  "fallbackAssetId": "PLACEHOLDER_VFX007",
+  "releaseCritical": true,
+  "sourceType": "ai_generated",
+  "creatorOrProvider": "OpenAI image generation",
+  "sourceUrlOrJobId": "exec-9a3a1d3e-15e9-42d8-a2b5-d61f09c09ea4",
+  "acquiredOrGeneratedAtUtc": "2026-09-19T00:28:00Z",
+  "generation": {"provider":"OpenAI","model":"built-in image generation","modelVersion":null,"prompt":"Glowing golden ATP collection orb with teal rim and transparent background.","settings":"transparent PNG; square; P0 style references","referenceAssetIds":["DEF002","DEF006","ENE001"]},
+  "status": "Approved",
+  "rights": {
+    "commercialUse": "Allowed",
+    "modification": "Allowed",
+    "embeddedRedistribution": "Allowed",
+    "attribution": "N/A",
+    "aiInputUse": "Allowed",
+    "territoryOrPlatformLimits": null
+  },
+  "evidence": {
+    "evidenceType": "AIProviderTerms",
+    "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+    "urlOrOrderId": "https://openai.com/policies/service-terms/",
+    "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+    "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+    "attributionText": null
+  },
+  "rawSha256": "bf09364549a555379664987fedea781d2eee19ca9ea66af0724e0abe744dfc72",
+  "approvedExportSha256": "bf09364549a555379664987fedea781d2eee19ca9ea66af0724e0abe744dfc72",
+  "recheckAtUtc": "2027-03-19T00:00:00Z",
+  "review": {
+    "reviewer": "Project owner (standing image approval confirmed in Codex session)",
+    "reviewedAtUtc": "2026-09-19T00:28:00Z",
+    "notes": "Selected under standing image approval; ATP readability, alpha, provenance, and hash verified."
+  }
+}

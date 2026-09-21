@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "recordKind": "ShippableAsset",
+  "assetId": "UI006",
+  "manifestCategory": "UI",
+  "purpose": "Energy Cell Icon",
+  "runtimePath": "Assets/ImmunWar/Art/UI/P0/UI_Icon_EnergyCell.png",
+  "fallbackAssetId": "PLACEHOLDER_UI006",
+  "releaseCritical": true,
+  "sourceType": "ai_generated",
+  "creatorOrProvider": "OpenAI image generation / derived crop",
+  "sourceUrlOrJobId": "derived:DEF006",
+  "acquiredOrGeneratedAtUtc": "2026-09-18T09:00:00Z",
+  "generation": {
+    "provider": "OpenAI",
+    "model": "built-in image generation",
+    "modelVersion": null,
+    "prompt": "Derived icon from approved-candidate DEF006 sprite; no new external input.",
+    "settings": "Unity max size 256",
+    "referenceAssetIds": [
+      "DEF006"
+    ]
+  },
+  "status": "Approved",
+  "rights": {
+    "commercialUse": "Allowed",
+    "modification": "Allowed",
+    "embeddedRedistribution": "Allowed",
+    "attribution": "N/A",
+    "aiInputUse": "Allowed",
+    "territoryOrPlatformLimits": null
+  },
+  "evidence": {
+    "evidenceType": "AIProviderTerms",
+    "nameAndVersion": "OpenAI terms reviewed 2026-09-18",
+    "urlOrOrderId": "https://openai.com/policies/service-terms/",
+    "snapshotPath": "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+    "snapshotSha256": "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+    "attributionText": null
+  },
+  "rawSha256": "481a3f1626991240a4a51a6d5186d8c590537d11e581f3ed50402847fe6a7cf2",
+  "approvedExportSha256": "481a3f1626991240a4a51a6d5186d8c590537d11e581f3ed50402847fe6a7cf2",
+  "recheckAtUtc": "2027-03-18T00:00:00Z",
+  "review": {
+    "reviewer": "Project owner (standing image approval confirmed in Codex session)",
+    "reviewedAtUtc": "2026-09-19T00:28:00Z",
+    "notes": "Selected under standing image approval; derived from approved DEF006 and hash verified."
+  }
+}

@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "UI009",
+    "manifestCategory":  "UI",
+    "purpose":  "Fever Icon",
+    "runtimePath":  "Assets/ImmunWar/Art/UI/Tactical/UI_Fever.png",
+    "fallbackAssetId":  "UI009_FALLBACK",
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation",
+    "sourceUrlOrJobId":  "exec-4944c673-e131-4ad2-8b3c-2aaaa7f7532e",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T00:36:00Z",
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI terms reviewed 2026-09-18",
+                     "urlOrOrderId":  "https://openai.com/policies/service-terms/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+                     "snapshotSha256":  "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "a12266e73904311523d7c6445688aa4f61953468ee59a18b78eba3372794c036",
+    "approvedExportSha256":  "a12266e73904311523d7c6445688aa4f61953468ee59a18b78eba3372794c036",
+    "recheckAtUtc":  "2027-03-19T00:36:00Z",
+    "review":  {
+                   "reviewer":  "Project owner (standing image approval confirmed in Codex session)",
+                   "reviewedAtUtc":  "2026-09-19T00:36:00Z",
+                   "notes":  "Selected by Codex under the project owner standing image approval; alpha, provenance, and runtime hash verified."
+               },
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "built-in image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Compact orange-gold Fever flame around a cyan energy core.",
+                       "settings":  "transparent PNG; square; selected under standing image approval",
+                       "referenceAssetIds":  [
+
+                                             ]
+                   }
+}

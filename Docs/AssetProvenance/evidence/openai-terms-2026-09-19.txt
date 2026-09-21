@@ -1,0 +1,5 @@
+﻿OpenAI Terms of Use, effective 2026-01-01
+URL: https://openai.com/policies/row-terms-of-use/
+Accessed: 2026-09-19 via web research tool.
+The Content section assigns OpenAI's interest in generated Output to the user, subject to applicable law. It also says output may resemble other users' output and the user is responsible for use and rights in inputs. This summary is provenance evidence, not a legal opinion.
+Reference inputs for this batch are existing Immune War project sprites.

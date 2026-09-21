@@ -1,0 +1,523 @@
+{
+    "schemaVersion":  1,
+    "auditedAtUtc":  "2026-09-19T01:12:25Z",
+    "sourceManifest":  "09_ASSET_MANIFEST.xlsx",
+    "total":  51,
+    "approved":  51,
+    "review":  0,
+    "missingRecord":  0,
+    "missingRuntime":  0,
+    "releaseReady":  true,
+    "items":  [
+                  {
+                      "assetId":  "DEF001",
+                      "category":  "Defender",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Defenders/P0/DEF_Macrophage.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Units/DEF001.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "DEF002",
+                      "category":  "Defender",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Defenders/P0/DEF_TCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Units/DEF002.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "DEF003",
+                      "category":  "Defender",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Defenders/P1/DEF_BCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/DEF003.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "DEF004",
+                      "category":  "Defender",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Defenders/P1/DEF_NKCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/DEF004.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "DEF005",
+                      "category":  "Defender",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Defenders/P1/DEF_Platelet.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/DEF005.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "DEF006",
+                      "category":  "Defender",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Defenders/P0/DEF_EnergyCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Units/DEF006.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENE001",
+                      "category":  "Enemy",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Enemies/P0/ENE_Virus.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Units/ENE001.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENE002",
+                      "category":  "Enemy",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Enemies/P1/ENE_Bacteria.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENE002.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENE003",
+                      "category":  "Enemy",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Enemies/P1/ENE_MutantVirus.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENE003.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENE004",
+                      "category":  "Enemy",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Enemies/Boss/ENE_Boss.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENE004.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV001",
+                      "category":  "Environment",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Straight.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/LungEnvironment/ENV001.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV002",
+                      "category":  "Environment",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Curve.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/LungEnvironment/ENV002.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV003",
+                      "category":  "Environment",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Lung/ENV_Vessel_Junction3.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/LungEnvironment/ENV003.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV004",
+                      "category":  "Environment",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Lung/ENV_DefenseNode.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/LungEnvironment/ENV004.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV005",
+                      "category":  "Environment",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Final/ENV_InfectionDecal.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENV005.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV006",
+                      "category":  "Environment",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Lung/ENV_Lung.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENV006.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV007",
+                      "category":  "Environment",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Brain/ENV_Brain.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENV007.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV008",
+                      "category":  "Environment",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Stomach/ENV_Stomach.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENV008.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "ENV009",
+                      "category":  "Environment",
+                      "priority":  "P2",
+                      "runtimePath":  "Assets/ImmunWar/Art/Environment/Final/ENV_BloodCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/ENV009.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX001",
+                      "category":  "VFX",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/P0/VFX_TCellPulse.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Feedback/VFX001.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX002",
+                      "category":  "VFX",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/Tactical/VFX_Antibody.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/VFX002.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX003",
+                      "category":  "VFX",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/P0/VFX_Hit.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Feedback/VFX003.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX004",
+                      "category":  "VFX",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/Tactical/VFX_Heal.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/VFX004.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX005",
+                      "category":  "VFX",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/Tactical/VFX_Infection.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/VFX005.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX006",
+                      "category":  "VFX",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/Tactical/VFX_Mutation.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/VFX006.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX007",
+                      "category":  "VFX",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/P0/VFX_ATP.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Feedback/VFX007.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "VFX008",
+                      "category":  "VFX",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/VFX/Tactical/VFX_FeverOverlay.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/VFX008.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI001",
+                      "category":  "UI",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/P0/UI_Icon_Macrophage.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Feedback/UI001.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI002",
+                      "category":  "UI",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/P0/UI_Icon_TCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Feedback/UI002.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI003",
+                      "category":  "UI",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/Tactical/UI_Icon_BCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/UI003.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI004",
+                      "category":  "UI",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/Tactical/UI_Icon_NKCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/UI004.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI005",
+                      "category":  "UI",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/Tactical/UI_Icon_Platelet.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/UI005.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI006",
+                      "category":  "UI",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/P0/UI_Icon_EnergyCell.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Feedback/UI006.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI007",
+                      "category":  "UI",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/P0/UI_ATP.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Feedback/UI007.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI008",
+                      "category":  "UI",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/Final/UI_Vitality_Set.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/UI008.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "UI009",
+                      "category":  "UI",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Art/UI/Tactical/UI_Fever.png",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/UI009.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD001",
+                      "category":  "Audio",
+                      "priority":  "P2",
+                      "runtimePath":  "Assets/ImmunWar/Audio/Music/BGM_Menu.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD001.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD002",
+                      "category":  "Audio",
+                      "priority":  "P2",
+                      "runtimePath":  "Assets/ImmunWar/Audio/Music/BGM_Battle.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD002.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD003",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Final/SFX_UI_Click_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD003.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD004",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Final/SFX_UI_Error_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD004.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD005",
+                      "category":  "Audio",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/P0/SFX_TCell_Attack_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Audio/AUD005.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD006",
+                      "category":  "Audio",
+                      "priority":  "P0",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/P0/SFX_Virus_Death_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/P0Audio/AUD006.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD007",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_BCell_Antibody_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD007.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD008",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_NK_Attack_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD008.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD009",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Platelet_Heal_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD009.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD010",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_ATP_Generate_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD010.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD011",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Infection_Start_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD011.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD012",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Infection_Cleanse_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD012.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD013",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Fever_Activate_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD013.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD014",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Tactical/SFX_Vitality_Damage_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD014.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  },
+                  {
+                      "assetId":  "AUD015",
+                      "category":  "Audio",
+                      "priority":  "P1",
+                      "runtimePath":  "Assets/ImmunWar/Audio/SFX/Boss/SFX_Boss_Phase_01.wav",
+                      "runtimeExists":  true,
+                      "recordPath":  "Docs/AssetProvenance/records/ManifestCandidates/AUD015.json",
+                      "status":  "Approved",
+                      "releaseReady":  true
+                  }
+              ]
+}

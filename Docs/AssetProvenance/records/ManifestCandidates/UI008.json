@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "UI008",
+    "manifestCategory":  "UI",
+    "purpose":  "Vitality Icon Set",
+    "runtimePath":  "Assets/ImmunWar/Art/UI/Final/UI_Vitality_Set.png",
+    "fallbackAssetId":  "UI008_FALLBACK",
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI image generation",
+    "sourceUrlOrJobId":  "exec-8df233b3-8e09-4193-84cb-1a225231df4e",
+    "acquiredOrGeneratedAtUtc":  "2026-09-19T00:48:00Z",
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI terms reviewed 2026-09-18",
+                     "urlOrOrderId":  "https://openai.com/policies/service-terms/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-image-terms-2026-09-18.md",
+                     "snapshotSha256":  "57fa5dc60c51ff83c5a2e7918b30dae570016c5159a6369a905b58eb403cf71c",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "6f2d2311a74f09badd8ae5868fcec4d26e60c6d89893557bc9ece08414d65f8b",
+    "approvedExportSha256":  "6f2d2311a74f09badd8ae5868fcec4d26e60c6d89893557bc9ece08414d65f8b",
+    "recheckAtUtc":  "2027-03-19T00:48:00Z",
+    "review":  {
+                   "reviewer":  "Project owner (standing image approval confirmed in Codex session)",
+                   "reviewedAtUtc":  "2026-09-19T00:48:00Z",
+                   "notes":  "Selected by Codex under the project owner standing image approval; alpha, provenance, and runtime hash verified."
+               },
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "built-in image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Three-state vitality shield and organ-heart icon set.",
+                       "settings":  "transparent PNG; square; selected under standing image approval",
+                       "referenceAssetIds":  [
+
+                                             ]
+                   }
+}

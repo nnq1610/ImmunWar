@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://immunwar.local/contracts/asset-record.schema.json",
+  "title": "Immune War Asset Provenance Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "recordKind",
+    "assetId",
+    "sourceType",
+    "acquiredOrGeneratedAtUtc",
+    "status",
+    "rights",
+    "evidence",
+    "rawSha256",
+    "review"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "integer", "minimum": 1 },
+    "recordKind": {
+      "enum": ["ShippableAsset", "ReferenceInput", "SourceMaster", "ToolPackage"]
+    },
+    "assetId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,5}[0-9]{3}$"
+    },
+    "manifestCategory": { "type": ["string", "null"] },
+    "purpose": { "type": ["string", "null"] },
+    "runtimePath": { "type": ["string", "null"] },
+    "fallbackAssetId": { "type": ["string", "null"] },
+    "releaseCritical": { "type": "boolean", "default": false },
+    "sourceType": {
+      "enum": ["in_house", "commissioned", "ai_generated", "third_party"]
+    },
+    "creatorOrProvider": { "type": ["string", "null"] },
+    "sourceUrlOrJobId": { "type": ["string", "null"] },
+    "acquiredOrGeneratedAtUtc": { "type": "string", "format": "date-time" },
+    "generation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "provider": { "type": ["string", "null"] },
+        "model": { "type": ["string", "null"] },
+        "modelVersion": { "type": ["string", "null"] },
+        "prompt": { "type": ["string", "null"] },
+        "settings": { "type": ["string", "null"] },
+        "referenceAssetIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "status": {
+      "enum": ["Quarantined", "Working", "Review", "Approved", "Rejected", "Revoked"]
+    },
+    "rights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commercialUse",
+        "modification",
+        "embeddedRedistribution",
+        "attribution",
+        "aiInputUse"
+      ],
+      "properties": {
+        "commercialUse": { "$ref": "#/$defs/rightDecision" },
+        "modification": { "$ref": "#/$defs/rightDecision" },
+        "embeddedRedistribution": { "$ref": "#/$defs/rightDecision" },
+        "attribution": { "$ref": "#/$defs/rightDecision" },
+        "aiInputUse": { "$ref": "#/$defs/rightDecision" },
+        "territoryOrPlatformLimits": { "type": ["string", "null"] }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceType", "snapshotPath", "snapshotSha256"],
+      "properties": {
+        "evidenceType": {
+          "enum": ["CreatorDeclaration", "CommissionAgreement", "ThirdPartyLicense", "AIProviderTerms"]
+        },
+        "nameAndVersion": { "type": ["string", "null"] },
+        "urlOrOrderId": { "type": ["string", "null"] },
+        "snapshotPath": { "type": "string" },
+        "snapshotSha256": { "$ref": "#/$defs/sha256" },
+        "attributionText": { "type": ["string", "null"] }
+      }
+    },
+    "rawSha256": { "$ref": "#/$defs/sha256" },
+    "approvedExportSha256": {
+      "oneOf": [
+        { "$ref": "#/$defs/sha256" },
+        { "type": "null" }
+      ]
+    },
+    "recheckAtUtc": { "type": ["string", "null"], "format": "date-time" },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewer", "reviewedAtUtc", "notes"],
+      "properties": {
+        "reviewer": { "type": "string", "minLength": 1 },
+        "reviewedAtUtc": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "recordKind": { "const": "ShippableAsset" } },
+        "required": ["recordKind"]
+      },
+      "then": {
+        "required": ["runtimePath", "approvedExportSha256"],
+        "properties": {
+          "runtimePath": {
+            "type": "string",
+            "pattern": "^Assets/ImmunWar/"
+          },
+          "approvedExportSha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "sourceType": { "const": "ai_generated" } },
+        "required": ["sourceType"]
+      },
+      "then": {
+        "required": ["generation"],
+        "properties": {
+          "generation": { "type": "object" },
+          "evidence": {
+            "properties": {
+              "evidenceType": { "const": "AIProviderTerms" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "recordKind": { "const": "ShippableAsset" },
+          "releaseCritical": { "const": true }
+        },
+        "required": ["recordKind", "releaseCritical"]
+      },
+      "then": {
+        "required": ["fallbackAssetId"],
+        "properties": {
+          "fallbackAssetId": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "sourceType": { "const": "in_house" } },
+        "required": ["sourceType"]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "properties": {
+              "evidenceType": { "const": "CreatorDeclaration" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "sourceType": { "const": "commissioned" } },
+        "required": ["sourceType"]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "properties": {
+              "evidenceType": { "const": "CommissionAgreement" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "sourceType": { "const": "third_party" } },
+        "required": ["sourceType"]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "properties": {
+              "evidenceType": { "const": "ThirdPartyLicense" }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "rightDecision": {
+      "enum": ["Allowed", "Prohibited", "Unknown", "N/A"]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
