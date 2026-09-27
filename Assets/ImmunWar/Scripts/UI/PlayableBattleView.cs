@@ -45,9 +45,9 @@ namespace ImmunWar.UI
         private Text _stats;
         private Text _waveLabel;
         private Text _selection;
-        private AnimatedHealthBar _organHealth;
         private AnimatedHealthBar _hudOrganHealth;
         private GameObject _resultPanel;
+        private GameObject _pausePanel;
         private Text _resultText;
         private DefenderConfig _selectedDefender;
         private WaveSystem _wave;
@@ -86,40 +86,42 @@ namespace ImmunWar.UI
             _placement = new PlacementSystem(_battle.State);
             _art = Resources.Load<PlayableArtCatalog>("ImmuneWar/PlayableArtCatalog");
             BuildInterface(catalog);
-            SetStatus("Select a defender, place it on a glowing node, then start the wave.");
+            
+            _battle.State.Economy.Add(250); // Starting ATP bonus
+            SetStatus("Prepare your defenses! Wave 1 starts soon...");
             RefreshStats();
+            
+            StartCoroutine(AutoNextWaveRoutine(6f));
+        }
+
+        private IEnumerator AutoNextWaveRoutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            StartNextWave();
         }
 
         private void BuildInterface(GameCatalog catalog)
         {
             var root = RuntimeUi.Root("PlayableBattle");
-            RuntimeUi.Image(root, "Background", Vector2.zero, new Vector2(1920, 1080), RuntimeUi.Background);
-            RuntimeUi.Image(root, "TopPanel", new Vector2(0, 470), new Vector2(1920, 140), RuntimeUi.Panel);
-            RuntimeUi.Text(root, "MapTitle", _map.Id.Replace("map_", "").ToUpperInvariant() + " DEFENSE", new Vector2(-710, 470), new Vector2(440, 85), 41, RuntimeUi.Accent, TextAnchor.MiddleLeft);
-            _stats = RuntimeUi.Text(root, "Stats", "", new Vector2(-90, 470), new Vector2(800, 80), 30, Color.white);
-            _hudOrganHealth = AnimatedHealthBar.Create(root, "HudOrganHealth", new Vector2(-90, 417),
-                new Vector2(440, 18), _battle.State.Vitality.Maximum, _battle.State.Vitality.Current);
-            _waveLabel = RuntimeUi.Text(root, "Wave", "", new Vector2(700, 470), new Vector2(400, 80), 28, Color.white);
 
-            RuntimeUi.Image(root, "ArenaPanel", new Vector2(0, 20), new Vector2(1640, 690), new Color(0.045f, 0.115f, 0.17f));
-            _arena = RuntimeUi.Rect(root, "Arena", new Vector2(0, 20), new Vector2(1640, 690));
+            // Fullscreen map background (no black edges)
+            _arena = RuntimeUi.Rect(root, "Arena", Vector2.zero, new Vector2(1920, 1080));
             var mapSprite = _art ? _art.MapSprite(_map.Id) : null;
             if (mapSprite)
             {
-                var mapImage = RuntimeUi.Image(_arena, "LungMap", Vector2.zero, new Vector2(1640, 690), new Color(1f, 1f, 1f, 0.72f));
+                var mapImage = RuntimeUi.Image(_arena, "MapBg", Vector2.zero, new Vector2(1920, 1080), Color.white);
                 mapImage.sprite = mapSprite;
+                mapImage.preserveAspect = false;
             }
-            var organImage = RuntimeUi.Image(_arena, "Organ", new Vector2(665, 0), new Vector2(180, 136),
-                new Color(0.2f, 0.8f, 0.75f, 0.8f), true);
-            if (_art && _art.organCard)
-            {
-                organImage.sprite = _art.organCard;
-                organImage.color = Color.white;
-                organImage.preserveAspect = true;
-            }
-            RuntimeUi.Text(_arena, "OrganLabel", "ORGAN", new Vector2(665, -95), new Vector2(220, 40), 23, RuntimeUi.Accent);
-            _organHealth = AnimatedHealthBar.Create(_arena, "OrganHealth", new Vector2(665, 97),
-                new Vector2(170, 18), _battle.State.Vitality.Maximum, _battle.State.Vitality.Current);
+
+            // Organ Core at center (0,0) — this is where all routes converge
+            var organImage = RuntimeUi.Image(_arena, "OrganCore", Vector2.zero, new Vector2(260, 260), Color.white, true);
+            var specificCore = Resources.Load<Sprite>("ImmuneWar/Cores/core_" + _map.Id);
+            if (specificCore) organImage.sprite = specificCore;
+            else if (_art && _art.organCard) organImage.sprite = _art.organCard;
+            // Note: Floating _organHealth bar removed; we use the main HUD bar instead.
+
+            // Route visualization: subtle transparent lines along blood vessels
             if (_map.routes != null)
             {
                 foreach (var route in _map.routes)
@@ -129,11 +131,13 @@ namespace ImmunWar.UI
                     {
                         var start = RuntimeUi.Point(route.waypoints[i - 1]);
                         var end = RuntimeUi.Point(route.waypoints[i]);
-                        RuntimeUi.Line(_arena, "RouteGlow", start, end, 54, new Color(0.09f, 0.27f, 0.32f));
-                        RuntimeUi.Line(_arena, "RouteCore", start, end, 14, new Color(0.21f, 0.61f, 0.59f));
+                        // Very subtle glow only - the map art already shows the blood vessels
+                        RuntimeUi.Line(_arena, "RouteGlow", start, end, 28, new Color(1f, 0.3f, 0.2f, 0.12f));
                     }
                 }
             }
+
+            // Defense nodes (placement spots)
             if (_map.nodes != null)
             {
                 foreach (var node in _map.nodes)
@@ -143,36 +147,143 @@ namespace ImmunWar.UI
                     _nodePositions[node.Id] = node.position;
                     var nodeId = node.Id;
                     var mask = node.allowedRoleMask;
-                    var button = RuntimeUi.Button(_arena, "Node_" + nodeId, "+", point, new Vector2(90, 90), new Color(0.13f, 0.44f, 0.44f), () => Place(nodeId, mask), 47);
-                    button.GetComponent<Image>().sprite = RuntimeUi.Image(_arena, "CircleTemplate", new Vector2(-2000, -2000), new Vector2(1, 1), Color.clear, true).sprite;
+                    // Node size reduced to 32x32
+                    var button = RuntimeUi.Button(_arena, "Node_" + nodeId, "+", point, new Vector2(32, 32),
+                        new Color(0.3f, 1f, 0.5f, 0.6f), () => Place(nodeId, mask), 22);
+                    var img = button.GetComponent<Image>();
+                    img.sprite = RuntimeUi.Image(_arena, "CT", new Vector2(-9999, 0), Vector2.one, Color.clear, true).sprite;
+                    img.type = Image.Type.Simple;
                 }
             }
 
-            RuntimeUi.Image(root, "BottomPanel", new Vector2(0, -445), new Vector2(1920, 190), RuntimeUi.Panel);
-            _status = RuntimeUi.Text(root, "Status", "", new Vector2(0, -355), new Vector2(1700, 55), 24, new Color(0.82f, 0.92f, 0.94f));
+            // === LEFT PANEL: Defender selector (PvZ seed packet style) ===
+            var leftPanel = RuntimeUi.Image(root, "LeftPanel", new Vector2(-890, 0),
+                new Vector2(140, 800), new Color(0.08f, 0.06f, 0.12f, 0.75f));
+            var panelSprite = _art ? _art.panel : null;
+            if (panelSprite) { leftPanel.sprite = panelSprite; leftPanel.type = UnityEngine.UI.Image.Type.Sliced; }
+
             var defenders = catalog.defenders;
             var shown = Math.Min(6, defenders == null ? 0 : defenders.Length);
             for (var i = 0; i < shown; i++)
             {
                 var defender = defenders[i];
                 if (!defender) continue;
-                var name = defender.Id.Replace("def_", "").ToUpperInvariant();
-                var caption = name + "\n" + defender.atpCost + " ATP";
-                var button = RuntimeUi.Button(root, "Defender_" + defender.Id, caption, new Vector2(-790 + i * 264, -445), new Vector2(245, 115), new Color(0.1f, 0.34f, 0.38f), () => SelectDefender(defender), 23);
-                RuntimeUi.Skin(button, _art, UiButtonRole.Card);
+                var yPos = 300 - i * 120;
+                
+                // Seed packet background
+                var button = RuntimeUi.Button(root, "Defender_" + defender.Id, "",
+                    new Vector2(-890, yPos), new Vector2(110, 110),
+                    new Color(0.12f, 0.16f, 0.22f, 0.95f), () => SelectDefender(defender), 16);
+                
+                var btnImg = button.GetComponent<Image>();
+                if (panelSprite) { btnImg.sprite = panelSprite; btnImg.type = Image.Type.Sliced; }
+                
+                var rt = button.GetComponent<RectTransform>();
+                
+                // Icon (larger, centered)
+                if (defender.presentation && defender.presentation.icon) {
+                    var iconImg = RuntimeUi.Image(rt, "Icon", new Vector2(0, 10), new Vector2(80, 80), Color.white);
+                    iconImg.sprite = defender.presentation.icon;
+                    iconImg.preserveAspect = true;
+                } else {
+                    var name = defender.Id.Replace("def_", "").ToUpperInvariant();
+                    RuntimeUi.Text(rt, "Name", name, new Vector2(0, 15), new Vector2(100, 40), 16, Color.white);
+                }
+                
+                // Cost strip at bottom
+                RuntimeUi.Image(rt, "CostStrip", new Vector2(0, -40), new Vector2(110, 30), new Color(0f, 0f, 0f, 0.6f));
+                RuntimeUi.Text(rt, "Cost", defender.atpCost + " ATP", new Vector2(0, -40), new Vector2(100, 24), 16, new Color(1f, 0.9f, 0.2f), TextAnchor.MiddleRight);
+                
+                // Shortcut number
+                RuntimeUi.Text(rt, "Shortcut", (i+1).ToString(), new Vector2(-40, 35), new Vector2(30, 30), 18, new Color(0.7f, 0.7f, 0.7f));
+
                 _defenderButtons[defender.Id] = button;
             }
-            _selection = RuntimeUi.Text(root, "Selection", "NO DEFENDER", new Vector2(785, -442), new Vector2(300, 95), 23, RuntimeUi.Accent);
-            RuntimeUi.Skin(RuntimeUi.Button(root, "StartWave", "START WAVE", new Vector2(-610, 365), new Vector2(260, 70), new Color(0.12f, 0.48f, 0.38f), StartNextWave, 25), _art, UiButtonRole.Primary);
-            RuntimeUi.Skin(RuntimeUi.Button(root, "Pause", "PAUSE", new Vector2(-320, 365), new Vector2(220, 70), new Color(0.2f, 0.34f, 0.45f), TogglePause, 25), _art, UiButtonRole.Secondary);
-            RuntimeUi.Skin(RuntimeUi.Button(root, "Restart", "RESTART", new Vector2(-70, 365), new Vector2(220, 70), new Color(0.2f, 0.34f, 0.45f), Restart, 25), _art, UiButtonRole.Danger);
-            RuntimeUi.Skin(RuntimeUi.Button(root, "Menu", "MENU", new Vector2(180, 365), new Vector2(220, 70), new Color(0.2f, 0.34f, 0.45f), ReturnToMenu, 25), _art, UiButtonRole.Secondary);
-            var result = RuntimeUi.Rect(root, "ResultPanel", Vector2.zero, new Vector2(900, 470));
+            _selection = RuntimeUi.Text(root, "Selection", "",
+                new Vector2(-890, -420), new Vector2(130, 30), 14, RuntimeUi.Accent);
+
+            // === TOP HUD BAR (full width strip, y: 510) ===
+            // Background strip - use a softer blue-ish tint instead of harsh black
+            var topHud = RuntimeUi.Image(root, "TopHud", new Vector2(0, 510), new Vector2(1920, 56), new Color(0.12f, 0.18f, 0.28f, 0.85f));
+            if (_art && _art.panel) { topHud.sprite = _art.panel; topHud.type = Image.Type.Sliced; }
+
+            // Left: ATP
+            _stats = RuntimeUi.Text(root, "Stats", "",
+                new Vector2(-600, 510), new Vector2(260, 46), 26, Color.white);
+
+            // Centre-left: ORGAN label + health bar (separated)
+            RuntimeUi.Text(root, "OrganLabel", "ORGAN", new Vector2(-200, 510), new Vector2(120, 46), 22, new Color(0.8f, 0.85f, 1f));
+            _hudOrganHealth = AnimatedHealthBar.Create(root, "HudOrganHealth",
+                new Vector2(0, 510), new Vector2(300, 24),
+                _battle.State.Vitality.Maximum, _battle.State.Vitality.Current);
+
+            // Right: WAVE
+            _waveLabel = RuntimeUi.Text(root, "Wave", "",
+                new Vector2(600, 510), new Vector2(220, 46), 26, Color.white);
+
+            // === TOP RIGHT: Action buttons ===
+            
+            // 1. Menu Button (opens pause panel)
+            var btnSettingsSpr = Resources.Load<Sprite>("ImmuneWar/btn_settings");
+            var btnMenu = RuntimeUi.Button(root, "MenuToggle", btnSettingsSpr ? "" : "M",
+                new Vector2(910, 480), new Vector2(80, 80), Color.white, TogglePauseMenu, 24);
+            if (btnSettingsSpr) {
+                var hi = btnMenu.GetComponent<Image>();
+                hi.sprite = btnSettingsSpr; hi.type = Image.Type.Simple; hi.preserveAspect = true;
+            }
+
+            // === PAUSE PANEL ===
+            var pauseBox = RuntimeUi.Rect(root, "PausePanel", Vector2.zero, new Vector2(1920, 1080));
+            _pausePanel = pauseBox.gameObject;
+            
+            // Full screen dim
+            RuntimeUi.Image(pauseBox, "Dim", Vector2.zero, new Vector2(1920, 1080), new Color(0, 0, 0, 0.6f));
+            
+            // Central window
+            var pWin = RuntimeUi.Image(pauseBox, "Window", Vector2.zero, new Vector2(500, 400), new Color(0.12f, 0.16f, 0.22f, 0.98f));
+            if (panelSprite) { pWin.sprite = panelSprite; pWin.type = Image.Type.Sliced; }
+            
+            RuntimeUi.Text(pauseBox, "Title", "PAUSED", new Vector2(0, 130), new Vector2(400, 80), 48, Color.white).fontStyle = FontStyle.Bold;
+            
+            // Resume
+            var btnResume = RuntimeUi.Button(pauseBox, "Resume", "RESUME", new Vector2(0, 30), new Vector2(280, 70), new Color(0.2f, 0.7f, 0.3f), TogglePauseMenu, 26);
+            if (panelSprite) { var img = btnResume.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+            
+            // Restart
+            var btnPr = RuntimeUi.Button(pauseBox, "Restart", "RESTART", new Vector2(0, -55), new Vector2(280, 70), new Color(0.7f, 0.3f, 0.2f), Restart, 26);
+            if (panelSprite) { var img = btnPr.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+            
+            // Home
+            var btnPh = RuntimeUi.Button(pauseBox, "Home", "MAIN MENU", new Vector2(0, -140), new Vector2(280, 70), new Color(0.2f, 0.5f, 0.8f), ReturnToMenu, 26);
+            if (panelSprite) { var img = btnPh.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+
+            _pausePanel.SetActive(false);
+
+            // Status text (bottom centre)
+
+            _status = RuntimeUi.Text(root, "Status", "",
+                new Vector2(0, -510), new Vector2(700, 40), 18, new Color(1f, 0.96f, 0.82f));
+
+            // === RESULT PANEL ===
+            var result = RuntimeUi.Rect(root, "ResultPanel", Vector2.zero, new Vector2(700, 450));
             _resultPanel = result.gameObject;
-            RuntimeUi.Image(result, "Shade", Vector2.zero, new Vector2(900, 470), new Color(0.035f, 0.12f, 0.17f, 0.97f));
-            _resultText = RuntimeUi.Text(result, "ResultText", "", new Vector2(0, 100), new Vector2(780, 125), 52, RuntimeUi.Accent);
-            RuntimeUi.Skin(RuntimeUi.Button(result, "PlayAgain", "PLAY AGAIN", new Vector2(-205, -100), new Vector2(320, 90), new Color(0.12f, 0.48f, 0.38f), Restart, 30), _art, UiButtonRole.Primary);
-            RuntimeUi.Skin(RuntimeUi.Button(result, "BackToMenu", "MENU", new Vector2(205, -100), new Vector2(320, 90), new Color(0.2f, 0.34f, 0.45f), ReturnToMenu, 30), _art, UiButtonRole.Secondary);
+            
+            // Background
+            var resultBg = RuntimeUi.Image(result, "Shade", Vector2.zero, new Vector2(700, 450), new Color(0.08f, 0.12f, 0.2f, 0.98f));
+            if (panelSprite) { resultBg.sprite = panelSprite; resultBg.type = UnityEngine.UI.Image.Type.Sliced; }
+            
+            // Text
+            _resultText = RuntimeUi.Text(result, "ResultText", "", new Vector2(0, 100), new Vector2(600, 140), 64, Color.white);
+            _resultText.fontStyle = FontStyle.Bold;
+            
+            // Restart Button
+            var btnRe = RuntimeUi.Button(result, "PlayAgain", "PLAY AGAIN", new Vector2(-170, -100), new Vector2(260, 80), new Color(0.2f, 0.7f, 0.3f), Restart, 28);
+            if (panelSprite) { var img = btnRe.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+            
+            // Menu Button
+            var btnMenu2 = RuntimeUi.Button(result, "BackToMenu", "MAIN MENU", new Vector2(170, -100), new Vector2(260, 80), new Color(0.8f, 0.5f, 0.2f), ReturnToMenu, 28);
+            if (panelSprite) { var img = btnMenu2.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+            
             _resultPanel.SetActive(false);
         }
 
@@ -192,14 +303,14 @@ namespace ImmunWar.UI
             var result = _placement.TryPlace(Guid.NewGuid().ToString("N"), config.Id, config.role, nodeId, mask, config.atpCost, config.maxHealth);
             if (!result.Accepted) { SetStatus("Cannot place: " + result.ReasonCode.Replace('_', ' ')); return false; }
             var point = RuntimeUi.Point(_nodePositions[nodeId]);
-            var visual = RuntimeUi.Image(_arena, "Placed_" + result.DefenderInstanceId, point, new Vector2(120, 120), DefenderColor(config.role), true);
+            var visual = RuntimeUi.Image(_arena, "Placed_" + result.DefenderInstanceId, point, new Vector2(80, 80), DefenderColor(config.role), true);
             if (config.presentation && config.presentation.icon)
             {
                 visual.sprite = config.presentation.icon;
                 visual.color = Color.white;
                 visual.preserveAspect = true;
             }
-            else RuntimeUi.Text(_arena, "PlacedLetter", config.Id.Replace("def_", "").Substring(0, 1).ToUpperInvariant(), point, new Vector2(72, 72), 33, Color.white);
+            else RuntimeUi.Text(_arena, "PlacedLetter", config.Id.Replace("def_", "").Substring(0, 1).ToUpperInvariant(), point, new Vector2(50, 50), 24, Color.white);
             var controller = _art ? _art.DefenderController(config.Id) : null;
             if (controller)
             {
@@ -209,7 +320,7 @@ namespace ImmunWar.UI
             }
             _defenderImages[result.DefenderInstanceId] = visual;
             _defenderHealthBars[result.DefenderInstanceId] = AnimatedHealthBar.Create(visual.transform,
-                "DefenderHealth", new Vector2(0f, 79f), new Vector2(112f, 15f), config.maxHealth, config.maxHealth);
+                "DefenderHealth", new Vector2(0f, 55f), new Vector2(76f, 10f), config.maxHealth, config.maxHealth);
             SetStatus(config.Id.Replace("def_", "") + " placed. " + _battle.State.Economy.Atp + " ATP remaining.");
             RefreshStats();
             return true;
@@ -241,10 +352,19 @@ namespace ImmunWar.UI
             RefreshStats();
         }
 
-        public void TogglePause()
+        public void TogglePauseMenu()
         {
-            if (_battle.State.Phase == BattlePhase.Running) { _battle.Pause(); SetStatus("Paused. Press PAUSE again to resume."); }
-            else if (_battle.State.Phase == BattlePhase.Paused) { _battle.Resume(); SetStatus("Battle resumed."); }
+            if (!_battle) return;
+            if (_battle.State.Phase == BattlePhase.Running)
+            {
+                _battle.Pause();
+                if (_pausePanel) _pausePanel.SetActive(true);
+            }
+            else if (_battle.State.Phase == BattlePhase.Paused)
+            {
+                _battle.Resume();
+                if (_pausePanel) _pausePanel.SetActive(false);
+            }
         }
 
         public void Restart() => StartCoroutine(SceneFlowService.Load("Battle"));
@@ -270,31 +390,41 @@ namespace ImmunWar.UI
             for (var i = _enemies.Count - 1; i >= 0; i--)
             {
                 var enemy = _enemies[i];
-                if (enemy.Follower.Tick(1f / 30f))
+                var blocked = false;
+                
+                // Check if blocked by a defender
+                foreach (var defender in _battle.State.Defenders.Values)
                 {
-                    _battle.DamageOrgan(enemy.Config.organDamage);
-                    _organHealth.SetValue(_battle.State.Vitality.Current, _battle.State.Vitality.Maximum);
-                    _hudOrganHealth.SetValue(_battle.State.Vitality.Current, _battle.State.Vitality.Maximum);
-                    _wave.NotifyTerminal();
-                    RemoveEnemy(i);
-                    continue;
-                }
-                enemy.Image.rectTransform.anchoredPosition = RuntimeUi.Point(enemy.Follower.Position) + new Vector2(0, Mathf.Sin((_tick + i * 11) * 0.16f) * 5f);
-                enemy.Image.rectTransform.localScale = Vector3.one * (1f + Mathf.Sin((_tick + i * 13) * 0.12f) * 0.035f);
-                if (_tick >= enemy.NextContactTick)
-                {
-                    foreach (var defender in _battle.State.Defenders.Values)
+                    if (defender.Health > 0f && _nodePositions.TryGetValue(defender.NodeId, out var defenderPoint) &&
+                        Vector2.Distance(defenderPoint, enemy.Follower.Position) <= 1.3f)
                     {
-                        if (defender.Health <= 0f || !_nodePositions.TryGetValue(defender.NodeId, out var defenderPoint) ||
-                            Vector2.Distance(defenderPoint, enemy.Follower.Position) > 1.3f) continue;
-                        defender.ReceiveDamage(Mathf.Max(2f, enemy.Config.organDamage * 0.5f));
-                        ShowEffect(_art ? _art.hit : null, defenderPoint, new Color(1f, 0.46f, 0.51f, 0.72f));
-                        if (_defenderHealthBars.TryGetValue(defender.InstanceId, out var healthBar))
-                            healthBar.SetValue(defender.Health, FindDefender(defender.ConfigId)?.maxHealth ?? 100);
-                        enemy.NextContactTick = _tick + 30;
+                        blocked = true;
+                        if (_tick >= enemy.NextContactTick)
+                        {
+                            defender.ReceiveDamage(Mathf.Max(2f, enemy.Config.organDamage * 0.5f));
+                            ShowEffect(_art ? _art.hit : null, defenderPoint, new Color(1f, 0.46f, 0.51f, 0.72f));
+                            if (_defenderHealthBars.TryGetValue(defender.InstanceId, out var healthBar))
+                                healthBar.SetValue(defender.Health, FindDefender(defender.ConfigId)?.maxHealth ?? 100);
+                            enemy.NextContactTick = _tick + 30;
+                        }
                         break;
                     }
                 }
+
+                if (!blocked)
+                {
+                    if (enemy.Follower.Tick(1f / 30f))
+                    {
+                        _battle.DamageOrgan(enemy.Config.organDamage);
+                        if (_hudOrganHealth) _hudOrganHealth.SetValue(_battle.State.Vitality.Current, _battle.State.Vitality.Maximum);
+                        _wave.NotifyTerminal();
+                        RemoveEnemy(i);
+                        continue;
+                    }
+                }
+                
+                enemy.Image.rectTransform.anchoredPosition = RuntimeUi.Point(enemy.Follower.Position) + new Vector2(0, Mathf.Sin((_tick + i * 11) * 0.16f) * 5f);
+                enemy.Image.rectTransform.localScale = Vector3.one * (1f + Mathf.Sin((_tick + i * 13) * 0.12f) * 0.035f);
             }
             var defeatedDefenders = new List<string>();
             foreach (var defender in _battle.State.Defenders.Values)
@@ -335,12 +465,16 @@ namespace ImmunWar.UI
             if (_wave != null && _battle.State.Waves.Phase == WavePhase.AllComplete)
             {
                 _wave = null;
-                if (_waveIndex + 1 >= _map.waveSet.waves.Length)
+                if (_map.waveSet != null && _waveIndex + 1 >= _map.waveSet.waves.Length)
                 {
                     _battle.CompleteAllWavesForTests();
                     ShowResult(true);
                 }
-                else SetStatus("Wave clear! Place more defenders, then press START WAVE.");
+                else 
+                {
+                    SetStatus("Wave clear! Next wave approaching...");
+                    StartCoroutine(AutoNextWaveRoutine(6f));
+                }
             }
             if (_tick % 10 == 0) RefreshStats();
             foreach (var enemy in _enemies)
@@ -356,7 +490,7 @@ namespace ImmunWar.UI
             var state = new EnemyState("enemy-" + (++_enemySerial), config.Id, route.Id, config.maxHealth);
             _battle.State.Enemies[state.InstanceId] = state;
             var follower = new RouteFollower(state, route.waypoints, config.moveSpeed);
-            var image = RuntimeUi.Image(_arena, "Enemy_" + state.InstanceId, RuntimeUi.Point(follower.Position), new Vector2(110, 110), new Color(0.94f, 0.29f, 0.42f), true);
+            var image = RuntimeUi.Image(_arena, "Enemy_" + state.InstanceId, RuntimeUi.Point(follower.Position), new Vector2(70, 70), new Color(0.94f, 0.29f, 0.42f), true);
             if (config.presentation && config.presentation.icon)
             {
                 image.sprite = config.presentation.icon;
@@ -370,13 +504,13 @@ namespace ImmunWar.UI
                 animator.runtimeAnimatorController = controller;
             }
             var health = AnimatedHealthBar.Create(image.transform, "EnemyHealth",
-                new Vector2(0f, 70f), new Vector2(112f, 15f), config.maxHealth, config.maxHealth);
+                new Vector2(0f, 48f), new Vector2(68f, 10f), config.maxHealth, config.maxHealth);
             _enemies.Add(new EnemyVisual { State = state, Config = config, Follower = follower, Image = image, HealthBar = health });
         }
 
         private void ShowEffect(Sprite sprite, Vector2 position, Color tint)
         {
-            var image = RuntimeUi.Image(_arena, "ImpactVfx", RuntimeUi.Point(position), new Vector2(105, 105), tint, !sprite);
+            var image = RuntimeUi.Image(_arena, "ImpactVfx", RuntimeUi.Point(position), new Vector2(65, 65), tint, !sprite);
             if (sprite) { image.sprite = sprite; image.preserveAspect = true; }
             StartCoroutine(FadeEffect(image));
         }
@@ -456,9 +590,9 @@ namespace ImmunWar.UI
         {
             if (!_battle || !_stats) return;
             var state = _battle.State;
-            _stats.text = "ATP  " + state.Economy.Atp + "       ORGAN  " + state.Vitality.Current + "/" + state.Vitality.Maximum;
+            _stats.text = "ATP  " + state.Economy.Atp;
             _waveLabel.text = "WAVE " + Math.Max(0, _waveIndex + 1) + "/" + (_map.waveSet?.waves?.Length ?? 0);
-            if (_organHealth) _organHealth.SetValue(state.Vitality.Current, state.Vitality.Maximum);
+            // (Floating organ health removed)
             if (_hudOrganHealth) _hudOrganHealth.SetValue(state.Vitality.Current, state.Vitality.Maximum);
         }
     }

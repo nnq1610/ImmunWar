@@ -181,13 +181,13 @@ TextureImporter:
       name: button_primary
       rect:
         serializedVersion: 2
-        x: 18
-        y: 624
-        width: 494
-        height: 252
+        x: 10
+        y: 894
+        width: 236
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 50, y: 50, z: 50, w: 50}
       customData: 
       outline: []
       physicsShape: []
@@ -203,13 +203,13 @@ TextureImporter:
       name: button_secondary
       rect:
         serializedVersion: 2
-        x: 512
-        y: 624
-        width: 512
-        height: 247
+        x: 310
+        y: 894
+        width: 236
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 50, y: 50, z: 50, w: 50}
       customData: 
       outline: []
       physicsShape: []
@@ -225,13 +225,13 @@ TextureImporter:
       name: button_danger
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 624
-        width: 497
-        height: 253
+        x: 610
+        y: 894
+        width: 236
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 50, y: 50, z: 50, w: 50}
       customData: 
       outline: []
       physicsShape: []
@@ -247,13 +247,13 @@ TextureImporter:
       name: panel
       rect:
         serializedVersion: 2
-        x: 27
-        y: 157
-        width: 485
-        height: 348
+        x: 10
+        y: 478
+        width: 236
+        height: 236
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 40, y: 40, z: 40, w: 40}
       customData: 
       outline: []
       physicsShape: []
@@ -269,10 +269,10 @@ TextureImporter:
       name: badge
       rect:
         serializedVersion: 2
-        x: 512
-        y: 157
-        width: 512
-        height: 349
+        x: 310
+        y: 564
+        width: 150
+        height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -291,13 +291,13 @@ TextureImporter:
       name: organ_card
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 155
-        width: 485
-        height: 346
+        x: 610
+        y: 478
+        width: 236
+        height: 236
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 30, y: 30, z: 30, w: 30}
       customData: 
       outline: []
       physicsShape: []

@@ -3,7 +3,8 @@
   "rootNamespace": "ImmunWar",
   "references": [
     "Unity.InputSystem",
-    "Unity.UGUI"
+    "Unity.UGUI",
+    "Unity.TextMeshPro"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

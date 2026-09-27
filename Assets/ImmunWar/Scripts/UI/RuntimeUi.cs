@@ -10,9 +10,9 @@ namespace ImmunWar.UI
     {
         private static Font _font;
         private static Sprite _circle;
-        public static readonly Color Background = new Color(0.035f, 0.07f, 0.12f);
-        public static readonly Color Panel = new Color(0.075f, 0.15f, 0.22f);
-        public static readonly Color Accent = new Color(0.32f, 0.9f, 0.78f);
+        public static readonly Color Background = new Color(0.12f, 0.18f, 0.28f);
+        public static readonly Color Panel = new Color(0.12f, 0.18f, 0.28f, 0.85f);
+        public static readonly Color Accent = new Color(0.45f, 0.95f, 0.35f);
 
         public static RectTransform Root(string name)
         {
@@ -73,6 +73,9 @@ namespace ImmunWar.UI
             text.resizeTextMinSize = Mathf.Max(14, fontSize / 2);
             text.resizeTextMaxSize = fontSize;
             text.raycastTarget = false;
+            var outline = rect.gameObject.AddComponent<Outline>();
+            outline.effectColor = new Color(0, 0, 0, 0.5f);
+            outline.effectDistance = new Vector2(2, -2);
             return text;
         }
 
@@ -103,27 +106,20 @@ namespace ImmunWar.UI
                 {
                     UiButtonRole.Primary => art.primaryButton,
                     UiButtonRole.Danger => art.dangerButton,
-                    UiButtonRole.Card => art.panel,
+                    UiButtonRole.Card => art.organCard,
                     _ => art.secondaryButton
                 };
             if (sprite) image.sprite = sprite;
-            var baseColor = role switch
-            {
-                UiButtonRole.Primary => new Color(0.84f, 1f, 0.97f),
-                UiButtonRole.Danger => new Color(1f, 0.86f, 0.88f),
-                UiButtonRole.Locked => new Color(0.42f, 0.49f, 0.56f),
-                UiButtonRole.Card => new Color(0.78f, 0.92f, 0.98f),
-                _ => Color.white
-            };
-            if (selected) baseColor = new Color(0.48f, 1f, 0.85f);
+            var baseColor = role == UiButtonRole.Locked ? new Color(0.5f, 0.5f, 0.5f) : Color.white;
+            if (selected) baseColor = new Color(0.8f, 1f, 0.8f);
             image.color = baseColor;
             var colors = button.colors;
             colors.normalColor = baseColor;
-            colors.highlightedColor = Color.Lerp(baseColor, Color.white, 0.22f);
+            colors.highlightedColor = Color.Lerp(baseColor, Color.white, 0.3f);
             colors.selectedColor = colors.highlightedColor;
-            colors.pressedColor = Color.Lerp(baseColor, new Color(0.18f, 0.36f, 0.43f), 0.35f);
-            colors.disabledColor = new Color(0.32f, 0.4f, 0.48f, 0.75f);
-            colors.fadeDuration = 0.18f;
+            colors.pressedColor = Color.Lerp(baseColor, Color.black, 0.2f);
+            colors.disabledColor = new Color(0.5f, 0.5f, 0.5f, 0.7f);
+            colors.fadeDuration = 0.15f;
             button.colors = colors;
             var label = button.GetComponentInChildren<Text>();
             if (label) label.color = role == UiButtonRole.Locked ? new Color(0.76f, 0.82f, 0.84f) : Color.white;

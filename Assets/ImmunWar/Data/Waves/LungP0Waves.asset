@@ -17,10 +17,22 @@ MonoBehaviour:
   - groups:
     - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
       routeId: route_lung_main
-      count: 5
-      intervalTicks: 30
+      count: 6
+      intervalTicks: 35
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_lung_mid
+      count: 7
+      intervalTicks: 40
   - groups:
     - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
       routeId: route_lung_main
-      count: 8
-      intervalTicks: 24
+      count: 7
+      intervalTicks: 28
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_lung_mid
+      count: 6
+      intervalTicks: 30
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_lung_bot
+      count: 6
+      intervalTicks: 32

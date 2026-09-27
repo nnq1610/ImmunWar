@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LungNode4
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.DefenseNodeConfig
   id: node_lung_4
-  position: {x: 1, y: -2}
+  position: {x: -4, y: -1}
   allowedRoleMask: 63
-  routeId: route_lung_main
-  routeProgress: 0.5714286
+  routeId: route_lung_mid
+  routeProgress: 0.5

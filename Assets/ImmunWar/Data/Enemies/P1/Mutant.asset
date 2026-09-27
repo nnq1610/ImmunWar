@@ -16,7 +16,7 @@ MonoBehaviour:
   displayNameKey: ene_mutant
   maxHealth: 120
   moveSpeed: 0.7
-  organDamage: 16
+  organDamage: 20
   atpReward: 13
   mutations:
   - {fileID: 11400000, guid: f29534b5f100103478211915baca3d02, type: 2}

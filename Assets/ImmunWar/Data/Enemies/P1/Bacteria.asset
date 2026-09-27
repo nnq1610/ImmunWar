@@ -16,7 +16,7 @@ MonoBehaviour:
   displayNameKey: ene_bacteria
   maxHealth: 90
   moveSpeed: 0.58
-  organDamage: 12
+  organDamage: 20
   atpReward: 9
   mutations: []
   bossPhases: []

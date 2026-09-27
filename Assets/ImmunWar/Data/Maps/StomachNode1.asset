@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StomachNode1
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.DefenseNodeConfig
   id: node_stomach_1
-  position: {x: -5.333333, y: 2.1666665}
+  position: {x: 4, y: 4}
   allowedRoleMask: 63
   routeId: route_stomach_main
-  routeProgress: 0.16666667
+  routeProgress: 0.25

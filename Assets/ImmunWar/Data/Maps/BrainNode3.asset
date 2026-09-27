@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BrainNode3
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.DefenseNodeConfig
   id: node_brain_3
-  position: {x: 0, y: 1}
+  position: {x: -7, y: -1}
   allowedRoleMask: 63
-  routeId: route_brain_main
-  routeProgress: 0.5
+  routeId: route_brain_left
+  routeProgress: 0.25

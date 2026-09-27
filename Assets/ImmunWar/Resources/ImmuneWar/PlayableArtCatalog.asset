@@ -18,11 +18,11 @@ MonoBehaviour:
   lungMap: {fileID: 21300000, guid: 7ac01e487d6233842ace9df2604c2028, type: 3}
   brainMap: {fileID: 21300000, guid: 9fe8ab5792b737c4f9fca36f903b76ae, type: 3}
   stomachMap: {fileID: 21300000, guid: bd2b29221dd92b64fa0b2cf8e96b6b10, type: 3}
-  primaryButton: {fileID: 2128587150, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
-  secondaryButton: {fileID: -792469008, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
-  dangerButton: {fileID: -1933676131, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
-  panel: {fileID: -427036146, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
-  organCard: {fileID: -1767134267, guid: 11b6d0f3a402e174ead7629edfa38816, type: 3}
+  primaryButton: {fileID: 21300000, guid: a1111111111111111111111111111111, type: 3}
+  secondaryButton: {fileID: 21300000, guid: b2222222222222222222222222222222, type: 3}
+  dangerButton: {fileID: 21300000, guid: c3333333333333333333333333333333, type: 3}
+  panel: {fileID: 21300000, guid: d4444444444444444444444444444444, type: 3}
+  organCard: {fileID: 21300000, guid: e5555555555555555555555555555555, type: 3}
   macrophageIdle:
   - {fileID: -447582603, guid: a2b64317405631f41a3967faf4603747, type: 3}
   - {fileID: 1959997171, guid: a2b64317405631f41a3967faf4603747, type: 3}

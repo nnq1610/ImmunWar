@@ -19,6 +19,8 @@ MonoBehaviour:
   maximumVitality: 100
   routes:
   - {fileID: 11400000, guid: 31b0852de7a791d4fb106ed50fc887db, type: 2}
+  - {fileID: 11400000, guid: eedf0e5a14ea4996ba9b9bc6ac884529, type: 2}
+  - {fileID: 11400000, guid: a2dfcd75e3384c0091d14b565cc73ef4, type: 2}
   nodes:
   - {fileID: 11400000, guid: e44dcd1fc799e4848a434bd8f809b281, type: 2}
   - {fileID: 11400000, guid: 44ef8d3e74c2c3a4fb7ddfc62a4ff77c, type: 2}

@@ -17,5 +17,13 @@ MonoBehaviour:
   - groups:
     - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
       routeId: route_stomach_main
-      count: 12
+      count: 4
+      intervalTicks: 25
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_stomach_left
+      count: 5
       intervalTicks: 24
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_stomach_bot
+      count: 3
+      intervalTicks: 30

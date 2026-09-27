@@ -27,10 +27,10 @@ namespace ImmunWar.UI
             var bar = root.gameObject.AddComponent<AnimatedHealthBar>();
             bar._width = size.x - 6f;
             bar._frame = RuntimeUi.Image(root, "Frame", Vector2.zero, size + new Vector2(4f, 4f),
-                new Color(0.15f, 0.77f, 0.79f, 0.9f));
-            RuntimeUi.Image(root, "Track", Vector2.zero, size, new Color(0.025f, 0.075f, 0.11f, 0.94f));
+                new Color(0.42f, 0.72f, 0.28f, 0.92f));
+            RuntimeUi.Image(root, "Track", Vector2.zero, size, new Color(0.15f, 0.18f, 0.12f, 0.94f));
             var trailImage = RuntimeUi.Image(root, "DamageTrail", new Vector2(-size.x * 0.5f + 3f, 0f),
-                new Vector2(bar._width, size.y - 6f), new Color(1f, 0.77f, 0.29f, 0.9f));
+                new Vector2(bar._width, size.y - 6f), new Color(1f, 0.72f, 0.22f, 0.9f));
             bar._trail = trailImage.rectTransform;
             var fillImage = RuntimeUi.Image(root, "HealthFill", new Vector2(-size.x * 0.5f + 3f, 0f),
                 new Vector2(bar._width, size.y - 6f), Color.green);
@@ -76,7 +76,7 @@ namespace ImmunWar.UI
             var healthy = new Color(0.28f, 0.93f, 0.67f);
             var wounded = new Color(1f, 0.33f, 0.42f);
             _fillImage.color = Color.Lerp(wounded, healthy, Mathf.Clamp01(_shown * 1.6f));
-            _frame.color = Color.Lerp(new Color(0.15f, 0.77f, 0.79f, 0.9f),
+            _frame.color = Color.Lerp(new Color(0.42f, 0.72f, 0.28f, 0.92f),
                 new Color(1f, 0.38f, 0.42f), _flash / 0.32f);
         }
 
