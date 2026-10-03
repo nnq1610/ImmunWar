@@ -16,7 +16,7 @@ MonoBehaviour:
   displayNameKey: ene_virus
   maxHealth: 45
   moveSpeed: 0.45
-  organDamage: 20
+  organDamage: 10
   atpReward: 6
   mutations: []
   bossPhases: []

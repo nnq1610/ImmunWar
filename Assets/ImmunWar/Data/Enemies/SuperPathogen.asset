@@ -16,7 +16,7 @@ MonoBehaviour:
   displayNameKey: enemy.super_pathogen
   maxHealth: 1200
   moveSpeed: 0.32
-  organDamage: 20
+  organDamage: 50
   atpReward: 100
   mutations: []
   bossPhases:
@@ -24,3 +24,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2f5fde8fbcf2994459a7220233d7245a, type: 2}
   - {fileID: 11400000, guid: a70efe5bc6f7d924ab97ef5370b5ba08, type: 2}
   presentation: {fileID: 11400000, guid: c14e4d978a66ee749aee2c436fbd13a3, type: 2}
+  armor: 0.2
+  regenPerSecond: 0
+  biteMultiplier: 3

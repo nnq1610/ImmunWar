@@ -41,6 +41,9 @@ namespace ImmunWar.Editor
         [MenuItem("Immune War/Assets/Import Approved Batch")]
         public static void ImportFromMenu() => Import(DefaultManifest);
 
+        [MenuItem("Immune War/Assets/Import Enemy Variants Batch")]
+        public static void ImportEnemyVariantsFromMenu() => Import("AssetSource/Incoming/Batches/2026-10-03-enemy-variants/batch.json");
+
         public static void ImportFromCommandLine()
         {
             var args = Environment.GetCommandLineArgs();

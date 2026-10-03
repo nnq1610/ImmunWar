@@ -142,3 +142,76 @@ MonoBehaviour:
     - {fileID: -716725289, guid: 5d0ca0ca9f22e4f40b1279838ea04582, type: 3}
     action: []
     controller: {fileID: 9100000, guid: 3dc4af5ffca10dd4b94efd14adf85edd, type: 2}
+  - unitId: ene_virus_swift
+    idleOrMove:
+    - {fileID: 1777914792, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    - {fileID: 1406291141, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    - {fileID: 2118256455, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    - {fileID: 248783381, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    - {fileID: 1744533119, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    - {fileID: 2105969601, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    - {fileID: 1385376776, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    - {fileID: 1373006533, guid: 2dc643fbc427e064a9d3c0a0c933caf9, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: c69c0f9190bf2d346bb2885af8a41151, type: 2}
+  - unitId: ene_virus_splitter
+    idleOrMove:
+    - {fileID: -699241031, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    - {fileID: -1151124466, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    - {fileID: 1785181645, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    - {fileID: -1558505964, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    - {fileID: -1370800985, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    - {fileID: 1105656326, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    - {fileID: -221428437, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    - {fileID: -1844964290, guid: 2c8fd820409015c40892d083ddf8e602, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: 5886acc6ba67e8c4abe0cc64941e2459, type: 2}
+  - unitId: ene_bacteria_armored
+    idleOrMove:
+    - {fileID: 648506575, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    - {fileID: -1722861315, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    - {fileID: 1559774170, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    - {fileID: 561888840, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    - {fileID: -1724247191, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    - {fileID: 557435907, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    - {fileID: 1770814629, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    - {fileID: -909476437, guid: 9114fb206a241af4db372b17db613ce8, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: bf00005e46b862c4cb35e317dfa77fec, type: 2}
+  - unitId: ene_bacteria_toxic
+    idleOrMove:
+    - {fileID: -1245050987, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    - {fileID: -2143497796, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    - {fileID: -1161237925, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    - {fileID: -1083798171, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    - {fileID: -1468862171, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    - {fileID: 656398037, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    - {fileID: -502659733, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    - {fileID: -297742867, guid: eb2b7e251b449714c861ab125b9f2b85, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: 139c20c41a3b14f4e80ed9cf82e08677, type: 2}
+  - unitId: ene_mutant_regen
+    idleOrMove:
+    - {fileID: -523101395, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    - {fileID: 1427787657, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    - {fileID: -36638010, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    - {fileID: 1061520127, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    - {fileID: 1958594037, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    - {fileID: 96482585, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    - {fileID: -1685630948, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    - {fileID: -866548281, guid: b7291fbd54057614f969f3261bf552c7, type: 3}
+    action: []
+    controller: {fileID: 9100000, guid: 3785775c9f918594cb87a2dba6508d75, type: 2}
+  menuMusic: {fileID: 8300000, guid: fe252e800a63000489e774710377443d, type: 3}
+  battleMusic: {fileID: 8300000, guid: 27d0ab026bb169745963ee737c013686, type: 3}
+  uiClick: {fileID: 8300000, guid: a50a90479073c2945bf673550a349fa2, type: 3}
+  uiError: {fileID: 8300000, guid: 614cde2aa107d6c409618837407335ed, type: 3}
+  place: {fileID: 8300000, guid: ca01787174d092742b6a07c97bea0481, type: 3}
+  attack: {fileID: 8300000, guid: 8b69642c257b3674d9386d5e213b0ab9, type: 3}
+  heavyAttack: {fileID: 8300000, guid: 404c5152e04a7504b9436b063b792c1d, type: 3}
+  enemyDeath: {fileID: 8300000, guid: 036491d2236d19b46b10e91274832a91, type: 3}
+  organHit: {fileID: 8300000, guid: dcf412d168a83c6448de50a806e3a4a2, type: 3}
+  atpGain: {fileID: 8300000, guid: 7467d364057e1144f822c4a3e1e98e2f, type: 3}
+  heal: {fileID: 8300000, guid: cc573ce54e0c11d4382c3d4e3c47d398, type: 3}
+  bossWarning: {fileID: 8300000, guid: 84e08e0f08e57704f859672a5d8b4d75, type: 3}
+  waveStart: {fileID: 8300000, guid: 257284fe3b0ad7345aff986ca0bb5200, type: 3}

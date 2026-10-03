@@ -13,6 +13,7 @@ namespace ImmunWar.UI
         private string _selectedMap = "map_lung";
         private Text _selectionLabel;
         private PlayableArtCatalog _art;
+        private BattleAudio _audio;
         private readonly Dictionary<string, Button> _mapButtons = new Dictionary<string, Button>();
         private readonly Dictionary<string, Image> _mapCardImages = new Dictionary<string, Image>();
 
@@ -21,6 +22,8 @@ namespace ImmunWar.UI
             _session = FindFirstObjectByType<GameSession>();
             _menu = FindFirstObjectByType<MainMenuController>();
             _art = Resources.Load<PlayableArtCatalog>("ImmuneWar/PlayableArtCatalog");
+            _audio = BattleAudio.Create(gameObject, _art, _session ? _session.Progress : null);
+            _audio.PlayMusic(_art ? _art.menuMusic : null);
             var root = RuntimeUi.Root("PlayableMenu");
 
             // === FIXED BACKGROUND ===
@@ -132,7 +135,8 @@ namespace ImmunWar.UI
 
         private void SelectMap(string mapId)
         {
-            if (_session != null && !_session.SelectMap(mapId)) return;
+            if (_session != null && !_session.SelectMap(mapId)) { _audio?.Play(_art ? _art.uiError : null); return; }
+            _audio?.Play(_art ? _art.uiClick : null);
             _selectedMap = mapId;
             if (_selectionLabel) _selectionLabel.text = "SELECTED: " + mapId.Replace("map_", "").ToUpperInvariant();
             UpdateSelectedMapArt();
@@ -152,6 +156,7 @@ namespace ImmunWar.UI
 
         public void Play()
         {
+            _audio?.Play(_art ? _art.uiClick : null);
             if (_session != null) _session.SelectMap(_selectedMap);
             if (_menu) _menu.StartSelectedBattle();
         }

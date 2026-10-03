@@ -57,6 +57,26 @@ AI014 - Stomach battle map plate
 Provider: OpenAI image generation via Codex
 Source/terms: https://openai.com/policies/row-terms-of-use/
 
+AI015 - Swift Virus movement animation sheet
+Provider: OpenAI ChatGPT image generation, generated and supplied by the project owner
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI016 - Splitter Virus movement animation sheet
+Provider: OpenAI ChatGPT image generation, generated and supplied by the project owner
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI017 - Armored Bacteria movement animation sheet
+Provider: OpenAI ChatGPT image generation, generated and supplied by the project owner
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI018 - Toxic Bacteria movement animation sheet
+Provider: OpenAI ChatGPT image generation, generated and supplied by the project owner
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
+AI019 - Regenerating Mutant movement animation sheet
+Provider: OpenAI ChatGPT image generation, generated and supplied by the project owner
+Source/terms: https://openai.com/policies/row-terms-of-use/
+
 ENV001 - Vessel Straight
 Provider: OpenAI image generation
 Source/terms: https://openai.com/policies/service-terms/

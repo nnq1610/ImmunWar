@@ -1,0 +1,436 @@
+fileFormatVersion: 2
+guid: 2dc643fbc427e064a9d3c0a0c933caf9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6182420382765799390
+    second: swift_sheet_0
+  - first:
+      213: 8046045090764578041
+    second: swift_sheet_1
+  - first:
+      213: -7623304802666071156
+    second: swift_sheet_2
+  - first:
+      213: -6825470946650694314
+    second: swift_sheet_3
+  - first:
+      213: -5886986846756091632
+    second: swift_sheet_4
+  - first:
+      213: 2525305699588431872
+    second: swift_sheet_5
+  - first:
+      213: -5234748491614191751
+    second: swift_sheet_6
+  - first:
+      213: 8479291792215921452
+    second: swift_sheet_7
+  - first:
+      213: 7661173921404058470
+    second: swift_sheet_8
+  - first:
+      213: 1081382394131428574
+    second: swift_sheet_9
+  - first:
+      213: 2221511576565715818
+    second: swift_sheet_10
+  - first:
+      213: 5829692913285511341
+    second: swift_sheet_11
+  - first:
+      213: -2267002080945015429
+    second: swift_sheet_12
+  - first:
+      213: -1005236226907504032
+    second: swift_sheet_13
+  - first:
+      213: -3318916610006278965
+    second: swift_sheet_14
+  - first:
+      213: 353724514418613588
+    second: swift_sheet_15
+  - first:
+      213: 3183939707657761638
+    second: swift_sheet_16
+  - first:
+      213: 3711322652230446354
+    second: swift_sheet_17
+  - first:
+      213: 4064229072314719670
+    second: swift_sheet_18
+  - first:
+      213: 1617069021941265767
+    second: swift_sheet_19
+  - first:
+      213: 6399560040799026388
+    second: swift_sheet_20
+  - first:
+      213: -4643767668030565550
+    second: swift_sheet_21
+  - first:
+      213: -7496087505367263405
+    second: swift_sheet_22
+  - first:
+      213: 2306826436347717988
+    second: swift_sheet_23
+  - first:
+      213: -7643101836651654310
+    second: swift_sheet_24
+  - first:
+      213: 4113617108516066595
+    second: swift_sheet_25
+  - first:
+      213: -1313709461920585963
+    second: swift_sheet_26
+  - first:
+      213: 4868944917172658622
+    second: swift_sheet_27
+  - first:
+      213: -8162830161817021710
+    second: swift_sheet_28
+  - first:
+      213: -3165747597566365785
+    second: swift_sheet_29
+  - first:
+      213: 1361464818049245361
+    second: swift_sheet_30
+  - first:
+      213: -3047791913505926189
+    second: swift_sheet_31
+  - first:
+      213: 7208877440696107669
+    second: swift_sheet_32
+  - first:
+      213: 6052211668552165000
+    second: swift_sheet_33
+  - first:
+      213: -1302950427638593615
+    second: swift_sheet_34
+  - first:
+      213: 5548262709978755867
+    second: swift_sheet_35
+  - first:
+      213: -2282358432901969486
+    second: swift_sheet_36
+  - first:
+      213: -4675672445245799883
+    second: swift_sheet_37
+  - first:
+      213: -3799405669758829846
+    second: swift_sheet_38
+  - first:
+      213: -3966887292239352923
+    second: swift_sheet_39
+  - first:
+      213: 437705860593564474
+    second: swift_sheet_40
+  - first:
+      213: -433763718388409417
+    second: swift_sheet_41
+  - first:
+      213: -5689796151945198348
+    second: swift_sheet_42
+  - first:
+      213: -1812116465173640851
+    second: swift_sheet_43
+  - first:
+      213: -5601455981662138090
+    second: swift_sheet_44
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: swift_sheet_move_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 444
+        width: 444
+        height: 443
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c08960fc26236e049b2d818fbf9ba1de
+      internalID: 1777914792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swift_sheet_move_1
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 444
+        width: 443
+        height: 443
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43bd616714ca640449a833ff47497583
+      internalID: 1406291141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swift_sheet_move_2
+      rect:
+        serializedVersion: 2
+        x: 887
+        y: 444
+        width: 443
+        height: 443
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cd0e028e132a4d47b313c802be2dc6a
+      internalID: 2118256455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swift_sheet_move_3
+      rect:
+        serializedVersion: 2
+        x: 1330
+        y: 444
+        width: 444
+        height: 443
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65379b614f97fd74dabffd5d65cac7d4
+      internalID: 248783381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swift_sheet_move_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 444
+        height: 444
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f9b9eab142a21a45a9c39c6aab7fd1a
+      internalID: 1744533119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swift_sheet_move_5
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 0
+        width: 443
+        height: 444
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01299342e3121124b92075db8674fe86
+      internalID: 2105969601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swift_sheet_move_6
+      rect:
+        serializedVersion: 2
+        x: 887
+        y: 0
+        width: 443
+        height: 444
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b5bd855bf4955f4e9583acee10aca04
+      internalID: 1385376776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: swift_sheet_move_7
+      rect:
+        serializedVersion: 2
+        x: 1330
+        y: 0
+        width: 444
+        height: 444
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 138db2732d7017448b33c2a6ada38039
+      internalID: 1373006533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 9b38a14cc0047c0478e6ee6a86551858
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      swift_sheet_move_0: 1777914792
+      swift_sheet_move_1: 1406291141
+      swift_sheet_move_2: 2118256455
+      swift_sheet_move_3: 248783381
+      swift_sheet_move_4: 1744533119
+      swift_sheet_move_5: 2105969601
+      swift_sheet_move_6: 1385376776
+      swift_sheet_move_7: 1373006533
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

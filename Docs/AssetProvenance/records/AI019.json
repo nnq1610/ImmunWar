@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AI019",
+    "manifestCategory":  "character",
+    "purpose":  "Regenerating Mutant movement animation sheet",
+    "runtimePath":  "Assets/ImmunWar/Art/Batch/Characters/regen_sheet.png",
+    "fallbackAssetId":  null,
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI ChatGPT image generation, generated and supplied by the project owner",
+    "sourceUrlOrJobId":  "ChatGPT session of the project owner (no job id provided)",
+    "acquiredOrGeneratedAtUtc":  "2026-10-03T00:00:00Z",
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "ChatGPT image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Mutated green and pink virus with healing stitches, glowing green regenerating veins and regrowing spikes, healing sparkles, glossy cartoon; 4x2 transparent motion frames.",
+                       "settings":  "4x2 transparent sprite sheet, 1774x887",
+                       "referenceAssetIds":  [
+                                                 "AI010"
+                                             ]
+                   },
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI Terms of Use effective 2026-01-01",
+                     "urlOrOrderId":  "https://openai.com/policies/row-terms-of-use/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-terms-2026-09-19.txt",
+                     "snapshotSha256":  "5e32a72a7c3bf0bf58fd0ca13de43d6afe1d0f9fcba5b7fe5587c28182826279",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "b6b62fdbaeecba01e2bcb0f28a765ee95dfaae8a263ab76607d41ca0ed1fffe6",
+    "approvedExportSha256":  "b6b62fdbaeecba01e2bcb0f28a765ee95dfaae8a263ab76607d41ca0ed1fffe6",
+    "recheckAtUtc":  null,
+    "review":  {
+                   "reviewer":  "Claude Code review requested by the project owner",
+                   "reviewedAtUtc":  "2026-10-03T00:00:00Z",
+                   "notes":  "Owner asked to import. Checked 1774x887 RGBA PNG with alpha, 4x2 grid of 8 consistent frames, style consistent with existing enemy sheets. Owner should confirm rights before release."
+               }
+}

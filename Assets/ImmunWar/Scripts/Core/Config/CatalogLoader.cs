@@ -15,7 +15,10 @@ namespace ImmunWar.Core.Config
             var validation = ConfigValidator.Validate(catalog);
             if (!validation.IsValid) throw new InvalidOperationException(string.Join("\n", validation.Errors));
             Catalog = catalog;
-            _lookup = catalog.AllConfigs().ToDictionary(x => x.Id, x => x, StringComparer.Ordinal);
+            // A missing reference (e.g. an asset Unity failed to import) must not take the whole game down.
+            var configs = catalog.AllConfigs().ToArray();
+            if (configs.Any(x => !x)) Debug.LogWarning("GameCatalog contains missing config references; they are ignored.");
+            _lookup = configs.Where(x => x).ToDictionary(x => x.Id, x => x, StringComparer.Ordinal);
         }
 
         public T Get<T>(string id) where T : GameConfig

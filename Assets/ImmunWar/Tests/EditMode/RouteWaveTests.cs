@@ -21,6 +21,19 @@ namespace ImmunWar.Tests.EditMode
         }
 
         [Test]
+        public void RouteFollower_WithEndInset_ArrivesBeforeTheLastWaypoint()
+        {
+            var enemy = new EnemyState("enemy-1", "ene_virus", "route-1", 10);
+            var route = new[] { new Vector2(-4f, 0f), Vector2.zero };
+            var follower = new RouteFollower(enemy, route, 1f, 1.5f);
+            var arrivals = 0;
+            for (var i = 0; i < 300; i++) if (follower.Tick(1f / 30f)) arrivals++;
+            Assert.That(arrivals, Is.EqualTo(1));
+            Assert.That(enemy.RouteProgress, Is.EqualTo(1f));
+            Assert.That(Vector2.Distance(follower.Position, follower.Destination), Is.EqualTo(1.5f).Within(1e-4f));
+        }
+
+        [Test]
         public void WaveSystem_SpawnsInStableOrderAndCompletesAfterLastTerminalEnemy()
         {
             var state = new WaveState();

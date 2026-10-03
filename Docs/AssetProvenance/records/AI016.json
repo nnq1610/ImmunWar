@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AI016",
+    "manifestCategory":  "character",
+    "purpose":  "Splitter Virus movement animation sheet",
+    "runtimePath":  "Assets/ImmunWar/Art/Batch/Characters/splitter_sheet.png",
+    "fallbackAssetId":  null,
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI ChatGPT image generation, generated and supplied by the project owner",
+    "sourceUrlOrJobId":  "ChatGPT session of the project owner (no job id provided)",
+    "acquiredOrGeneratedAtUtc":  "2026-10-03T00:00:00Z",
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "ChatGPT image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Bloated orange virus made of three virus cores with glowing crack lines about to split, glossy cartoon; 4x2 transparent motion frames.",
+                       "settings":  "4x2 transparent sprite sheet, 1774x887",
+                       "referenceAssetIds":  [
+                                                 "AI010"
+                                             ]
+                   },
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI Terms of Use effective 2026-01-01",
+                     "urlOrOrderId":  "https://openai.com/policies/row-terms-of-use/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-terms-2026-09-19.txt",
+                     "snapshotSha256":  "5e32a72a7c3bf0bf58fd0ca13de43d6afe1d0f9fcba5b7fe5587c28182826279",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "0080586d0c95190ff21a87042829399f51ffe6d1deb2ca38bb9086380cb2b80e",
+    "approvedExportSha256":  "0080586d0c95190ff21a87042829399f51ffe6d1deb2ca38bb9086380cb2b80e",
+    "recheckAtUtc":  null,
+    "review":  {
+                   "reviewer":  "Claude Code review requested by the project owner",
+                   "reviewedAtUtc":  "2026-10-03T00:00:00Z",
+                   "notes":  "Owner asked to import. Checked 1774x887 RGBA PNG with alpha, 4x2 grid of 8 consistent frames, style consistent with existing enemy sheets. Owner should confirm rights before release."
+               }
+}

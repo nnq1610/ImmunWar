@@ -33,6 +33,21 @@ namespace ImmunWar.UI
         public UnitAnimationArt[] defenderAnimations;
         public UnitAnimationArt[] enemyAnimations;
 
+        [Header("Audio")]
+        public AudioClip menuMusic;
+        public AudioClip battleMusic;
+        public AudioClip uiClick;
+        public AudioClip uiError;
+        public AudioClip place;
+        public AudioClip attack;
+        public AudioClip heavyAttack;
+        public AudioClip enemyDeath;
+        public AudioClip organHit;
+        public AudioClip atpGain;
+        public AudioClip heal;
+        public AudioClip bossWarning;
+        public AudioClip waveStart;
+
         public Sprite MapSprite(string mapId) => mapId switch
         {
             "map_brain" => brainMap ? brainMap : lungMap,

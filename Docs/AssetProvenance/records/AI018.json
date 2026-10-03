@@ -1,0 +1,49 @@
+{
+    "schemaVersion":  1,
+    "recordKind":  "ShippableAsset",
+    "assetId":  "AI018",
+    "manifestCategory":  "character",
+    "purpose":  "Toxic Bacteria movement animation sheet",
+    "runtimePath":  "Assets/ImmunWar/Art/Batch/Characters/toxic_sheet.png",
+    "fallbackAssetId":  null,
+    "releaseCritical":  false,
+    "sourceType":  "ai_generated",
+    "creatorOrProvider":  "OpenAI ChatGPT image generation, generated and supplied by the project owner",
+    "sourceUrlOrJobId":  "ChatGPT session of the project owner (no job id provided)",
+    "acquiredOrGeneratedAtUtc":  "2026-10-03T00:00:00Z",
+    "generation":  {
+                       "provider":  "OpenAI",
+                       "model":  "ChatGPT image generation",
+                       "modelVersion":  null,
+                       "prompt":  "Tall lumpy lime-yellow bacterium oozing glowing toxic slime, bubbling pustules, purple flagella, fanged mouth dripping venom, glossy cartoon; 4x2 transparent motion frames.",
+                       "settings":  "4x2 transparent sprite sheet, 1774x887",
+                       "referenceAssetIds":  [
+                                                 "AI010"
+                                             ]
+                   },
+    "status":  "Approved",
+    "rights":  {
+                   "commercialUse":  "Allowed",
+                   "modification":  "Allowed",
+                   "embeddedRedistribution":  "Allowed",
+                   "attribution":  "N/A",
+                   "aiInputUse":  "Allowed",
+                   "territoryOrPlatformLimits":  null
+               },
+    "evidence":  {
+                     "evidenceType":  "AIProviderTerms",
+                     "nameAndVersion":  "OpenAI Terms of Use effective 2026-01-01",
+                     "urlOrOrderId":  "https://openai.com/policies/row-terms-of-use/",
+                     "snapshotPath":  "Docs/AssetProvenance/evidence/openai-terms-2026-09-19.txt",
+                     "snapshotSha256":  "5e32a72a7c3bf0bf58fd0ca13de43d6afe1d0f9fcba5b7fe5587c28182826279",
+                     "attributionText":  null
+                 },
+    "rawSha256":  "21ce9bb250ed6665cc9db11d93bfe5dce7b30a5523d91392a3a23ef74547faaf",
+    "approvedExportSha256":  "21ce9bb250ed6665cc9db11d93bfe5dce7b30a5523d91392a3a23ef74547faaf",
+    "recheckAtUtc":  null,
+    "review":  {
+                   "reviewer":  "Claude Code review requested by the project owner",
+                   "reviewedAtUtc":  "2026-10-03T00:00:00Z",
+                   "notes":  "Owner asked to import. Checked 1774x887 RGBA PNG with alpha, 4x2 grid of 8 consistent frames, style consistent with existing enemy sheets. Owner should confirm rights before release."
+               }
+}

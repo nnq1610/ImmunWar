@@ -72,6 +72,18 @@ namespace ImmunWar.Core
             ScreenCapture.CaptureScreenshot(battlePath);
             yield return new WaitForSecondsRealtime(0.5f);
             Debug.Log("IMMUNEWAR_VISUAL_BATTLE_OK " + battlePath);
+            // Optional: "--immunwar-visual-smoke-shots N" captures N more frames, 4 s apart, so later enemy types are visible.
+            var shotsOption = Array.IndexOf(args, "--immunwar-visual-smoke-shots");
+            var extraShots = shotsOption >= 0 && shotsOption + 1 < args.Length && int.TryParse(args[shotsOption + 1], out var parsed) ? parsed : 0;
+            for (var shot = 1; shot <= extraShots; shot++)
+            {
+                yield return new WaitForSecondsRealtime(4f);
+                yield return new WaitForEndOfFrame();
+                var shotPath = Path.Combine(output, "battle_" + shot + ".png");
+                ScreenCapture.CaptureScreenshot(shotPath);
+                Debug.Log("IMMUNEWAR_VISUAL_SHOT " + shotPath + " enemies=" + battle.VisibleEnemyCount);
+            }
+            yield return new WaitForSecondsRealtime(0.5f);
             Application.Quit(0);
         }
 
