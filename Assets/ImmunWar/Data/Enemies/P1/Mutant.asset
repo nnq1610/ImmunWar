@@ -23,3 +23,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 28de73343a5dda549984e508152038ba, type: 2}
   bossPhases: []
   presentation: {fileID: 11400000, guid: 5e8293f5554ac98459895c48856bc073, type: 2}
+  attackStyle: 6
+  attackRange: 0

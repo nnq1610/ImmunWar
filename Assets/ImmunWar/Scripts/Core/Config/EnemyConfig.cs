@@ -2,6 +2,20 @@ using UnityEngine;
 
 namespace ImmunWar.Core.Config
 {
+    /// <summary>How an enemy attacks the defender blocking it (or, for ranged styles, defenders it passes).</summary>
+    public enum EnemyAttackStyle
+    {
+        Bite,       // single lunge
+        Nibble,     // fast, weak repeated bites
+        Slam,       // body slam hitting every defender close by
+        Whip,       // flagellum lash
+        Ram,        // slow, heavy charge
+        AcidSpit,   // ranged glob that poisons
+        Claw,       // slashing swipe
+        Drain,      // bite that heals the attacker
+        SporeBurst  // wide spore cloud around the boss
+    }
+
     [CreateAssetMenu(menuName = "Immune War/Enemy")]
     public sealed class EnemyConfig : GameConfig
     {
@@ -13,6 +27,11 @@ namespace ImmunWar.Core.Config
         public MutationDefinition[] mutations;
         public BossPhaseConfig[] bossPhases;
         public PresentationConfig presentation;
+
+        [Header("Attack")]
+        public EnemyAttackStyle attackStyle = EnemyAttackStyle.Bite;
+        [Tooltip("Above 0, the enemy also attacks defenders within this range while walking (world units).")]
+        [Min(0f)] public float attackRange;
 
         [Header("Traits")]
         [Tooltip("Fraction of incoming damage ignored (0 = none, 0.5 = half).")]

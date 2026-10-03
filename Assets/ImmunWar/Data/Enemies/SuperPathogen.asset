@@ -27,3 +27,5 @@ MonoBehaviour:
   armor: 0.2
   regenPerSecond: 0
   biteMultiplier: 3
+  attackStyle: 8
+  attackRange: 0

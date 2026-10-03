@@ -61,6 +61,28 @@ namespace ImmunWar.Core
             var map = session.Catalogs.Get<OrganMapConfig>(session.SelectedMapId);
             battle.SelectDefender(session.Catalogs.Catalog.defenders[0]);
             if (!battle.Place(map.nodes[0].Id, map.nodes[0].allowedRoleMask)) { Fail("placement rejected"); yield break; }
+            // Optional "--immunwar-visual-smoke-lineup": one of each defender (fixed nodes, then free spots on routes)
+            // so every cell skill shows up in the captures.
+            if (Array.IndexOf(args, "--immunwar-visual-smoke-lineup") >= 0)
+            {
+                var defenders = session.Catalogs.Catalog.defenders;
+                battle.Controller.State.Economy.Add(2000);
+                for (var i = 1; i < map.nodes.Length; i++)
+                {
+                    battle.SelectDefender(defenders[i % defenders.Length]);
+                    battle.Place(map.nodes[i].Id, map.nodes[i].allowedRoleMask);
+                }
+                for (var i = map.nodes.Length; i < defenders.Length + 2; i++)
+                {
+                    var route = map.routes[i % map.routes.Length].waypoints;
+                    battle.SelectDefender(defenders[i % defenders.Length]);
+                    battle.PlaceFree(Vector2.Lerp(route[1], route[2], 0.5f));
+                }
+            }
+            // Optional "--immunwar-visual-smoke-wave K": start at wave K (1-based) to see later enemy types.
+            var waveOption = Array.IndexOf(args, "--immunwar-visual-smoke-wave");
+            if (waveOption >= 0 && waveOption + 1 < args.Length && int.TryParse(args[waveOption + 1], out var startWave))
+                battle.SkipToWaveForSmoke(startWave);
             battle.StartNextWave();
             for (var attempt = 0; attempt < 80 && battle.VisibleEnemyCount == 0; attempt++) yield return new WaitForSecondsRealtime(0.1f);
             if (battle.VisibleEnemyCount == 0) { Fail("enemy did not spawn"); yield break; }

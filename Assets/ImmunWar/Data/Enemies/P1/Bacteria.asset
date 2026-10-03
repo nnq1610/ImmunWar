@@ -21,3 +21,5 @@ MonoBehaviour:
   mutations: []
   bossPhases: []
   presentation: {fileID: 11400000, guid: 77698e3701cd3624c897c72a79b4760e, type: 2}
+  attackStyle: 3
+  attackRange: 0

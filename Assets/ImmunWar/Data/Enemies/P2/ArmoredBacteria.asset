@@ -30,3 +30,5 @@ MonoBehaviour:
   tint: {r: 1, g: 1, b: 1, a: 1}
   visualScale: 1.45
   stretch: {x: 1, y: 1}
+  attackStyle: 4
+  attackRange: 0

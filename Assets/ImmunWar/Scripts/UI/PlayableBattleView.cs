@@ -16,7 +16,7 @@ using UnityEngine.UI;
 
 namespace ImmunWar.UI
 {
-    public sealed class PlayableBattleView : MonoBehaviour
+    public sealed partial class PlayableBattleView : MonoBehaviour
     {
         private sealed class EnemyVisual
         {
@@ -39,6 +39,10 @@ namespace ImmunWar.UI
             public float TrailTime;
             public float Facing = 1f;
             public bool HasOwnArt;
+            public int MarkedUntilTick;
+            public int SlowUntilTick;
+            public Image Mark;
+            public Image Net;
         }
 
         // Radius of the organ's ring in world units (core art is 260 px, its ring ~60% of that).
@@ -87,6 +91,9 @@ namespace ImmunWar.UI
         public BattleController Controller => _battle;
         public int VisibleEnemyCount => _enemies.Count;
         public float FirstEnemyProgress => _enemies.Count == 0 ? 0f : _enemies[0].State.RouteProgress;
+
+        /// <summary>Visual smoke only: the next StartNextWave begins at the given 1-based wave.</summary>
+        public void SkipToWaveForSmoke(int wave) => _waveIndex = Mathf.Clamp(wave, 1, _map.waveSet.waves.Length) - 2;
 
         public void AdvanceSimulationTicksForTests(int count)
         {
@@ -523,25 +530,15 @@ namespace ImmunWar.UI
                         Vector2.Distance(defenderPoint, enemy.Follower.Position) <= BlockRadius)
                     {
                         blocked = true;
-                        if (_tick >= enemy.NextContactTick)
-                        {
-                            defender.ReceiveDamage(Mathf.Max(2f, enemy.Config.organDamage * 0.5f * enemy.Config.biteMultiplier));
-                            ShowEffect(_art ? _art.hit : null, defenderPoint, new Color(1f, 0.46f, 0.51f, 0.72f));
-                            if (_defenderHealthBars.TryGetValue(defender.InstanceId, out var healthBar))
-                                healthBar.SetValue(defender.Health, FindDefender(defender.ConfigId)?.maxHealth ?? 100);
-                            // The enemy lunges at the defender it is biting, and the defender flashes red.
-                            enemy.Knock += (RuntimeUi.Point(defenderPoint) - enemy.BasePoint).normalized * 16f;
-                            if (_defenderImages.TryGetValue(defender.InstanceId, out var defenderImage) && defenderImage)
-                                StartCoroutine(FlashDefender(defenderImage));
-                            enemy.NextContactTick = _tick + 30;
-                        }
+                        if (_tick >= enemy.NextContactTick) EnemyAttack(enemy, defender, defenderPoint);
                         break;
                     }
                 }
 
                 if (!blocked)
                 {
-                    if (enemy.Follower.Tick(1f / 30f))
+                    if (enemy.Config.attackRange > 0f && _tick >= enemy.NextContactTick) TryRangedAttack(enemy);
+                    if (enemy.Follower.Tick(1f / 30f * SpeedFactor(enemy)))
                     {
                         enemy.BasePoint = RuntimeUi.Point(enemy.Follower.Position);
                         _battle.DamageOrgan(enemy.Config.organDamage);
@@ -558,6 +555,7 @@ namespace ImmunWar.UI
                 if (Mathf.Abs(next.x - enemy.BasePoint.x) > 0.2f) enemy.Facing = next.x < enemy.BasePoint.x ? -1f : 1f;
                 enemy.BasePoint = next;
             }
+            TickDefenderStatus();
             var defeatedDefenders = new List<string>();
             foreach (var defender in _battle.State.Defenders.Values)
                 if (defender.Health <= 0f) defeatedDefenders.Add(defender.InstanceId);
@@ -567,31 +565,24 @@ namespace ImmunWar.UI
                 CombatSystem.TickCooldown(defender);
                 var config = FindDefender(defender.ConfigId);
                 if (!config || !_nodePositions.TryGetValue(defender.NodeId, out var position)) continue;
-                if (config.role == DefenderRole.Economy && _tick % 90 == 0)
-                {
-                    _battle.State.Economy.Add(5);
-                    FloatText(RuntimeUi.Point(position) + new Vector2(0f, 50f), "+5", new Color(1f, 0.88f, 0.25f), 22);
-                    _audio?.Play(_art ? _art.atpGain : null, 0.35f, 0.4f);
-                }
+                if (config.role == DefenderRole.Economy && _tick % 90 == 0) GenerateAtp(position);
                 if (config.role == DefenderRole.Repair && _tick % 120 == 0 && _battle.State.Vitality.Current < _battle.State.Vitality.Maximum)
-                {
-                    _battle.State.Vitality.Repair(3);
-                    _audio?.Play(_art ? _art.heal : null, 0.4f, 1f);
-                }
-                if (config.attackDamage <= 0) continue;
+                    RepairOrgan(position);
+                if (config.attackDamage <= 0 || defender.CooldownTicks > 0) continue;
                 var candidates = new List<EnemyState>();
                 foreach (var enemy in _enemies)
                     if (!enemy.State.IsTerminal && Vector2.Distance(position, enemy.Follower.Position) <= config.range) candidates.Add(enemy.State);
-                // Pick the target first so its armor can reduce the damage dealt.
+                // Pick the target first so its armor, marks and the cell's skill can shape the damage dealt.
                 var chosen = TargetingSystem.Select(candidates);
                 var hitEnemy = chosen == null ? null : _enemies.Find(x => x.State == chosen);
-                var damage = config.attackDamage * (1f - (hitEnemy != null ? hitEnemy.Config.armor : 0f));
-                var target = chosen == null ? null : _combat.Attack(defender, new[] { chosen }, damage, Mathf.CeilToInt(config.attackInterval * 30f));
+                if (hitEnemy == null) continue;
+                var strike = PrepareStrike(defender, config, hitEnemy);
+                var target = _combat.Attack(defender, new[] { chosen }, strike.Damage, Mathf.CeilToInt(config.attackInterval * 30f));
                 if (target != null)
                 {
                     if (_defenderAnimators.TryGetValue(defender.InstanceId, out var animator) && animator)
                         animator.Play("Attack", 0, 0f);
-                    if (hitEnemy != null) ShowAttack(defender.InstanceId, config, position, hitEnemy, damage);
+                    PlaySkill(defender.InstanceId, config, position, hitEnemy, strike);
                 }
                 if (target != null && target.IsTerminal)
                 {
@@ -777,6 +768,7 @@ namespace ImmunWar.UI
                 enemy.Image.color = Color.Lerp(enemy.BaseColor, new Color(1f, 0.3f, 0.3f), hit);
                 // Counter-mirror the health bar so it always drains right-to-left.
                 if (enemy.HealthBar) enemy.HealthBar.transform.localScale = new Vector3(enemy.Facing, 1f, 1f);
+                UpdateStatusMarkers(enemy, now);
                 if (enemy.Aura)
                 {
                     var pulse = 0.5f + 0.5f * Mathf.Sin(now * 5f + enemy.Phase);
@@ -809,27 +801,6 @@ namespace ImmunWar.UI
                 yield return null;
             }
             if (ghost) Destroy(ghost.gameObject);
-        }
-
-        private void ShowAttack(string defenderId, DefenderConfig config, Vector2 defenderPosition, EnemyVisual target, float damage)
-        {
-            var from = RuntimeUi.Point(defenderPosition);
-            var to = target.BasePoint;
-            var direction = (to - from).sqrMagnitude > 0.01f ? (to - from).normalized : Vector2.right;
-            var melee = config.range <= 1.5f;
-            var color = DefenderColor(config.role);
-            if (_defenderImages.TryGetValue(defenderId, out var defenderImage) && defenderImage)
-                StartCoroutine(Recoil(defenderImage.rectTransform, from, melee ? direction * 20f : -direction * 7f));
-            if (!melee) StartCoroutine(Tracer(from, to, color));
-            target.HitTime = Time.time;
-            target.Knock += direction * (melee ? 16f : 10f);
-            ShowEffect(_art ? _art.hit : null, target.Follower.Position, Color.Lerp(color, Color.white, 0.4f), 58f);
-            // Armored targets show their reduced damage in steel blue.
-            var armored = target.Config.armor > 0f;
-            FloatText(to + new Vector2(UnityEngine.Random.Range(-16f, 16f), 42f),
-                Mathf.Max(1, Mathf.RoundToInt(damage)).ToString(), armored ? new Color(0.7f, 0.82f, 1f) : new Color(1f, 0.95f, 0.6f), armored ? 22 : 26);
-            var heavy = config.role is DefenderRole.Burst or DefenderRole.Blocker;
-            _audio?.Play(_art ? heavy ? _art.heavyAttack : _art.attack : null, 0.45f, 0.07f);
         }
 
         private IEnumerator Recoil(RectTransform rect, Vector2 home, Vector2 offset)
