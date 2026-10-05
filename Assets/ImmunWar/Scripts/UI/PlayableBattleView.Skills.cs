@@ -3,25 +3,20 @@ using System.Collections.Generic;
 using ImmunWar.Battle.State;
 using ImmunWar.Combat;
 using ImmunWar.Core.Config;
+using ImmunWar.StatusEffects;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace ImmunWar.UI
 {
     /// <summary>
-    /// Per-type enemy attacks and per-cell defender skills, each with its own mechanic and presentation.
+    /// Per-type enemy attacks and per-cell defender basic attacks, each with its own mechanic and presentation.
     /// </summary>
     public sealed partial class PlayableBattleView
     {
-        private const int MarkTicks = 90;        // B Cell antibodies: marked enemies take +25% damage for 3 s
-        private const float MarkBonus = 1.25f;
-        private const int SlowTicks = 60;        // Platelet clot: 45% slower for 2 s
-        private const float SlowFactor = 0.55f;
-        private const int PoisonTicks = 90;      // Toxic acid: 1.5 damage every 0.5 s for 3 s
         private const float NkSplashRadius = 1.2f;
 
         private readonly Dictionary<string, int> _attackCounts = new Dictionary<string, int>();
-        private readonly Dictionary<string, int> _poisonTicks = new Dictionary<string, int>();
 
         private struct Strike
         {
@@ -29,16 +24,17 @@ namespace ImmunWar.UI
             public bool Crit;
             public bool Burst;
             public bool VsMutant;
+            public bool Ignite;
         }
 
         // ================= Enemy attacks =================
 
-        private void EnemyAttack(EnemyVisual enemy, DefenderState defender, Vector2 defenderPoint)
+        private void EnemyAttack(EnemyVisual enemy, DefenderVisual defender)
         {
             var config = enemy.Config;
             var damage = Mathf.Max(2f, config.organDamage * 0.5f * config.biteMultiplier);
             var from = enemy.BasePoint;
-            var to = RuntimeUi.Point(defenderPoint);
+            var to = RuntimeUi.Point(defender.Position);
             var direction = (to - from).sqrMagnitude > 0.01f ? (to - from).normalized : Vector2.right;
             var tint = EnemyTint(VisualBaseId(config)) * config.tint;
             var interval = 30;
@@ -68,13 +64,12 @@ namespace ImmunWar.UI
                     interval = 48;
                     damage *= 1.7f;
                     StartCoroutine(RamCharge(enemy, direction));
-                    if (_defenderImages.TryGetValue(defender.InstanceId, out var rammed) && rammed)
-                        StartCoroutine(Recoil(rammed.rectTransform, to, direction * 18f));
+                    Kick(defender, direction * 18f);
                     SpawnParticles(to, new Color(1f, 0.85f, 0.5f), 8, 50f);
                     FloatText(to + new Vector2(0f, 70f), "BAM!", new Color(0.8f, 0.88f, 1f), 26);
                     break;
                 case EnemyAttackStyle.AcidSpit:
-                    SpitAt(enemy, defender, defenderPoint, damage);
+                    SpitAt(enemy, defender, damage);
                     return;
                 case EnemyAttackStyle.Claw:
                     interval = 26;
@@ -110,74 +105,80 @@ namespace ImmunWar.UI
         /// <summary>Ranged enemies spit at the nearest defender in range while they keep walking.</summary>
         private void TryRangedAttack(EnemyVisual enemy)
         {
-            DefenderState nearest = null;
-            var nearestPoint = Vector2.zero;
+            DefenderVisual nearest = null;
             var best = enemy.Config.attackRange;
-            foreach (var defender in _battle.State.Defenders.Values)
+            foreach (var defender in _defenders.Values)
             {
-                if (defender.Health <= 0f || !_nodePositions.TryGetValue(defender.NodeId, out var point)) continue;
-                var distance = Vector2.Distance(point, enemy.Follower.Position);
+                if (defender.State.Health <= 0f) continue;
+                var distance = Vector2.Distance(defender.Position, enemy.Follower.Position);
                 if (distance > best) continue;
                 best = distance;
                 nearest = defender;
-                nearestPoint = point;
             }
-            if (nearest != null) SpitAt(enemy, nearest, nearestPoint, Mathf.Max(2f, enemy.Config.organDamage * 0.5f * enemy.Config.biteMultiplier));
+            if (nearest != null) SpitAt(enemy, nearest, Mathf.Max(2f, enemy.Config.organDamage * 0.5f * enemy.Config.biteMultiplier));
         }
 
-        private void SpitAt(EnemyVisual enemy, DefenderState defender, Vector2 defenderPoint, float damage)
+        /// <summary>Acid glob: light hit plus a poison stack. Paralyzing toxins lock up a cell soaked with enough stacks.</summary>
+        private void SpitAt(EnemyVisual enemy, DefenderVisual defender, float damage)
         {
             enemy.NextContactTick = _tick + 50;
             DamageDefender(defender, damage * 0.6f, Color.clear, false);
-            _poisonTicks[defender.InstanceId] = PoisonTicks;
             enemy.Knock += Vector2.up * 8f;
-            StartCoroutine(ArcOrb(enemy.BasePoint, RuntimeUi.Point(defenderPoint), new Color(0.75f, 1f, 0.2f), 26f, 70f, 0.35f, true));
+            StartCoroutine(ArcOrb(enemy.BasePoint, RuntimeUi.Point(defender.Position), new Color(0.75f, 1f, 0.2f), 26f, 70f, 0.35f, true));
+            var effects = defender.State.Effects;
+            if (CombatStatus.Has(effects, StatusIds.Shield)) return;
+            CombatStatus.Apply(_statusSystem, effects, CombatStatus.Poison, enemy.State.InstanceId);
+            if (enemy.Config.skill == EnemySkill.Paralyze && CombatStatus.Stacks(effects, StatusIds.Poison) >= CombatStatus.ParalyzePoisonStacks)
+                Paralyze(enemy, defender);
         }
 
-        private IEnumerable<DefenderState> DefendersNear(Vector2 world, float radius)
+        private List<DefenderVisual> DefendersNear(Vector2 world, float radius)
         {
-            var hits = new List<DefenderState>();
-            foreach (var defender in _battle.State.Defenders.Values)
-                if (defender.Health > 0f && _nodePositions.TryGetValue(defender.NodeId, out var point) && Vector2.Distance(point, world) <= radius)
+            var hits = new List<DefenderVisual>();
+            foreach (var defender in _defenders.Values)
+                if (defender.State.Health > 0f && Vector2.Distance(defender.Position, world) <= radius)
                     hits.Add(defender);
             return hits;
         }
 
-        private void DamageDefender(DefenderState defender, float damage, Color effect, bool showEffect = true)
+        // ================= Defender basic attacks =================
+
+        private void DefenderAct(DefenderVisual visual)
         {
-            defender.ReceiveDamage(damage);
-            if (showEffect && _nodePositions.TryGetValue(defender.NodeId, out var point))
-                ShowEffect(_art ? _art.hit : null, point, effect, 55f);
-            if (_defenderHealthBars.TryGetValue(defender.InstanceId, out var bar) && bar)
-                bar.SetValue(defender.Health, FindDefender(defender.ConfigId)?.maxHealth ?? 100);
-            if (_defenderImages.TryGetValue(defender.InstanceId, out var image) && image)
-                StartCoroutine(FlashDefender(image));
+            var defender = visual.State;
+            var config = visual.Config;
+            CombatSystem.TickCooldown(defender);
+            var disabled = CombatStatus.IsDisabled(defender.Effects);
+            if (config.role == DefenderRole.Economy && _tick % 90 == 0 && !disabled && !CombatStatus.Has(defender.Effects, StatusIds.Exhausted))
+                GenerateAtp(visual.Position);
+            if (config.role == DefenderRole.Repair && _tick % 120 == 0 && !disabled && _battle.State.Vitality.Current < _battle.State.Vitality.Maximum)
+                RepairOrgan(visual.Position);
+            if (config.attackDamage <= 0 || defender.CooldownTicks > 0 || !CombatStatus.CanAttack(defender.Effects)) return;
+            var target = PickTarget(visual);
+            if (target == null) return;
+            // Pick the target first so its armor, marks and the cell's skill can shape the damage dealt.
+            var strike = PrepareStrike(defender, config, target);
+            defender.CooldownTicks = Mathf.Max(1, Mathf.CeilToInt(config.attackInterval * 30f * CombatStatus.CooldownMultiplier(defender.Effects)));
+            if (visual.Animator) visual.Animator.Play("Attack", 0, 0f);
+            PlaySkill(visual, target, strike);
+            var melee = Vector2.Distance(visual.Position, target.Follower.Position) <= BlockRadius;
+            HitEnemy(target, strike.Damage);
+            if (melee && target.Config.skill == EnemySkill.SpikeShell) ReflectSpikes(target, visual, strike.Damage);
         }
 
-        /// <summary>Poison damage over time on defenders hit by acid.</summary>
-        private void TickDefenderStatus()
+        /// <summary>Mobile cells keep hitting the enemy they walked out to; others use the shared targeting rule.</summary>
+        private EnemyVisual PickTarget(DefenderVisual visual)
         {
-            if (_poisonTicks.Count == 0) return;
-            foreach (var id in new List<string>(_poisonTicks.Keys))
+            var candidates = new List<EnemyState>();
+            foreach (var enemy in _enemies)
             {
-                if (!_battle.State.Defenders.TryGetValue(id, out var defender)) { _poisonTicks.Remove(id); continue; }
-                var left = _poisonTicks[id] - 1;
-                if (left % 15 == 0)
-                {
-                    defender.ReceiveDamage(1.5f);
-                    if (_defenderHealthBars.TryGetValue(id, out var bar) && bar)
-                        bar.SetValue(defender.Health, FindDefender(defender.ConfigId)?.maxHealth ?? 100);
-                    if (_nodePositions.TryGetValue(defender.NodeId, out var point))
-                        SpawnParticles(RuntimeUi.Point(point) + new Vector2(0f, 20f), new Color(0.7f, 1f, 0.2f), 2, 22f);
-                }
-                if (left <= 0) _poisonTicks.Remove(id);
-                else _poisonTicks[id] = left;
+                if (enemy.State.IsTerminal || Vector2.Distance(visual.Position, enemy.Follower.Position) > visual.Config.range) continue;
+                if (enemy.State.InstanceId == visual.ChaseId) return enemy;
+                candidates.Add(enemy.State);
             }
+            var chosen = TargetingSystem.Select(candidates);
+            return chosen == null ? null : _enemies.Find(x => x.State == chosen);
         }
-
-        private float SpeedFactor(EnemyVisual enemy) => _tick < enemy.SlowUntilTick ? SlowFactor : 1f;
-
-        // ================= Defender skills =================
 
         private Strike PrepareStrike(DefenderState defender, DefenderConfig config, EnemyVisual target)
         {
@@ -185,29 +186,34 @@ namespace ImmunWar.UI
             _attackCounts[defender.InstanceId] = count;
             var strike = new Strike { Damage = config.attackDamage };
             if (config.role == DefenderRole.Damage && count % 4 == 0) { strike.Crit = true; strike.Damage *= 2f; }
+            if (config.role == DefenderRole.Damage && CombatStatus.Has(defender.Effects, StatusIds.Haste)) strike.Ignite = true;
             if (config.role == DefenderRole.Burst)
             {
                 if (count % 3 == 0) { strike.Burst = true; strike.Damage *= 1.5f; }
                 if (target.Config.Id.StartsWith("ene_mutant", System.StringComparison.Ordinal)) { strike.VsMutant = true; strike.Damage *= 2f; }
             }
-            if (_tick < target.MarkedUntilTick) strike.Damage *= MarkBonus;
-            strike.Damage *= 1f - target.Config.armor;
+            strike.Damage = EnemyDamage(target, strike.Damage);
             return strike;
         }
 
-        private void PlaySkill(string defenderId, DefenderConfig config, Vector2 defenderPosition, EnemyVisual target, Strike strike)
+        /// <summary>Damage after the target's armor and any antibody mark.</summary>
+        private static float EnemyDamage(EnemyVisual target, float damage) =>
+            damage * (1f - target.Config.armor) * CombatStatus.DamageTakenMultiplier(target.State.Effects);
+
+        private void PlaySkill(DefenderVisual visual, EnemyVisual target, Strike strike)
         {
-            var from = RuntimeUi.Point(defenderPosition);
+            var config = visual.Config;
+            var from = RuntimeUi.Point(visual.Position);
             var to = target.BasePoint;
             var direction = (to - from).sqrMagnitude > 0.01f ? (to - from).normalized : Vector2.right;
-            _defenderImages.TryGetValue(defenderId, out var image);
+            if (Mathf.Abs(direction.x) > 0.2f) visual.Facing = direction.x < 0f ? -1f : 1f;
             target.HitTime = Time.time;
             var numberColor = new Color(1f, 0.95f, 0.6f);
             switch (config.role)
             {
                 case DefenderRole.Blocker:
                     // Macrophage — Engulf: lunges, jaws snap shut on the target and drag it in.
-                    if (image) StartCoroutine(Recoil(image.rectTransform, from, direction * 24f));
+                    Kick(visual, direction * 24f);
                     StartCoroutine(Ring(to, new Color(0.3f, 1f, 0.8f, 0.9f), target.Size * 1.8f, target.Size * 0.4f, 0.18f));
                     target.Knock -= direction * 14f;
                     SpawnParticles(to, new Color(0.4f, 1f, 0.8f), 5, 30f);
@@ -215,8 +221,10 @@ namespace ImmunWar.UI
                     break;
                 case DefenderRole.Damage:
                     // T Cell — Precision shot: thin piercing beam; every 4th shot is a golden critical.
-                    if (image) StartCoroutine(Recoil(image.rectTransform, from, -direction * 7f));
-                    StartCoroutine(Beam(from, to, strike.Crit ? new Color(1f, 0.85f, 0.25f) : new Color(0.55f, 0.85f, 1f), strike.Crit ? 9f : 4f));
+                    // During Fever Rush the beam runs hot and sets the target on fire.
+                    Kick(visual, -direction * 7f);
+                    var beamColor = strike.Ignite ? new Color(1f, 0.45f, 0.1f) : strike.Crit ? new Color(1f, 0.85f, 0.25f) : new Color(0.55f, 0.85f, 1f);
+                    StartCoroutine(Beam(from, to, beamColor, strike.Crit || strike.Ignite ? 9f : 4f));
                     StartCoroutine(Ring(from, new Color(0.6f, 0.9f, 1f, 0.8f), 30f, 70f, 0.15f));
                     target.Knock += direction * (strike.Crit ? 18f : 8f);
                     if (strike.Crit)
@@ -225,19 +233,20 @@ namespace ImmunWar.UI
                         FloatText(to + new Vector2(0f, 75f), "CRIT!", numberColor, 28);
                         StartCoroutine(Ring(to, new Color(1f, 0.85f, 0.25f, 0.9f), 30f, 140f, 0.25f));
                     }
+                    if (strike.Ignite) Ignite(target, visual.State.InstanceId);
                     _audio?.Play(_art ? _art.attack : null, strike.Crit ? 0.7f : 0.4f, 0.07f);
                     break;
                 case DefenderRole.Support:
                     // B Cell — Antibody volley: three antibodies mark the target, which then takes extra damage.
-                    if (image) StartCoroutine(Recoil(image.rectTransform, from, -direction * 5f));
+                    Kick(visual, -direction * 5f);
                     StartCoroutine(AntibodyVolley(from, to));
-                    if (_tick >= target.MarkedUntilTick) FloatText(to + new Vector2(0f, 75f), "MARKED", new Color(1f, 0.5f, 0.9f), 20);
-                    target.MarkedUntilTick = _tick + MarkTicks;
+                    if (!CombatStatus.Has(target.State.Effects, StatusIds.Mark)) FloatText(to + new Vector2(0f, 75f), "MARKED", new Color(1f, 0.5f, 0.9f), 20);
+                    CombatStatus.Apply(_statusSystem, target.State.Effects, CombatStatus.Mark, visual.State.InstanceId);
                     _audio?.Play(_art ? _art.place : null, 0.35f, 0.12f);
                     break;
                 case DefenderRole.Burst:
                     // NK Cell — Granzyme: quick strikes; every 3rd releases a burst that splashes nearby enemies.
-                    if (image) StartCoroutine(Recoil(image.rectTransform, from, strike.Burst ? direction * 14f : -direction * 6f));
+                    Kick(visual, strike.Burst ? direction * 14f : -direction * 6f);
                     StartCoroutine(Tracer(from, to, new Color(0.7f, 0.35f, 1f)));
                     if (strike.Burst)
                     {
@@ -251,10 +260,11 @@ namespace ImmunWar.UI
                     break;
                 case DefenderRole.Repair:
                     // Platelet — Clot shot: a sticky glob that slows the target.
-                    if (image) StartCoroutine(Recoil(image.rectTransform, from, -direction * 5f));
+                    Kick(visual, -direction * 5f);
                     StartCoroutine(ArcOrb(from, to, new Color(1f, 0.7f, 0.3f), 20f, 40f, 0.25f, false));
-                    if (_tick >= target.SlowUntilTick) FloatText(to + new Vector2(0f, 75f), "SLOWED", new Color(1f, 0.75f, 0.35f), 20);
-                    target.SlowUntilTick = _tick + SlowTicks;
+                    var wasSlowed = CombatStatus.Has(target.State.Effects, StatusIds.Slow);
+                    if (ApplyEnemyControl(target, CombatStatus.Slow, visual.State.InstanceId) && !wasSlowed)
+                        FloatText(to + new Vector2(0f, 75f), "SLOWED", new Color(1f, 0.75f, 0.35f), 20);
                     _audio?.Play(_art ? _art.attack : null, 0.3f, 0.1f);
                     break;
                 default:
@@ -271,12 +281,11 @@ namespace ImmunWar.UI
             var center = source.Follower.Position;
             for (var i = _enemies.Count - 1; i >= 0; i--)
             {
+                if (i >= _enemies.Count) continue;
                 var enemy = _enemies[i];
                 if (enemy == source || enemy.State.IsTerminal || Vector2.Distance(enemy.Follower.Position, center) > radius) continue;
-                var result = DamageResolver.Apply(enemy.State, damage * (1f - enemy.Config.armor));
-                enemy.HitTime = Time.time;
                 enemy.Knock += (enemy.BasePoint - source.BasePoint).normalized * 16f;
-                if (result.Defeated) KillEnemy(i);
+                HitEnemy(enemy, EnemyDamage(enemy, damage));
             }
         }
 
@@ -299,34 +308,6 @@ namespace ImmunWar.UI
             StartCoroutine(Ring(Vector2.zero, new Color(0.45f, 1f, 0.55f, 0.8f), 200f, 320f, 0.5f));
             FloatText(new Vector2(0f, 140f), "+3", new Color(0.45f, 1f, 0.55f), 26);
             _audio?.Play(_art ? _art.heal : null, 0.4f, 1f);
-        }
-
-        // ================= Status markers on enemies =================
-
-        private void UpdateStatusMarkers(EnemyVisual enemy, float now)
-        {
-            var marked = _tick < enemy.MarkedUntilTick;
-            if (marked && !enemy.Mark)
-            {
-                enemy.Mark = RuntimeUi.Image(enemy.Image.transform, "AntibodyMark", new Vector2(0f, enemy.Size * 0.5f + 32f), new Vector2(26f, 26f), new Color(1f, 0.45f, 0.9f, 0.95f));
-                enemy.Mark.sprite = RingSprite;
-            }
-            if (enemy.Mark)
-            {
-                enemy.Mark.gameObject.SetActive(marked);
-                enemy.Mark.rectTransform.localScale = Vector3.one * (0.85f + 0.2f * Mathf.Sin(now * 9f));
-            }
-            var slowed = _tick < enemy.SlowUntilTick;
-            if (slowed && !enemy.Net)
-            {
-                enemy.Net = RuntimeUi.Image(enemy.Image.transform, "ClotNet", Vector2.zero, Vector2.one * (enemy.Size * 1.1f), new Color(1f, 0.7f, 0.3f, 0.75f));
-                enemy.Net.sprite = RingSprite;
-            }
-            if (enemy.Net)
-            {
-                enemy.Net.gameObject.SetActive(slowed);
-                enemy.Net.rectTransform.localRotation = Quaternion.Euler(0f, 0f, now * 40f);
-            }
         }
 
         // ================= Effect primitives =================

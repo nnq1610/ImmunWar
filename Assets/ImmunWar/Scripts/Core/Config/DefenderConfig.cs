@@ -15,6 +15,15 @@ namespace ImmunWar.Core.Config
         [Min(0.01f)] public float attackInterval = 1f;
         [Min(0f)] public float range = 2f;
         public AbilityConfig ability;
+
+        [Header("Melee movement")]
+        [Tooltip("Walks out from its placement point to fight enemies inside the guard radius, then walks back.")]
+        public bool mobile;
+        [Min(0f)] public float moveSpeed = 1.5f;
+        [Tooltip("Radius around the placement point this defender guards (world units).")]
+        [Min(0f)] public float engageRadius = 2.2f;
+        [Tooltip("Enemies it can hold at once; 0 = unlimited.")]
+        [Min(0)] public int blockCapacity;
         public PresentationConfig presentation;
     }
 }

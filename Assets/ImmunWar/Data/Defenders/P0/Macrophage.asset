@@ -22,3 +22,7 @@ MonoBehaviour:
   range: 1.2
   ability: {fileID: 0}
   presentation: {fileID: 11400000, guid: d8372eeae11e2a94ebefeacdaa2a9580, type: 2}
+  mobile: 1
+  moveSpeed: 1.4
+  engageRadius: 2.2
+  blockCapacity: 3

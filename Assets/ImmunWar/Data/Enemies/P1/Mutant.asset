@@ -25,3 +25,4 @@ MonoBehaviour:
   presentation: {fileID: 11400000, guid: 5e8293f5554ac98459895c48856bc073, type: 2}
   attackStyle: 6
   attackRange: 0
+  skill: 5

@@ -16,6 +16,20 @@ namespace ImmunWar.Core.Config
         SporeBurst  // wide spore cloud around the boss
     }
 
+    /// <summary>Signature trick each enemy type uses on its own, on top of its attack style.</summary>
+    public enum EnemySkill
+    {
+        None,
+        Dash,           // slips past the defender blocking it now and then
+        Biofilm,        // grows a damage-absorbing shield once below half health
+        SpikeShell,     // reflects part of the melee damage it takes
+        Paralyze,       // its poison paralyzes a defender hit by enough stacks
+        Adapt,          // briefly immune to a control effect after suffering it
+        Revive,         // comes back once from a lethal hit unless executed
+        FrostSplit,     // buds off a copy the first time it is frozen
+        CytokineStorm   // boss: telegraphed storm that freezes every defender
+    }
+
     [CreateAssetMenu(menuName = "Immune War/Enemy")]
     public sealed class EnemyConfig : GameConfig
     {
@@ -43,6 +57,7 @@ namespace ImmunWar.Core.Config
         [Tooltip("Enemy spawned at this one's position when it dies.")]
         public EnemyConfig splitInto;
         [Min(0)] public int splitCount;
+        public EnemySkill skill;
 
         [Header("Look")]
         [Tooltip("Reuse the sprite animation of another enemy ID (empty = this enemy's own).")]

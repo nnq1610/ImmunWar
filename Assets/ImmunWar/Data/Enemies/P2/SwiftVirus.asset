@@ -32,3 +32,4 @@ MonoBehaviour:
   stretch: {x: 1, y: 1}
   attackStyle: 1
   attackRange: 0
+  skill: 1

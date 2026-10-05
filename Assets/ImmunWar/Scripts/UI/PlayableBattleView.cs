@@ -7,9 +7,11 @@ using ImmunWar.Battle.Placement;
 using ImmunWar.Battle.State;
 using ImmunWar.Battle.Waves;
 using ImmunWar.Combat;
+using ImmunWar.Combat.Abilities;
 using ImmunWar.Core;
 using ImmunWar.Core.Config;
 using ImmunWar.Progression;
+using ImmunWar.StatusEffects;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -39,10 +41,20 @@ namespace ImmunWar.UI
             public float TrailTime;
             public float Facing = 1f;
             public bool HasOwnArt;
-            public int MarkedUntilTick;
-            public int SlowUntilTick;
-            public Image Mark;
-            public Image Net;
+            public Animator Animator;
+            public readonly StatusOverlays Overlays = new StatusOverlays();
+            // Enemy skill state (ticks on the never-reset _clock).
+            public float Shield;
+            public float ShieldMax;
+            public bool BiofilmUsed;
+            public bool Revived;
+            public bool Budded;
+            public int IgnoreBlockUntil;
+            public int NextSkillTick;
+            public int StormChargeAt;
+            public float AdaptTextTime = -10f;
+            public float SpikeTime = -10f;
+            public Image Biofilm;
         }
 
         // Radius of the organ's ring in world units (core art is 260 px, its ring ~60% of that).
@@ -57,11 +69,8 @@ namespace ImmunWar.UI
         private GameSession _session;
         private PlacementSystem _placement;
         private PlayableArtCatalog _art;
-        private readonly CombatSystem _combat = new CombatSystem();
         private readonly List<EnemyVisual> _enemies = new List<EnemyVisual>();
-        private readonly Dictionary<string, Animator> _defenderAnimators = new Dictionary<string, Animator>();
-        private readonly Dictionary<string, Image> _defenderImages = new Dictionary<string, Image>();
-        private readonly Dictionary<string, AnimatedHealthBar> _defenderHealthBars = new Dictionary<string, AnimatedHealthBar>();
+        private readonly Dictionary<string, DefenderVisual> _defenders = new Dictionary<string, DefenderVisual>();
         private readonly Dictionary<string, Button> _defenderButtons = new Dictionary<string, Button>();
         private readonly Dictionary<string, Vector2> _nodePositions = new Dictionary<string, Vector2>();
         private RectTransform _arena;
@@ -77,6 +86,8 @@ namespace ImmunWar.UI
         private WaveSystem _wave;
         private int _waveIndex = -1;
         private int _tick;
+        // Unlike _tick, which restarts every wave, this clock only moves forward (skill cooldowns, enemy skill timers).
+        private int _clock;
         private int _enemySerial;
         private float _accumulator;
         private bool _resultSaved;
@@ -84,7 +95,6 @@ namespace ImmunWar.UI
         private Image _coreGlow;
         private float _coreHitTime = -10f;
         private Vector2 _coreHitDirection = Vector2.up;
-        private readonly HashSet<Image> _flashingDefenders = new HashSet<Image>();
         private static Sprite _glowSprite;
         private static Sprite _ringSprite;
 
@@ -363,17 +373,17 @@ namespace ImmunWar.UI
                 visual.preserveAspect = true;
             }
             else RuntimeUi.Text(visual.transform, "PlacedLetter", config.Id.Replace("def_", "").Substring(0, 1).ToUpperInvariant(), Vector2.zero, new Vector2(50, 50), 24, Color.white);
+            Animator animator = null;
             var controller = _art ? _art.DefenderController(config.Id) : null;
             if (controller)
             {
-                var animator = visual.gameObject.AddComponent<Animator>();
+                animator = visual.gameObject.AddComponent<Animator>();
                 animator.runtimeAnimatorController = controller;
-                _defenderAnimators[result.DefenderInstanceId] = animator;
             }
-            _defenderImages[result.DefenderInstanceId] = visual;
-            _defenderHealthBars[result.DefenderInstanceId] = AnimatedHealthBar.Create(visual.transform,
+            var healthBar = AnimatedHealthBar.Create(visual.transform,
                 "DefenderHealth", new Vector2(0f, 55f), new Vector2(76f, 10f), config.maxHealth, config.maxHealth);
-            SetStatus(config.Id.Replace("def_", "") + " placed. " + _battle.State.Economy.Atp + " ATP remaining.");
+            RegisterDefender(_battle.State.Defenders[result.DefenderInstanceId], config, visual, animator, healthBar, _nodePositions[nodeId]);
+            SetStatus(config.Id.Replace("def_", "") + " placed. " + _battle.State.Economy.Atp + " ATP remaining. Click a placed cell to use its skill.");
             RefreshStats();
             return true;
         }
@@ -430,8 +440,10 @@ namespace ImmunWar.UI
             if (icon) _ghost.sprite = icon;
             _ghost.color = ok ? new Color(0.7f, 1f, 0.75f, 0.6f) : new Color(1f, 0.35f, 0.35f, 0.55f);
             _ghost.rectTransform.anchoredPosition = point;
-            // Range ring shows attack range; for non-attackers it shows the blocking radius.
-            var radius = Mathf.Max(_selectedDefender.attackDamage > 0f ? _selectedDefender.range : 0f, BlockRadius) * 76f;
+            // Range ring shows attack range (or the guard circle of mobile melee cells); for non-attackers it shows the blocking radius.
+            var reach = Mathf.Max(_selectedDefender.attackDamage > 0f ? _selectedDefender.range : 0f, BlockRadius);
+            if (_selectedDefender.mobile) reach = Mathf.Max(reach, _selectedDefender.engageRadius);
+            var radius = reach * 76f;
             _ghostRange.rectTransform.anchoredPosition = point;
             _ghostRange.rectTransform.sizeDelta = Vector2.one * (radius * 2f / 0.85f);
             _ghostRange.color = ok ? new Color(0.5f, 1f, 0.6f, 0.55f) : new Color(1f, 0.35f, 0.35f, 0.45f);
@@ -507,46 +519,53 @@ namespace ImmunWar.UI
                 }
             }
             if (running) AnimateEnemies(Time.deltaTime);
+            AnimateDefenders(running ? Time.deltaTime : 0f);
             AnimateCore();
         }
 
         private void Tick()
         {
             _tick++;
+            _clock++;
             _battle.Advance(1d / 30d);
             foreach (var request in _wave.Tick(_tick)) Spawn(request);
+            TickStatuses();
+            TickEnemySkills();
+            MoveMobileDefenders();
+            foreach (var defender in _defenders.Values) defender.Held = 0;
             for (var i = _enemies.Count - 1; i >= 0; i--)
             {
                 var enemy = _enemies[i];
-                var blocked = false;
+                enemy.State.BlockedById = null;
 
-                if (enemy.Config.regenPerSecond > 0f && enemy.State.Health < enemy.Config.maxHealth)
+                // Burning tissue cannot regenerate.
+                if (enemy.Config.regenPerSecond > 0f && enemy.State.Health < enemy.Config.maxHealth && !CombatStatus.Has(enemy.State.Effects, StatusIds.Burn))
                     enemy.State.Health = Mathf.Min(enemy.Config.maxHealth, enemy.State.Health + enemy.Config.regenPerSecond / 30f);
 
-                // Check if blocked by a defender
-                foreach (var defender in _battle.State.Defenders.Values)
+                // Frozen or stunned enemies neither walk nor attack.
+                if (!CombatStatus.IsDisabled(enemy.State.Effects))
                 {
-                    if (defender.Health > 0f && _nodePositions.TryGetValue(defender.NodeId, out var defenderPoint) &&
-                        Vector2.Distance(defenderPoint, enemy.Follower.Position) <= BlockRadius)
+                    var blocker = FindBlocker(enemy);
+                    if (blocker != null && enemy.Config.skill == EnemySkill.Dash && TryDash(enemy, blocker)) blocker = null;
+                    if (blocker != null)
                     {
-                        blocked = true;
-                        if (_tick >= enemy.NextContactTick) EnemyAttack(enemy, defender, defenderPoint);
-                        break;
+                        blocker.Held++;
+                        enemy.State.BlockedById = blocker.State.InstanceId;
+                        if (_tick >= enemy.NextContactTick) EnemyAttack(enemy, blocker);
                     }
-                }
-
-                if (!blocked)
-                {
-                    if (enemy.Config.attackRange > 0f && _tick >= enemy.NextContactTick) TryRangedAttack(enemy);
-                    if (enemy.Follower.Tick(1f / 30f * SpeedFactor(enemy)))
+                    else
                     {
-                        enemy.BasePoint = RuntimeUi.Point(enemy.Follower.Position);
-                        _battle.DamageOrgan(enemy.Config.organDamage);
-                        if (_hudOrganHealth) _hudOrganHealth.SetValue(_battle.State.Vitality.Current, _battle.State.Vitality.Maximum);
-                        _wave.NotifyTerminal();
-                        StrikeOrgan(enemy);
-                        RemoveEnemy(i, false);
-                        continue;
+                        if (enemy.Config.attackRange > 0f && _tick >= enemy.NextContactTick) TryRangedAttack(enemy);
+                        if (enemy.Follower.Tick(1f / 30f * CombatStatus.MoveMultiplier(enemy.State.Effects)))
+                        {
+                            enemy.BasePoint = RuntimeUi.Point(enemy.Follower.Position);
+                            _battle.DamageOrgan(enemy.Config.organDamage);
+                            if (_hudOrganHealth) _hudOrganHealth.SetValue(_battle.State.Vitality.Current, _battle.State.Vitality.Maximum);
+                            _wave.NotifyTerminal();
+                            StrikeOrgan(enemy);
+                            RemoveEnemy(i, false);
+                            continue;
+                        }
                     }
                 }
 
@@ -555,41 +574,11 @@ namespace ImmunWar.UI
                 if (Mathf.Abs(next.x - enemy.BasePoint.x) > 0.2f) enemy.Facing = next.x < enemy.BasePoint.x ? -1f : 1f;
                 enemy.BasePoint = next;
             }
-            TickDefenderStatus();
             var defeatedDefenders = new List<string>();
             foreach (var defender in _battle.State.Defenders.Values)
                 if (defender.Health <= 0f) defeatedDefenders.Add(defender.InstanceId);
             foreach (var id in defeatedDefenders) RemoveDefender(id);
-            foreach (var defender in _battle.State.Defenders.Values)
-            {
-                CombatSystem.TickCooldown(defender);
-                var config = FindDefender(defender.ConfigId);
-                if (!config || !_nodePositions.TryGetValue(defender.NodeId, out var position)) continue;
-                if (config.role == DefenderRole.Economy && _tick % 90 == 0) GenerateAtp(position);
-                if (config.role == DefenderRole.Repair && _tick % 120 == 0 && _battle.State.Vitality.Current < _battle.State.Vitality.Maximum)
-                    RepairOrgan(position);
-                if (config.attackDamage <= 0 || defender.CooldownTicks > 0) continue;
-                var candidates = new List<EnemyState>();
-                foreach (var enemy in _enemies)
-                    if (!enemy.State.IsTerminal && Vector2.Distance(position, enemy.Follower.Position) <= config.range) candidates.Add(enemy.State);
-                // Pick the target first so its armor, marks and the cell's skill can shape the damage dealt.
-                var chosen = TargetingSystem.Select(candidates);
-                var hitEnemy = chosen == null ? null : _enemies.Find(x => x.State == chosen);
-                if (hitEnemy == null) continue;
-                var strike = PrepareStrike(defender, config, hitEnemy);
-                var target = _combat.Attack(defender, new[] { chosen }, strike.Damage, Mathf.CeilToInt(config.attackInterval * 30f));
-                if (target != null)
-                {
-                    if (_defenderAnimators.TryGetValue(defender.InstanceId, out var animator) && animator)
-                        animator.Play("Attack", 0, 0f);
-                    PlaySkill(defender.InstanceId, config, position, hitEnemy, strike);
-                }
-                if (target != null && target.IsTerminal)
-                {
-                    var enemyIndex = _enemies.FindIndex(x => x.State == target);
-                    if (enemyIndex >= 0) KillEnemy(enemyIndex);
-                }
-            }
+            foreach (var visual in _defenders.Values) DefenderAct(visual);
             if (_battle.State.Phase == BattlePhase.Defeat) { ShowResult(false); return; }
             if (_wave != null && _battle.State.Waves.Phase == WavePhase.AllComplete)
             {
@@ -643,14 +632,15 @@ namespace ImmunWar.UI
             var hasOwnArt = controller && look == config.Id && FamilyId(config.Id) != config.Id;
             // A variant whose sheet has not been imported yet borrows its family's animation (ene_virus_swift → ene_virus).
             if (!controller && _art) controller = _art.EnemyController(FamilyId(config.Id));
+            Animator animator = null;
             if (controller)
             {
-                var animator = image.gameObject.AddComponent<Animator>();
+                animator = image.gameObject.AddComponent<Animator>();
                 animator.runtimeAnimatorController = controller;
             }
             var visual = new EnemyVisual
             {
-                State = state, Config = config, Follower = follower, Route = route, Image = image,
+                State = state, Config = config, Follower = follower, Route = route, Image = image, Animator = animator,
                 BasePoint = RuntimeUi.Point(follower.Position), Phase = _enemySerial * 1.7f, BaseColor = image.color,
                 Stretch = config.stretch, Size = size, HasOwnArt = hasOwnArt
             };
@@ -669,9 +659,11 @@ namespace ImmunWar.UI
             return second > 0 ? id.Substring(0, second) : id;
         }
 
-        private void KillEnemy(int enemyIndex)
+        /// <param name="eater">Macrophage swallowing the enemy whole (Engulf) instead of it bursting.</param>
+        private void KillEnemy(int enemyIndex, DefenderVisual eater = null)
         {
             var dead = _enemies[enemyIndex];
+            SpreadFire(dead);
             _battle.State.Economy.Add(dead.Config.atpReward);
             ShowEffect(_art ? _art.atp : null, dead.Follower.Position, RuntimeUi.Accent);
             FloatText(dead.BasePoint + new Vector2(0f, 60f), "+" + dead.Config.atpReward + " ATP", new Color(1f, 0.88f, 0.25f), 24);
@@ -693,7 +685,8 @@ namespace ImmunWar.UI
             _wave.NotifyTerminal();
             RemoveEnemy(enemyIndex, false);
             var look = VisualBaseId(dead.Config);
-            StartCoroutine(EnemyBurst(dead.Image, Vector2.zero, EnemyTint(look) * dead.Config.tint, dead.Config.Id == "ene_super_pathogen" ? 28 : 12));
+            if (eater != null) StartCoroutine(Swallowed(dead.Image, eater));
+            else StartCoroutine(EnemyBurst(dead.Image, Vector2.zero, EnemyTint(look) * dead.Config.tint, dead.Config.Id == "ene_super_pathogen" ? 28 : 12));
         }
 
         /// <summary>Adds a trait-specific silhouette accent so each enemy type reads differently at a glance.</summary>
@@ -758,17 +751,24 @@ namespace ImmunWar.UI
                 if (!enemy.Image) continue;
                 enemy.Knock = Vector2.Lerp(enemy.Knock, Vector2.zero, settle);
                 var hit = Mathf.Clamp01(1f - (now - enemy.HitTime) / 0.18f);
-                var bob = Mathf.Sin(now * 4.8f + enemy.Phase) * 5f;
-                var breathe = Mathf.Sin(now * 3.6f + enemy.Phase * 1.3f) * 0.035f;
+                var effects = enemy.State.Effects;
+                // Ice locks the pose: no bob or breathing, only a shiver just before it thaws.
+                var frozen = CombatStatus.Has(effects, StatusIds.Freeze);
+                var motion = frozen ? 0f : CombatStatus.Has(effects, StatusIds.Slow) ? 0.5f : 1f;
+                var bob = Mathf.Sin(now * 4.8f + enemy.Phase) * 5f * motion;
+                var breathe = Mathf.Sin(now * 3.6f + enemy.Phase * 1.3f) * 0.035f * motion;
+                var shiver = frozen && CombatStatus.Remaining(effects, StatusIds.Freeze) < 15 ? new Vector2(Mathf.Sin(now * 70f) * 3f, 0f) : Vector2.zero;
                 var rect = enemy.Image.rectTransform;
-                rect.anchoredPosition = enemy.BasePoint + new Vector2(0f, bob) + enemy.Knock;
+                rect.anchoredPosition = enemy.BasePoint + new Vector2(0f, bob) + enemy.Knock + shiver;
                 // Silhouette stretch per enemy type, plus squash on impact, wobble and a fading red flash.
                 rect.localScale = new Vector3(enemy.Facing * enemy.Stretch.x * (1f + breathe + hit * 0.22f), enemy.Stretch.y * (1f + breathe - hit * 0.16f), 1f);
                 rect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Sin((now - enemy.HitTime) * 45f) * 14f * hit);
-                enemy.Image.color = Color.Lerp(enemy.BaseColor, new Color(1f, 0.3f, 0.3f), hit);
+                enemy.Image.color = Color.Lerp(StatusTint(enemy.BaseColor, effects, now, enemy.Phase), new Color(1f, 0.3f, 0.3f), hit);
+                if (enemy.Animator) enemy.Animator.speed = AnimatorSpeed(effects);
                 // Counter-mirror the health bar so it always drains right-to-left.
                 if (enemy.HealthBar) enemy.HealthBar.transform.localScale = new Vector3(enemy.Facing, 1f, 1f);
-                UpdateStatusMarkers(enemy, now);
+                DrawStatus(enemy.Overlays, enemy.Image, enemy.Size, effects, now, enemy.Phase);
+                DrawBiofilm(enemy, now);
                 if (enemy.Aura)
                 {
                     var pulse = 0.5f + 0.5f * Mathf.Sin(now * 5f + enemy.Phase);
@@ -776,7 +776,7 @@ namespace ImmunWar.UI
                     if (enemy.Config.armor <= 0f) enemy.Aura.rectTransform.localRotation = Quaternion.identity;
                 }
                 // Fast enemies leave fading after-images.
-                if (enemy.Config.moveSpeed >= 0.8f && now - enemy.TrailTime > 0.06f && enemy.Image.sprite)
+                if (enemy.Config.moveSpeed >= 0.8f && motion > 0f && now - enemy.TrailTime > 0.06f && enemy.Image.sprite)
                 {
                     enemy.TrailTime = now;
                     StartCoroutine(AfterImage(enemy.Image));
@@ -803,21 +803,6 @@ namespace ImmunWar.UI
             if (ghost) Destroy(ghost.gameObject);
         }
 
-        private IEnumerator Recoil(RectTransform rect, Vector2 home, Vector2 offset)
-        {
-            const float duration = 0.16f;
-            for (var elapsed = 0f; rect && elapsed < duration; elapsed += Time.deltaTime)
-            {
-                var t = elapsed / duration;
-                rect.anchoredPosition = home + offset * Mathf.Sin(t * Mathf.PI);
-                rect.localScale = Vector3.one * (1f + 0.12f * Mathf.Sin(t * Mathf.PI));
-                yield return null;
-            }
-            if (!rect) yield break;
-            rect.anchoredPosition = home;
-            rect.localScale = Vector3.one;
-        }
-
         private IEnumerator Tracer(Vector2 from, Vector2 to, Color color)
         {
             var delta = to - from;
@@ -835,20 +820,6 @@ namespace ImmunWar.UI
             }
             if (beam) Destroy(beam.gameObject);
             if (bolt) Destroy(bolt.gameObject);
-        }
-
-        private IEnumerator FlashDefender(Image image)
-        {
-            if (!_flashingDefenders.Add(image)) yield break;
-            var original = image.color;
-            const float duration = 0.2f;
-            for (var elapsed = 0f; image && elapsed < duration; elapsed += Time.deltaTime)
-            {
-                image.color = Color.Lerp(new Color(1f, 0.3f, 0.3f, original.a), original, elapsed / duration);
-                yield return null;
-            }
-            if (image) image.color = original;
-            _flashingDefenders.Remove(image);
         }
 
         /// <summary>Death (or organ strike) animation: optional lunge, then pop, spin and particle burst.</summary>
@@ -1049,10 +1020,10 @@ namespace ImmunWar.UI
         private void RemoveDefender(string id)
         {
             if (!_battle.State.Defenders.TryGetValue(id, out var defender)) return;
-            if (_defenderImages.TryGetValue(id, out var image) && image)
+            if (_defenders.TryGetValue(id, out var visual) && visual.Image)
             {
-                ShowEffect(_art ? _art.hit : null, _nodePositions[defender.NodeId], new Color(1f, 0.4f, 0.43f));
-                Destroy(image.gameObject);
+                ShowEffect(_art ? _art.hit : null, visual.Position, new Color(1f, 0.4f, 0.43f));
+                Destroy(visual.Image.gameObject);
             }
             _placement.Remove(defender.NodeId);
             // One-off nodes from free placement disappear with their defender.
@@ -1061,9 +1032,8 @@ namespace ImmunWar.UI
                 _battle.State.Nodes.Remove(defender.NodeId);
                 _nodePositions.Remove(defender.NodeId);
             }
-            _defenderAnimators.Remove(id);
-            _defenderImages.Remove(id);
-            _defenderHealthBars.Remove(id);
+            _defenders.Remove(id);
+            _skillCooldowns.Remove(id);
         }
 
         private DefenderConfig FindDefender(string id)
