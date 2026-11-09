@@ -17,7 +17,7 @@ MonoBehaviour:
   maxHealth: 85
   moveSpeed: 0.5
   organDamage: 10
-  atpReward: 8
+  atpReward: 4
   mutations: []
   bossPhases: []
   presentation: {fileID: 11400000, guid: 4a6f0e6d5ec166a4685dc75f2ebb8465, type: 2}
@@ -31,5 +31,7 @@ MonoBehaviour:
   visualScale: 1.4
   stretch: {x: 1, y: 1}
   attackStyle: 2
+  attackDamage: 4
+  attackIntervalTicks: 40
   attackRange: 0
   skill: 7

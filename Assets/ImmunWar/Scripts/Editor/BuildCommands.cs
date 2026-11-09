@@ -21,6 +21,21 @@ namespace ImmunWar.Editor
 
         public static void BuildWindows() => BuildWindowsRelease();
 
+        [MenuItem("Immune War/Build/Windows Playable")]
+        public static void BuildWindowsPlayable()
+        {
+            ConfigValidationMenu.ValidateSelectedCatalog();
+            ThirdPartyNoticeGenerator.Generate();
+            Directory.CreateDirectory(Path.GetDirectoryName(Output) ?? "Builds/Windows");
+            var enabledScenes = Array.FindAll(EditorBuildSettings.scenes, x => x.enabled);
+            var paths = Array.ConvertAll(enabledScenes, x => x.path);
+            if (paths.Length == 0) throw new InvalidOperationException("No enabled scenes are configured.");
+            var report = BuildPipeline.BuildPlayer(paths, Output, BuildTarget.StandaloneWindows64, BuildOptions.None);
+            if (report.summary.result != BuildResult.Succeeded)
+                throw new InvalidOperationException($"Windows build failed: {report.summary.result}, {report.summary.totalErrors} errors.");
+            Debug.Log("IMMUNEWAR_BUILD_OK: " + Path.GetFullPath(Output));
+        }
+
         private static void Build(BuildOptions options)
         {
             ValidateReleaseGates();

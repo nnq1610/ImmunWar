@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 
@@ -187,6 +188,8 @@ namespace ImmunWar.UI
 
         private void HandleShortcuts()
         {
+            var kb = Keyboard.current;
+            if (kb == null) return;
             // Maps 1-6 keys to the 6 defender types
             string[] orderedDefenders = new string[] 
             {
@@ -195,7 +198,17 @@ namespace ImmunWar.UI
 
             for (int i = 0; i < _selectionShortcuts.Length && i < orderedDefenders.Length; i++)
             {
-                if (Input.GetKeyDown(_selectionShortcuts[i]))
+                var pressed = i switch
+                {
+                    0 => kb.digit1Key.wasPressedThisFrame,
+                    1 => kb.digit2Key.wasPressedThisFrame,
+                    2 => kb.digit3Key.wasPressedThisFrame,
+                    3 => kb.digit4Key.wasPressedThisFrame,
+                    4 => kb.digit5Key.wasPressedThisFrame,
+                    5 => kb.digit6Key.wasPressedThisFrame,
+                    _ => false
+                };
+                if (pressed)
                 {
                     if (_defenderStates.TryGetValue(orderedDefenders[i], out var state) && state.IsAvailable)
                     {

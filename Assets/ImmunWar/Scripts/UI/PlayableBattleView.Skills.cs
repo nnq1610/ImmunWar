@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ImmunWar.Battle.State;
 using ImmunWar.Combat;
+using ImmunWar.Combat.Abilities;
 using ImmunWar.Core.Config;
 using ImmunWar.StatusEffects;
 using UnityEngine;
@@ -32,37 +33,35 @@ namespace ImmunWar.UI
         private void EnemyAttack(EnemyVisual enemy, DefenderVisual defender)
         {
             var config = enemy.Config;
-            var damage = Mathf.Max(2f, config.organDamage * 0.5f * config.biteMultiplier);
+            var damage = config.attackDamage > 0f ? config.attackDamage : Mathf.Max(2f, config.organDamage * 0.5f * config.biteMultiplier);
             var from = enemy.BasePoint;
             var to = RuntimeUi.Point(defender.Position);
             var direction = (to - from).sqrMagnitude > 0.01f ? (to - from).normalized : Vector2.right;
             var tint = EnemyTint(VisualBaseId(config)) * config.tint;
-            var interval = 30;
+            var interval = config.attackIntervalTicks > 0 ? config.attackIntervalTicks : 30;
             var single = true;
             switch (config.attackStyle)
             {
                 case EnemyAttackStyle.Nibble:
-                    interval = 12;
-                    damage *= 0.45f;
+                    if (config.attackIntervalTicks <= 0) interval = 12;
                     enemy.Knock += direction * 10f;
                     SpawnParticles(to, tint, 3, 26f);
                     break;
                 case EnemyAttackStyle.Slam:
-                    interval = 40;
+                    if (config.attackIntervalTicks <= 0) interval = 40;
                     single = false;
                     enemy.Knock += Vector2.up * 28f;
                     StartCoroutine(Ring(from, new Color(1f, 0.55f, 0.15f, 0.9f), 80f, 260f, 0.35f));
                     foreach (var other in DefendersNear(enemy.Follower.Position, 1.5f))
-                        DamageDefender(other, damage * 0.8f, new Color(1f, 0.6f, 0.2f, 0.8f));
+                        DamageDefender(other, damage, new Color(1f, 0.6f, 0.2f, 0.8f));
                     FloatText(from + new Vector2(0f, 70f), "SLAM!", new Color(1f, 0.6f, 0.2f), 24);
                     break;
                 case EnemyAttackStyle.Whip:
-                    interval = 28;
+                    if (config.attackIntervalTicks <= 0) interval = 28;
                     StartCoroutine(Lash(from, to, new Color(0.75f, 0.3f, 0.95f)));
                     break;
                 case EnemyAttackStyle.Ram:
-                    interval = 48;
-                    damage *= 1.7f;
+                    if (config.attackIntervalTicks <= 0) interval = 48;
                     StartCoroutine(RamCharge(enemy, direction));
                     Kick(defender, direction * 18f);
                     SpawnParticles(to, new Color(1f, 0.85f, 0.5f), 8, 50f);
@@ -72,21 +71,20 @@ namespace ImmunWar.UI
                     SpitAt(enemy, defender, damage);
                     return;
                 case EnemyAttackStyle.Claw:
-                    interval = 26;
-                    damage *= 1.1f;
+                    if (config.attackIntervalTicks <= 0) interval = 26;
                     enemy.Knock += direction * 12f;
                     StartCoroutine(ClawSlash(to, direction));
                     break;
                 case EnemyAttackStyle.Drain:
-                    interval = 32;
-                    var heal = damage * 0.8f;
+                    if (config.attackIntervalTicks <= 0) interval = 32;
+                    var heal = 4f;
                     enemy.State.Health = Mathf.Min(config.maxHealth, enemy.State.Health + heal);
                     enemy.Knock += direction * 10f;
                     StartCoroutine(OrbStream(to, from, new Color(0.4f, 1f, 0.5f), 4, 0.3f));
                     FloatText(from + new Vector2(0f, 55f), "+" + Mathf.RoundToInt(heal), new Color(0.45f, 1f, 0.5f), 22);
                     break;
                 case EnemyAttackStyle.SporeBurst:
-                    interval = 45;
+                    if (config.attackIntervalTicks <= 0) interval = 45;
                     single = false;
                     StartCoroutine(Ring(from, new Color(0.7f, 0.85f, 0.3f, 0.85f), 120f, 2.2f * 2f * 76f / 0.85f, 0.6f));
                     SpawnParticles(from, new Color(0.75f, 0.9f, 0.35f), 18, 150f);
@@ -112,17 +110,23 @@ namespace ImmunWar.UI
                 if (defender.State.Health <= 0f) continue;
                 var distance = Vector2.Distance(defender.Position, enemy.Follower.Position);
                 if (distance > best) continue;
+                if (nearest != null && Mathf.Approximately(distance, best) && string.CompareOrdinal(defender.State.InstanceId, nearest.State.InstanceId) >= 0) continue;
                 best = distance;
                 nearest = defender;
             }
-            if (nearest != null) SpitAt(enemy, nearest, Mathf.Max(2f, enemy.Config.organDamage * 0.5f * enemy.Config.biteMultiplier));
+            if (nearest != null)
+            {
+                var damage = enemy.Config.attackDamage > 0f ? enemy.Config.attackDamage : Mathf.Max(2f, enemy.Config.organDamage * 0.5f * enemy.Config.biteMultiplier);
+                SpitAt(enemy, nearest, damage);
+            }
         }
 
         /// <summary>Acid glob: light hit plus a poison stack. Paralyzing toxins lock up a cell soaked with enough stacks.</summary>
         private void SpitAt(EnemyVisual enemy, DefenderVisual defender, float damage)
         {
-            enemy.NextContactTick = _tick + 50;
-            DamageDefender(defender, damage * 0.6f, Color.clear, false);
+            var interval = enemy.Config.attackIntervalTicks > 0 ? enemy.Config.attackIntervalTicks : 50;
+            enemy.NextContactTick = _tick + interval;
+            DamageDefender(defender, damage, Color.clear, false);
             enemy.Knock += Vector2.up * 8f;
             StartCoroutine(ArcOrb(enemy.BasePoint, RuntimeUi.Point(defender.Position), new Color(0.75f, 1f, 0.2f), 26f, 70f, 0.35f, true));
             var effects = defender.State.Effects;
@@ -147,11 +151,12 @@ namespace ImmunWar.UI
         {
             var defender = visual.State;
             var config = visual.Config;
+            visual.ActiveCombatTicks++;
             CombatSystem.TickCooldown(defender);
             var disabled = CombatStatus.IsDisabled(defender.Effects);
-            if (config.role == DefenderRole.Economy && _tick % 90 == 0 && !disabled && !CombatStatus.Has(defender.Effects, StatusIds.Exhausted))
+            if (config.role == DefenderRole.Economy && visual.ActiveCombatTicks % ActiveSkills.EnergyCellPassiveIntervalTicks == 0 && !disabled && !CombatStatus.Has(defender.Effects, StatusIds.Exhausted))
                 GenerateAtp(visual.Position);
-            if (config.role == DefenderRole.Repair && _tick % 120 == 0 && !disabled && _battle.State.Vitality.Current < _battle.State.Vitality.Maximum)
+            if (config.role == DefenderRole.Repair && visual.ActiveCombatTicks % ActiveSkills.PlateletRepairIntervalTicks == 0 && !disabled && _battle.State.Vitality.Current < _battle.State.Vitality.Maximum)
                 RepairOrgan(visual.Position);
             if (config.attackDamage <= 0 || defender.CooldownTicks > 0 || !CombatStatus.CanAttack(defender.Effects)) return;
             var target = PickTarget(visual);
@@ -292,21 +297,23 @@ namespace ImmunWar.UI
         /// <summary>Energy Cell: golden pulse and an ATP orb that flies to the ATP counter.</summary>
         private void GenerateAtp(Vector2 position)
         {
-            _battle.State.Economy.Add(5);
+            var added = _battle.State.Economy.GenerateWaveAtp(ActiveSkills.EnergyCellPassiveAmount);
+            if (added <= 0) return;
             var from = RuntimeUi.Point(position);
             StartCoroutine(Ring(from, new Color(1f, 0.85f, 0.25f, 0.9f), 50f, 150f, 0.4f));
             StartCoroutine(ArcOrb(from, new Vector2(-600f, 510f), new Color(1f, 0.88f, 0.3f), 22f, 120f, 0.6f, false));
-            FloatText(from + new Vector2(0f, 50f), "+5", new Color(1f, 0.88f, 0.25f), 22);
+            FloatText(from + new Vector2(0f, 50f), "+" + added, new Color(1f, 0.88f, 0.25f), 22);
             _audio?.Play(_art ? _art.atpGain : null, 0.35f, 0.4f);
         }
 
         /// <summary>Platelet: a stream of healing particles flows into the organ.</summary>
         private void RepairOrgan(Vector2 position)
         {
-            _battle.State.Vitality.Repair(3);
+            var repaired = _battle.State.Vitality.RepairWave(ActiveSkills.PlateletRepairAmount);
+            if (repaired <= 0) return;
             StartCoroutine(OrbStream(RuntimeUi.Point(position), Vector2.zero, new Color(0.45f, 1f, 0.55f), 5, 0.5f));
             StartCoroutine(Ring(Vector2.zero, new Color(0.45f, 1f, 0.55f, 0.8f), 200f, 320f, 0.5f));
-            FloatText(new Vector2(0f, 140f), "+3", new Color(0.45f, 1f, 0.55f), 26);
+            FloatText(new Vector2(0f, 140f), "+" + repaired, new Color(0.45f, 1f, 0.55f), 26);
             _audio?.Play(_art ? _art.heal : null, 0.4f, 1f);
         }
 

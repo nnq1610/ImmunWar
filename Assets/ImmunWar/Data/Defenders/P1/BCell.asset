@@ -15,7 +15,7 @@ MonoBehaviour:
   id: def_bcell
   displayNameKey: def_bcell
   role: 2
-  atpCost: 30
+  atpCost: 35
   maxHealth: 95
   attackDamage: 6
   attackInterval: 1.1

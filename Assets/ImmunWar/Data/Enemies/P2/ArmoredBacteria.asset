@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
   id: ene_bacteria_armored
   displayNameKey: ene_bacteria_armored
-  maxHealth: 170
+  maxHealth: 150
   moveSpeed: 0.38
-  organDamage: 20
-  atpReward: 14
+  organDamage: 15
+  atpReward: 7
   mutations: []
   bossPhases: []
   presentation: {fileID: 11400000, guid: 77698e3701cd3624c897c72a79b4760e, type: 2}
-  armor: 0.45
+  armor: 0.35
   regenPerSecond: 0
   biteMultiplier: 1.5
   splitInto: {fileID: 0}
@@ -31,5 +31,7 @@ MonoBehaviour:
   visualScale: 1.45
   stretch: {x: 1, y: 1}
   attackStyle: 4
+  attackDamage: 18
+  attackIntervalTicks: 48
   attackRange: 0
   skill: 3

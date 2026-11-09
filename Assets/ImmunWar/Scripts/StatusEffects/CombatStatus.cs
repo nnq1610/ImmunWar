@@ -59,8 +59,11 @@ namespace ImmunWar.StatusEffects
         public static readonly StatusSpec Poison = new StatusSpec(StatusIds.Poison, 90, ParalyzePoisonStacks, StatusStackPolicy.Stack);
         public static readonly StatusSpec Shield = new StatusSpec(StatusIds.Shield, 60, 1, StatusStackPolicy.Refresh);
         public static readonly StatusSpec Haste = new StatusSpec(StatusIds.Haste, 150, 1, StatusStackPolicy.Refresh);
-        public static readonly StatusSpec Exhausted = new StatusSpec(StatusIds.Exhausted, 240, 1, StatusStackPolicy.Refresh);
+        public static readonly StatusSpec Exhausted = new StatusSpec(StatusIds.Exhausted, 180, 1, StatusStackPolicy.Refresh);
         public static readonly StatusSpec Digesting = new StatusSpec(StatusIds.Digesting, 90, 1, StatusStackPolicy.Refresh);
+
+        public static bool CanReceiveControl(IList<StatusEffectState> effects, string controlId, bool adaptive = false) =>
+            !Has(effects, StatusIds.Shield) && (!adaptive || !Has(effects, StatusIds.AdaptedPrefix + controlId));
 
         public static StatusEffectState Find(IList<StatusEffectState> effects, string id)
         {

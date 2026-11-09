@@ -16,7 +16,7 @@ MonoBehaviour:
   displayNameKey: def_nk
   role: 3
   atpCost: 45
-  maxHealth: 105
+  maxHealth: 120
   attackDamage: 24
   attackInterval: 1.3
   range: 2.5

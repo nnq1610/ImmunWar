@@ -27,17 +27,22 @@ namespace ImmunWar.Combat.Abilities
         public const float ExecuteDamageMultiplier = 4f;
         public const float ExecuteKillRefund = 0.5f;
         public const float ClotShieldRadius = 2.2f;
-        public const float ClotShieldHealFraction = 0.15f;
-        public const int AtpSurgeAmount = 30;
+        public const float ClotShieldHealFraction = 0.10f;
+        public const int AtpSurgeAmount = 20;
+        public const int AtpSurgeInitialDelayTicks = 300;
+        public const int EnergyCellPassiveIntervalTicks = 120;
+        public const int EnergyCellPassiveAmount = 5;
+        public const int PlateletRepairIntervalTicks = 150;
+        public const int PlateletRepairAmount = 3;
 
         public static ActiveSkillSpec For(DefenderRole role) => role switch
         {
             DefenderRole.Blocker => new ActiveSkillSpec(ActiveSkillKind.Engulf, "ENGULF", 20, 360),
-            DefenderRole.Damage => new ActiveSkillSpec(ActiveSkillKind.FeverRush, "FEVER RUSH", 15, 420),
+            DefenderRole.Damage => new ActiveSkillSpec(ActiveSkillKind.FeverRush, "FEVER RUSH", 10, 420),
             DefenderRole.Support => new ActiveSkillSpec(ActiveSkillKind.AntibodyFreeze, "ANTIBODY FREEZE", 25, 480),
-            DefenderRole.Burst => new ActiveSkillSpec(ActiveSkillKind.Execute, "EXECUTE", 20, 300),
+            DefenderRole.Burst => new ActiveSkillSpec(ActiveSkillKind.Execute, "EXECUTE", 20, 360),
             DefenderRole.Repair => new ActiveSkillSpec(ActiveSkillKind.ClotShield, "CLOT SHIELD", 20, 540),
-            DefenderRole.Economy => new ActiveSkillSpec(ActiveSkillKind.AtpSurge, "ATP SURGE", 0, 600),
+            DefenderRole.Economy => new ActiveSkillSpec(ActiveSkillKind.AtpSurge, "ATP SURGE", 0, 750),
             _ => default
         };
     }

@@ -44,6 +44,10 @@ namespace ImmunWar.Core.Config
 
         [Header("Attack")]
         public EnemyAttackStyle attackStyle = EnemyAttackStyle.Bite;
+        [Tooltip("Base damage dealt to a defender per attack (CB-01 Table 3.6).")]
+        [Min(0f)] public float attackDamage = 5f;
+        [Tooltip("Attack period in simulation ticks (30 ticks = 1 second, CB-01 Table 3.6).")]
+        [Min(1)] public int attackIntervalTicks = 30;
         [Tooltip("Above 0, the enemy also attacks defenders within this range while walking (world units).")]
         [Min(0f)] public float attackRange;
 

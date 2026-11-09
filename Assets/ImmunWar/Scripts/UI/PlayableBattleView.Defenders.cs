@@ -31,6 +31,7 @@ namespace ImmunWar.UI
             public string ChaseId;
             public int Held;
             public bool Walking;
+            public int ActiveCombatTicks;
             public ActiveSkillSpec Skill;
             // Presentation-only state, animated every frame in AnimateDefenders.
             public Vector2 Kick;
@@ -66,7 +67,11 @@ namespace ImmunWar.UI
             visual.SkillRing.fillOrigin = (int)Image.Origin360.Top;
             image.raycastTarget = true;
             var id = state.InstanceId;
-            image.gameObject.AddComponent<DefenderClick>().Clicked += () => ActivateSkill(id);
+            var click = image.gameObject.AddComponent<DefenderClick>();
+            click.LeftClicked += () => ActivateSkill(id);
+            click.RightClicked += CancelSelection;
+            click.HoveredEnter += () => PreviewDefenderSkill(id);
+            click.HoveredExit += HideSkillPreview;
             _defenders[id] = visual;
         }
 
@@ -117,6 +122,7 @@ namespace ImmunWar.UI
                 if (!MeleeEngagement.HasCapacity(visual.Held, visual.Config.blockCapacity)) continue;
                 var distance = Vector2.Distance(visual.Position, enemy.Follower.Position);
                 if (distance > bestDistance) continue;
+                if (best != null && Mathf.Approximately(distance, bestDistance) && string.CompareOrdinal(visual.State.InstanceId, best.State.InstanceId) >= 0) continue;
                 best = visual;
                 bestDistance = distance;
             }
@@ -176,7 +182,11 @@ namespace ImmunWar.UI
             var id = visual.State.InstanceId;
             var progress = _skillCooldowns.Progress(id, _clock);
             var check = _skillCooldowns.Check(id, visual.Skill, _clock, _battle.State.Economy.Atp, CombatStatus.IsDisabled(visual.State.Effects));
-            var ready = check == SkillCheck.Ready;
+            var surgeBlocked = visual.Skill.Kind == ActiveSkillKind.AtpSurge &&
+                (visual.ActiveCombatTicks < ActiveSkills.AtpSurgeInitialDelayTicks || !_battle.State.Economy.CanSurge(ActiveSkills.AtpSurgeAmount));
+            if (visual.Skill.Kind == ActiveSkillKind.AtpSurge && visual.ActiveCombatTicks < ActiveSkills.AtpSurgeInitialDelayTicks)
+                progress = Mathf.Clamp01((float)visual.ActiveCombatTicks / ActiveSkills.AtpSurgeInitialDelayTicks);
+            var ready = check == SkillCheck.Ready && !surgeBlocked;
             var pulse = 0.5f + 0.5f * Mathf.Sin(now * 6f + visual.Phase);
             visual.SkillRing.fillAmount = progress;
             visual.SkillRing.color = ready ? Color.Lerp(new Color(0.4f, 1f, 1f), Color.white, pulse)
@@ -187,11 +197,22 @@ namespace ImmunWar.UI
             if (ready) visual.SkillGlow.transform.localScale = Vector3.one * (0.85f + 0.3f * pulse);
         }
 
-        /// <summary>Clicking a placed cell casts its skill.</summary>
-        private sealed class DefenderClick : MonoBehaviour, IPointerClickHandler
+        /// <summary>Clicking a placed cell casts its skill; hovering previews its skill range/target; right-click cancels selection.</summary>
+        private sealed class DefenderClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
         {
-            public event Action Clicked;
-            public void OnPointerClick(PointerEventData eventData) => Clicked?.Invoke();
+            public event Action LeftClicked;
+            public event Action RightClicked;
+            public event Action HoveredEnter;
+            public event Action HoveredExit;
+
+            public void OnPointerClick(PointerEventData eventData)
+            {
+                if (eventData.button == PointerEventData.InputButton.Right) RightClicked?.Invoke();
+                else if (eventData.button == PointerEventData.InputButton.Left) LeftClicked?.Invoke();
+            }
+
+            public void OnPointerEnter(PointerEventData eventData) => HoveredEnter?.Invoke();
+            public void OnPointerExit(PointerEventData eventData) => HoveredExit?.Invoke();
         }
     }
 }

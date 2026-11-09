@@ -15,10 +15,10 @@ MonoBehaviour:
   id: def_tcell
   displayNameKey: def_tcell
   role: 1
-  atpCost: 25
+  atpCost: 30
   maxHealth: 90
-  attackDamage: 18
-  attackInterval: 0.7
+  attackDamage: 14
+  attackInterval: 0.8
   range: 3.2
   ability: {fileID: 0}
   presentation: {fileID: 11400000, guid: 476d474b85845f84eb5195544cea1285, type: 2}

@@ -62,9 +62,12 @@ namespace ImmunWar.Tests.EditMode
         }
 
         [Test]
-        public void Capacity_ZeroMeansUnlimited()
+        public void Capacity_ZeroMeansCannotBlock()
         {
-            Assert.That(MeleeEngagement.HasCapacity(50, 0), Is.True);
+            Assert.That(MeleeEngagement.HasCapacity(0, 0), Is.False);
+            Assert.That(MeleeEngagement.HasCapacity(50, 0), Is.False);
+            Assert.That(MeleeEngagement.HasCapacity(0, 1), Is.True);
+            Assert.That(MeleeEngagement.HasCapacity(1, 1), Is.False);
             Assert.That(MeleeEngagement.HasCapacity(2, 3), Is.True);
             Assert.That(MeleeEngagement.HasCapacity(3, 3), Is.False);
         }

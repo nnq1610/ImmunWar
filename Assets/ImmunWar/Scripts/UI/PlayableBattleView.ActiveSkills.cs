@@ -68,19 +68,36 @@ namespace ImmunWar.UI
 
         // ---------- Macrophage: Engulf ----------
 
-        private bool CastEngulf(DefenderVisual visual)
+        private EnemyVisual FindEngulfTarget(DefenderVisual visual)
         {
             EnemyVisual prey = null;
+            var bestDistance = float.MaxValue;
             foreach (var enemy in _enemies)
             {
                 if (enemy.State.IsTerminal || enemy.Config.skill == EnemySkill.CytokineStorm) continue;
-                if (Vector2.Distance(visual.Position, enemy.Follower.Position) > BlockRadius) continue;
+                var distance = Vector2.Distance(visual.Position, enemy.Follower.Position);
+                if (distance > BlockRadius) continue;
                 if (enemy.State.Health > enemy.Config.maxHealth * ActiveSkills.EngulfHealthFraction) continue;
-                if (prey == null || enemy.State.Health < prey.State.Health) prey = enemy;
+                if (prey == null ||
+                    enemy.State.Health < prey.State.Health ||
+                    (Mathf.Approximately(enemy.State.Health, prey.State.Health) &&
+                     (distance < bestDistance ||
+                      (Mathf.Approximately(distance, bestDistance) &&
+                       string.CompareOrdinal(enemy.State.InstanceId, prey.State.InstanceId) < 0))))
+                {
+                    prey = enemy;
+                    bestDistance = distance;
+                }
             }
+            return prey;
+        }
+
+        private bool CastEngulf(DefenderVisual visual)
+        {
+            var prey = FindEngulfTarget(visual);
             if (prey == null)
             {
-                SetStatus("Engulf needs a weakened enemy (35% HP or less) right next to the Macrophage.");
+                SetStatus("Engulf needs a weakened non-boss enemy (35% HP or less) within 1.3u of the Macrophage.");
                 return false;
             }
             var green = new Color(0.35f, 1f, 0.75f);
@@ -161,17 +178,38 @@ namespace ImmunWar.UI
 
         // ---------- B Cell: Antibody Freeze ----------
 
+        private EnemyVisual FindAntibodyFreezeTarget(DefenderVisual visual)
+        {
+            EnemyVisual best = null;
+            var maxRange = visual.Config.range + 0.5f;
+            foreach (var enemy in _enemies)
+            {
+                if (enemy.State.IsTerminal || Vector2.Distance(visual.Position, enemy.Follower.Position) > maxRange) continue;
+                if (!CombatStatus.CanReceiveControl(enemy.State.Effects, StatusIds.Freeze, enemy.Config.skill == EnemySkill.Adapt)) continue;
+                if (best == null) { best = enemy; continue; }
+                var enemyCharging = enemy.StormChargeAt > 0;
+                var bestCharging = best.StormChargeAt > 0;
+                if (enemyCharging != bestCharging)
+                {
+                    if (enemyCharging) best = enemy;
+                    continue;
+                }
+                if (enemy.State.RouteProgress > best.State.RouteProgress ||
+                    (Mathf.Approximately(enemy.State.RouteProgress, best.State.RouteProgress) &&
+                     string.CompareOrdinal(enemy.State.InstanceId, best.State.InstanceId) < 0))
+                {
+                    best = enemy;
+                }
+            }
+            return best;
+        }
+
         private bool CastAntibodyFreeze(DefenderVisual visual)
         {
-            var candidates = new List<EnemyState>();
-            foreach (var enemy in _enemies)
-                if (!enemy.State.IsTerminal && Vector2.Distance(visual.Position, enemy.Follower.Position) <= visual.Config.range + 0.5f)
-                    candidates.Add(enemy.State);
-            var chosen = TargetingSystem.Select(candidates);
-            var target = chosen == null ? null : _enemies.Find(x => x.State == chosen);
+            var target = FindAntibodyFreezeTarget(visual);
             if (target == null)
             {
-                SetStatus("Antibody Freeze needs an enemy within the B Cell's range.");
+                SetStatus("Antibody Freeze needs an eligible enemy within the B Cell's 3.5u cast range.");
                 return false;
             }
             Commit(visual, IceColor);
@@ -233,17 +271,32 @@ namespace ImmunWar.UI
 
         // ---------- NK Cell: Execute ----------
 
-        private bool CastExecute(DefenderVisual visual)
+        private EnemyVisual FindExecuteTarget(DefenderVisual visual)
         {
             EnemyVisual target = null;
+            var maxRange = visual.Config.range + 0.3f;
             foreach (var enemy in _enemies)
             {
-                if (enemy.State.IsTerminal || Vector2.Distance(visual.Position, enemy.Follower.Position) > visual.Config.range + 0.3f) continue;
-                if (target == null || enemy.State.Health < target.State.Health) target = enemy;
+                if (enemy.State.IsTerminal || Vector2.Distance(visual.Position, enemy.Follower.Position) > maxRange) continue;
+                if (target == null ||
+                    enemy.State.Health < target.State.Health ||
+                    (Mathf.Approximately(enemy.State.Health, target.State.Health) &&
+                     (enemy.State.RouteProgress > target.State.RouteProgress ||
+                      (Mathf.Approximately(enemy.State.RouteProgress, target.State.RouteProgress) &&
+                       string.CompareOrdinal(enemy.State.InstanceId, target.State.InstanceId) < 0))))
+                {
+                    target = enemy;
+                }
             }
+            return target;
+        }
+
+        private bool CastExecute(DefenderVisual visual)
+        {
+            var target = FindExecuteTarget(visual);
             if (target == null)
             {
-                SetStatus("Execute needs an enemy within the NK Cell's reach.");
+                SetStatus("Execute needs an enemy within the NK Cell's 2.8u reach.");
                 return false;
             }
             var purple = new Color(0.8f, 0.4f, 1f);
@@ -333,9 +386,20 @@ namespace ImmunWar.UI
 
         private bool CastAtpSurge(DefenderVisual visual)
         {
+            if (visual.ActiveCombatTicks < ActiveSkills.AtpSurgeInitialDelayTicks)
+            {
+                var remainingSec = (ActiveSkills.AtpSurgeInitialDelayTicks - visual.ActiveCombatTicks) / 30f;
+                SetStatus("ATP Surge needs 10s of active combat after placement (" + remainingSec.ToString("0.0") + "s left).");
+                return false;
+            }
+            if (!_battle.State.Economy.CanSurge(ActiveSkills.AtpSurgeAmount))
+            {
+                SetStatus("ATP Surge requires at least 20 ATP room below the 300 ATP cap and 20 remaining in the 90/wave generation budget.");
+                return false;
+            }
             var gold = new Color(1f, 0.85f, 0.25f);
             Commit(visual, gold);
-            _battle.State.Economy.Add(ActiveSkills.AtpSurgeAmount);
+            _battle.State.Economy.TrySurge(ActiveSkills.AtpSurgeAmount);
             CombatStatus.Apply(_statusSystem, visual.State.Effects, CombatStatus.Exhausted, visual.State.InstanceId);
             visual.SpinTime = Time.time;
             var from = RuntimeUi.Point(visual.Position);
@@ -344,6 +408,83 @@ namespace ImmunWar.UI
             FloatText(from + new Vector2(0f, 60f), "+" + ActiveSkills.AtpSurgeAmount + " ATP", gold, 28);
             _audio?.Play(_art ? _art.atpGain : null, 1f, 0.2f);
             return true;
+        }
+
+        private Image _skillPreviewRing;
+        private Image _skillPreviewTargetRing;
+
+        private void PreviewDefenderSkill(string defenderId)
+        {
+            if (!_defenders.TryGetValue(defenderId, out var visual)) return;
+            if (!_skillPreviewRing)
+            {
+                _skillPreviewRing = RuntimeUi.Image(_arena, "SkillPreviewRing", Vector2.zero, Vector2.one, new Color(0.4f, 1f, 1f, 0.45f));
+                _skillPreviewRing.sprite = RingSprite;
+                _skillPreviewTargetRing = RuntimeUi.Image(_arena, "SkillPreviewTarget", Vector2.zero, Vector2.one, new Color(1f, 0.9f, 0.3f, 0.7f));
+                _skillPreviewTargetRing.sprite = RingSprite;
+            }
+            float previewRadius = 0f;
+            EnemyVisual target = null;
+            switch (visual.Skill.Kind)
+            {
+                case ActiveSkillKind.Engulf:
+                    previewRadius = BlockRadius;
+                    target = FindEngulfTarget(visual);
+                    break;
+                case ActiveSkillKind.FeverRush:
+                    previewRadius = visual.Config.range;
+                    break;
+                case ActiveSkillKind.AntibodyFreeze:
+                    previewRadius = visual.Config.range + 0.5f;
+                    target = FindAntibodyFreezeTarget(visual);
+                    break;
+                case ActiveSkillKind.Execute:
+                    previewRadius = visual.Config.range + 0.3f;
+                    target = FindExecuteTarget(visual);
+                    break;
+                case ActiveSkillKind.ClotShield:
+                    previewRadius = ActiveSkills.ClotShieldRadius;
+                    break;
+                case ActiveSkillKind.AtpSurge:
+                    previewRadius = 1.1f;
+                    break;
+            }
+            if (previewRadius > 0f)
+            {
+                _skillPreviewRing.rectTransform.anchoredPosition = RuntimeUi.Point(visual.Position);
+                _skillPreviewRing.rectTransform.sizeDelta = Vector2.one * (previewRadius * 76f * 2f / 0.85f);
+                _skillPreviewRing.gameObject.SetActive(true);
+            }
+            else _skillPreviewRing.gameObject.SetActive(false);
+
+            if (target != null && target.Image)
+            {
+                _skillPreviewTargetRing.rectTransform.anchoredPosition = target.BasePoint;
+                var targetRadius = visual.Skill.Kind == ActiveSkillKind.AntibodyFreeze
+                    ? ActiveSkills.AntibodyFreezeRadius * 76f * 2f / 0.85f
+                    : target.Size * 1.45f;
+                _skillPreviewTargetRing.rectTransform.sizeDelta = Vector2.one * targetRadius;
+                _skillPreviewTargetRing.gameObject.SetActive(true);
+            }
+            else _skillPreviewTargetRing.gameObject.SetActive(false);
+
+            var summary = visual.Skill.Kind switch
+            {
+                ActiveSkillKind.Engulf => "Nuốt chửng địch thường <=35% HP trong 1.3u, hồi 10% HP và tiêu hóa 3s.",
+                ActiveSkillKind.FeverRush => "Tăng gấp đôi tốc bắn và gây Burn trong 5s (tự đốt 2% HP/s).",
+                ActiveSkillKind.AntibodyFreeze => "Đóng băng diện rộng 1.5u trong 2s, tiếp nối Slow + Mark 5s.",
+                ActiveSkillKind.Execute => "Bổ 4x sát thương, xuyên Revive, hoàn 50% hồi chiêu nếu hạ gục.",
+                ActiveSkillKind.ClotShield => "Giải Freeze/Stun/Poison, tạo khiên 2s và hồi 10% HP đồng minh trong 2.2u.",
+                ActiveSkillKind.AtpSurge => "+20 ATP ngay lập tức, sau đó Exhausted 6s (cần 10s khởi động).",
+                _ => ""
+            };
+            SetStatus(visual.Skill.Name + " (" + visual.Skill.AtpCost + " ATP, " + (visual.Skill.CooldownTicks / 30f).ToString("0") + "s CD): " + summary);
+        }
+
+        private void HideSkillPreview()
+        {
+            if (_skillPreviewRing) _skillPreviewRing.gameObject.SetActive(false);
+            if (_skillPreviewTargetRing) _skillPreviewTargetRing.gameObject.SetActive(false);
         }
 
         private IEnumerator SurgeRings(Vector2 at, Color color)

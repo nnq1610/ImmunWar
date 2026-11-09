@@ -14,6 +14,7 @@ using ImmunWar.Progression;
 using ImmunWar.StatusEffects;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace ImmunWar.UI
@@ -61,6 +62,10 @@ namespace ImmunWar.UI
         private const float CoreRadius = 1.05f;
         // Any living defender within this distance stops an enemy (world units).
         private const float BlockRadius = 1.3f;
+        public const float InitialPrepSeconds = 10f;
+        public const float InterWavePrepSeconds = 6f;
+        public const int MaxWaveCombatTicks = 5400; // 180s at 30 ticks/s
+        public const int WaveTimeoutWarningTicks = 4500; // 150s (30s left)
         private BattleAudio _audio;
 
         private BattleSceneInstaller _installer;
@@ -72,16 +77,20 @@ namespace ImmunWar.UI
         private readonly List<EnemyVisual> _enemies = new List<EnemyVisual>();
         private readonly Dictionary<string, DefenderVisual> _defenders = new Dictionary<string, DefenderVisual>();
         private readonly Dictionary<string, Button> _defenderButtons = new Dictionary<string, Button>();
+        private readonly List<DefenderConfig> _orderedDefenders = new List<DefenderConfig>();
         private readonly Dictionary<string, Vector2> _nodePositions = new Dictionary<string, Vector2>();
         private RectTransform _arena;
         private Text _status;
         private Text _stats;
         private Text _waveLabel;
+        private Button _startWaveBtn;
         private Text _selection;
         private AnimatedHealthBar _hudOrganHealth;
         private GameObject _resultPanel;
         private GameObject _pausePanel;
+        private GameObject _briefingPanel;
         private Text _resultText;
+        private Text _resultReasonText;
         private DefenderConfig _selectedDefender;
         private WaveSystem _wave;
         private int _waveIndex = -1;
@@ -90,6 +99,9 @@ namespace ImmunWar.UI
         private int _clock;
         private int _enemySerial;
         private float _accumulator;
+        private float _prepRemainingSeconds = InitialPrepSeconds;
+        private bool _briefingOpen;
+        private string _defeatReason;
         private bool _resultSaved;
         private Image _core;
         private Image _coreGlow;
@@ -101,6 +113,9 @@ namespace ImmunWar.UI
         public BattleController Controller => _battle;
         public int VisibleEnemyCount => _enemies.Count;
         public float FirstEnemyProgress => _enemies.Count == 0 ? 0f : _enemies[0].State.RouteProgress;
+        public float PrepRemainingSeconds => _prepRemainingSeconds;
+        public bool IsBriefingOpen => _briefingOpen;
+        public string DefeatReason => _defeatReason;
 
         /// <summary>Visual smoke only: the next StartNextWave begins at the given 1-based wave.</summary>
         public void SkipToWaveForSmoke(int wave) => _waveIndex = Mathf.Clamp(wave, 1, _map.waveSet.waves.Length) - 2;
@@ -110,17 +125,32 @@ namespace ImmunWar.UI
             for (var i = 0; i < count && _battle && _battle.State.Phase == BattlePhase.Running && _wave != null; i++) Tick();
         }
 
+        public void DismissBriefing()
+        {
+            _briefingOpen = false;
+            if (_briefingPanel) _briefingPanel.SetActive(false);
+            SetStatus("Preparation phase (" + Mathf.CeilToInt(_prepRemainingSeconds) + "s): Select a defender and place on nodes or battlefield.");
+            RefreshStats();
+        }
+
         private void Start()
         {
+            Time.timeScale = 1f;
             _installer = FindFirstObjectByType<BattleSceneInstaller>();
             _session = FindFirstObjectByType<GameSession>();
+            var catalog = _session ? _session.Catalogs.Catalog : Resources.Load<GameCatalog>("ImmuneWar/GameCatalog");
+            if (!_session && catalog)
+            {
+                var sessionGo = new GameObject("GameSession");
+                _session = sessionGo.AddComponent<GameSession>();
+                _session.Initialize(catalog);
+            }
             if (!_installer || !_installer.Controller)
             {
                 Debug.LogError("Playable battle cannot start: BattleSceneInstaller is missing.");
                 return;
             }
             _battle = _installer.Controller;
-            var catalog = _session ? _session.Catalogs.Catalog : Resources.Load<GameCatalog>("ImmuneWar/GameCatalog");
             _map = catalog ? _session ? _session.Catalogs.Get<OrganMapConfig>(_session.SelectedMapId) : catalog.maps[0] : null;
             if (!_map)
             {
@@ -129,21 +159,13 @@ namespace ImmunWar.UI
             }
             _placement = new PlacementSystem(_battle.State);
             _art = Resources.Load<PlayableArtCatalog>("ImmuneWar/PlayableArtCatalog");
+            _prepRemainingSeconds = InitialPrepSeconds;
             BuildInterface(catalog);
             _audio = BattleAudio.Create(gameObject, _art, _session ? _session.Progress : null);
             _audio.PlayMusic(_art ? _art.battleMusic : null);
 
-            _battle.State.Economy.Add(250); // Starting ATP bonus
             SetStatus("Prepare your defenses! Click a node or anywhere on the map to drop defenders.");
             RefreshStats();
-            
-            StartCoroutine(AutoNextWaveRoutine(6f));
-        }
-
-        private IEnumerator AutoNextWaveRoutine(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            StartNextWave();
         }
 
         private void BuildInterface(GameCatalog catalog)
@@ -194,6 +216,7 @@ namespace ImmunWar.UI
             surface.raycastTarget = true;
             var pointer = surface.gameObject.AddComponent<ArenaPointer>();
             pointer.Clicked += local => PlaceFree(local / 76f);
+            pointer.RightClicked += CancelSelection;
             pointer.Moved += local => UpdateGhost(local / 76f);
             pointer.Exited += HideGhost;
 
@@ -223,11 +246,13 @@ namespace ImmunWar.UI
             if (panelSprite) { leftPanel.sprite = panelSprite; leftPanel.type = UnityEngine.UI.Image.Type.Sliced; }
 
             var defenders = catalog.defenders;
+            _orderedDefenders.Clear();
             var shown = Math.Min(6, defenders == null ? 0 : defenders.Length);
             for (var i = 0; i < shown; i++)
             {
                 var defender = defenders[i];
                 if (!defender) continue;
+                _orderedDefenders.Add(defender);
                 var yPos = 300 - i * 120;
                 
                 // Seed packet background
@@ -267,19 +292,21 @@ namespace ImmunWar.UI
             var topHud = RuntimeUi.Image(root, "TopHud", new Vector2(0, 510), new Vector2(1920, 56), new Color(0.12f, 0.18f, 0.28f, 0.85f));
             if (_art && _art.panel) { topHud.sprite = _art.panel; topHud.type = Image.Type.Sliced; }
 
-            // Left: ATP
+            // Left: ATP & wave budgets
             _stats = RuntimeUi.Text(root, "Stats", "",
-                new Vector2(-600, 510), new Vector2(260, 46), 26, Color.white);
+                new Vector2(-560, 510), new Vector2(620, 46), 20, Color.white);
 
-            // Centre-left: ORGAN label + health bar (separated)
-            RuntimeUi.Text(root, "OrganLabel", "ORGAN", new Vector2(-200, 510), new Vector2(120, 46), 22, new Color(0.8f, 0.85f, 1f));
+            // Centre: ORGAN label + health bar (separated)
+            RuntimeUi.Text(root, "OrganLabel", "ORGAN", new Vector2(-120, 510), new Vector2(120, 46), 22, new Color(0.8f, 0.85f, 1f));
             _hudOrganHealth = AnimatedHealthBar.Create(root, "HudOrganHealth",
-                new Vector2(0, 510), new Vector2(300, 24),
+                new Vector2(80, 510), new Vector2(280, 24),
                 _battle.State.Vitality.Maximum, _battle.State.Vitality.Current);
 
-            // Right: WAVE
+            // Right: WAVE & timer
             _waveLabel = RuntimeUi.Text(root, "Wave", "",
-                new Vector2(600, 510), new Vector2(220, 46), 26, Color.white);
+                new Vector2(500, 510), new Vector2(360, 46), 22, Color.white);
+            _startWaveBtn = RuntimeUi.Button(root, "StartWaveNow", "GỌI WAVE",
+                new Vector2(765, 510), new Vector2(140, 42), new Color(0.2f, 0.72f, 0.36f, 0.95f), StartNextWave, 18);
 
             // === TOP RIGHT: Action buttons ===
             
@@ -292,12 +319,34 @@ namespace ImmunWar.UI
                 hi.sprite = btnSettingsSpr; hi.type = Image.Type.Simple; hi.preserveAspect = true;
             }
 
-            // === PAUSE PANEL ===
+            // === BRIEFING PANEL (Pre-Battle Intro, does not count toward 10s prep timer) ===
+            var briefingBox = RuntimeUi.Rect(root, "BriefingPanel", Vector2.zero, new Vector2(1920, 1080));
+            _briefingPanel = briefingBox.gameObject;
+            RuntimeUi.Button(briefingBox, "BriefingDim", "", Vector2.zero, new Vector2(1920, 1080), new Color(0.04f, 0.06f, 0.1f, 0.85f), DismissBriefing, 0);
+            var bWin = RuntimeUi.Image(briefingBox, "BriefingWindow", Vector2.zero, new Vector2(780, 480), new Color(0.1f, 0.15f, 0.22f, 0.98f));
+            if (panelSprite) { bWin.sprite = panelSprite; bWin.type = Image.Type.Sliced; }
+            var organTitle = _map.Id.Replace("map_", "").ToUpperInvariant();
+            RuntimeUi.Text(briefingBox, "BriefingTitle", "NHIỆM VỤ: " + organTitle, new Vector2(0, 165), new Vector2(700, 60), 40, RuntimeUi.Accent).fontStyle = FontStyle.Bold;
+            var routeCount = _map.routes?.Length ?? 1;
+            var waveCount = _map.waveSet?.waves?.Length ?? 0;
+            var briefingDetails = _map.Id switch
+            {
+                "map_brain" => "Cơ quan: Não bộ (2 tuyến xâm nhập hội tụ | 4 Wave | 180 ATP khởi đầu)\nĐịch đặc trưng: Bacteria (Biofilm), Armored Bacteria (Giáp 35% + Phản đòn), Toxic Bacteria (Độc tê liệt), Splitter Virus.\nGợi ý: Dùng B Cell gắn Mark lên mục tiêu bọc giáp và Platelet giải Stun/Poison.",
+                "map_stomach" => "Cơ quan: Dạ dày (3 tuyến xâm nhập | 4 Wave | 210 ATP khởi đầu)\nĐịch đặc trưng: Mutant (Adapt), Regen Mutant (Hồi máu + Hồi sinh), Trùm cuối Super Pathogen (Cytokine Storm).\nGợi ý: Tích lũy NK Cell kết liễu Regen Mutant và giữ Antibody Freeze của B Cell để ngắt gồng Cytokine Storm (2.0s).",
+                _ => "Cơ quan: Phổi (1 tuyến chính | 3 Wave | 150 ATP khởi đầu)\nĐịch đặc trưng: Basic Virus, Swift Virus (Lướt qua tuyến chặn), Bacteria (Lá chắn Biofilm).\nGợi ý: Đặt Macrophage chặn tuyến, T Cell bắn xuyên tâm và Energy Cell tăng viện ATP."
+            };
+            RuntimeUi.Text(briefingBox, "BriefingBody", briefingDetails, new Vector2(0, 20), new Vector2(680, 200), 22, Color.white);
+            var btnStartBattle = RuntimeUi.Button(briefingBox, "BriefingStart", "VÀO TRẬN (10s CHUẨN BỊ)", new Vector2(0, -155), new Vector2(360, 76), new Color(0.2f, 0.7f, 0.35f), DismissBriefing, 26);
+            if (panelSprite) { var img = btnStartBattle.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+            _briefingOpen = true;
+            _briefingPanel.SetActive(true);
+
+            // === PAUSE PANEL (Opaque backdrop covering battlefield completely per CB-01 3.4 & 5.1) ===
             var pauseBox = RuntimeUi.Rect(root, "PausePanel", Vector2.zero, new Vector2(1920, 1080));
             _pausePanel = pauseBox.gameObject;
             
-            // Full screen dim
-            RuntimeUi.Image(pauseBox, "Dim", Vector2.zero, new Vector2(1920, 1080), new Color(0, 0, 0, 0.6f));
+            // Full screen opaque cover so battlefield cannot be inspected while paused
+            RuntimeUi.Image(pauseBox, "Dim", Vector2.zero, new Vector2(1920, 1080), new Color(0.05f, 0.07f, 0.11f, 1f));
             
             // Central window
             var pWin = RuntimeUi.Image(pauseBox, "Window", Vector2.zero, new Vector2(500, 400), new Color(0.12f, 0.16f, 0.22f, 0.98f));
@@ -322,7 +371,7 @@ namespace ImmunWar.UI
             // Status text (bottom centre)
 
             _status = RuntimeUi.Text(root, "Status", "",
-                new Vector2(0, -510), new Vector2(700, 40), 18, new Color(1f, 0.96f, 0.82f));
+                new Vector2(0, -510), new Vector2(960, 40), 18, new Color(1f, 0.96f, 0.82f));
 
             // === RESULT PANEL ===
             var result = RuntimeUi.Rect(root, "ResultPanel", Vector2.zero, new Vector2(700, 450));
@@ -333,8 +382,9 @@ namespace ImmunWar.UI
             if (panelSprite) { resultBg.sprite = panelSprite; resultBg.type = UnityEngine.UI.Image.Type.Sliced; }
             
             // Text
-            _resultText = RuntimeUi.Text(result, "ResultText", "", new Vector2(0, 100), new Vector2(600, 140), 64, Color.white);
+            _resultText = RuntimeUi.Text(result, "ResultText", "", new Vector2(0, 120), new Vector2(600, 110), 58, Color.white);
             _resultText.fontStyle = FontStyle.Bold;
+            _resultReasonText = RuntimeUi.Text(result, "ResultReason", "", new Vector2(0, 20), new Vector2(620, 70), 22, new Color(1f, 0.9f, 0.75f));
             
             // Restart Button
             var btnRe = RuntimeUi.Button(result, "PlayAgain", "PLAY AGAIN", new Vector2(-170, -100), new Vector2(260, 80), new Color(0.2f, 0.7f, 0.3f), Restart, 28);
@@ -353,8 +403,20 @@ namespace ImmunWar.UI
             foreach (var pair in _defenderButtons)
                 RuntimeUi.Skin(pair.Value, _art, UiButtonRole.Card, defender && pair.Key == defender.Id);
             if (_selection) _selection.text = defender ? defender.Id.Replace("def_", "").ToUpperInvariant() : "NO DEFENDER";
-            SetStatus(defender ? "Click a node or anywhere on the map to drop " + defender.Id.Replace("def_", "") + " (e.g. on a vessel to block)." : "Select a defender.");
+            if (!defender) HideGhost();
+            SetStatus(defender ? "Click a node or anywhere on the map to drop " + defender.Id.Replace("def_", "") + " (Right-click to cancel)." : "Select a defender.");
             _audio?.Play(_art ? _art.uiClick : null, 0.7f);
+        }
+
+        public void CancelSelection()
+        {
+            if (!_selectedDefender) return;
+            _selectedDefender = null;
+            foreach (var pair in _defenderButtons)
+                RuntimeUi.Skin(pair.Value, _art, UiButtonRole.Card, false);
+            if (_selection) _selection.text = "NO DEFENDER";
+            HideGhost();
+            SetStatus("Selection cancelled.");
         }
 
         public bool Place(string nodeId, DefenderRoleMask mask)
@@ -471,7 +533,11 @@ namespace ImmunWar.UI
         {
             if (_battle.State.Phase == BattlePhase.Paused || _battle.State.Phase is BattlePhase.Victory or BattlePhase.Defeat || _wave != null) return;
             if (_map.waveSet?.waves == null || _waveIndex + 1 >= _map.waveSet.waves.Length) return;
+            if (_briefingOpen) DismissBriefing();
+            _prepRemainingSeconds = 0f;
             _waveIndex++;
+            _battle.State.Economy.ResetWaveBudget();
+            _battle.State.Vitality.ResetWaveRepairBudget();
             var groups = _map.waveSet.waves[_waveIndex].groups;
             var spawns = new List<WaveSpawn>();
             if (groups != null) foreach (var group in groups) if (group?.enemy) spawns.Add(new WaveSpawn(group.enemy.Id, group.routeId, group.count, group.intervalTicks));
@@ -489,9 +555,11 @@ namespace ImmunWar.UI
         public void TogglePauseMenu()
         {
             if (!_battle) return;
-            if (_battle.State.Phase == BattlePhase.Running)
+            if (_battle.State.Phase == BattlePhase.Running || _battle.State.Phase == BattlePhase.Preparing)
             {
                 _battle.Pause();
+                HideGhost();
+                HideSkillPreview();
                 if (_pausePanel) _pausePanel.SetActive(true);
             }
             else if (_battle.State.Phase == BattlePhase.Paused)
@@ -504,13 +572,55 @@ namespace ImmunWar.UI
         public void Restart() => StartCoroutine(SceneFlowService.Load("Battle"));
         public void ReturnToMenu() => StartCoroutine(SceneFlowService.Load("MainMenu"));
 
+        private static bool WasSlotKeyPressed(Keyboard kb, int index) => index switch
+        {
+            0 => kb.digit1Key.wasPressedThisFrame || kb.numpad1Key.wasPressedThisFrame,
+            1 => kb.digit2Key.wasPressedThisFrame || kb.numpad2Key.wasPressedThisFrame,
+            2 => kb.digit3Key.wasPressedThisFrame || kb.numpad3Key.wasPressedThisFrame,
+            3 => kb.digit4Key.wasPressedThisFrame || kb.numpad4Key.wasPressedThisFrame,
+            4 => kb.digit5Key.wasPressedThisFrame || kb.numpad5Key.wasPressedThisFrame,
+            5 => kb.digit6Key.wasPressedThisFrame || kb.numpad6Key.wasPressedThisFrame,
+            _ => false
+        };
+
         private void Update()
         {
             if (!_battle || !_map) return;
+            var kb = Keyboard.current;
+            if (kb != null && (kb.escapeKey.wasPressedThisFrame || kb.pKey.wasPressedThisFrame))
+            {
+                TogglePauseMenu();
+                return;
+            }
+            if (_battle.State.Phase == BattlePhase.Paused) return;
+            if (_briefingOpen && kb != null && (kb.spaceKey.wasPressedThisFrame || kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
+            {
+                DismissBriefing();
+            }
+            var mouse = Mouse.current;
+            if (mouse != null && mouse.rightButton.wasPressedThisFrame) CancelSelection();
+            if (kb != null)
+            {
+                for (var i = 0; i < _orderedDefenders.Count && i < 6; i++)
+                {
+                    if (WasSlotKeyPressed(kb, i))
+                        SelectDefender(_orderedDefenders[i]);
+                }
+            }
+
+            var dt = Time.deltaTime > 0f ? Time.deltaTime : Time.unscaledDeltaTime;
+            if (!_briefingOpen && _wave == null && (_battle.State.Phase == BattlePhase.Preparing || _battle.State.Phase == BattlePhase.Running))
+            {
+                var prevSec = Mathf.CeilToInt(_prepRemainingSeconds);
+                _prepRemainingSeconds = Mathf.Max(0f, _prepRemainingSeconds - dt);
+                if (Mathf.CeilToInt(_prepRemainingSeconds) != prevSec) RefreshStats();
+                if (_prepRemainingSeconds <= 0f) StartNextWave();
+            }
+
             var running = _battle.State.Phase == BattlePhase.Running;
             if (running && _wave != null)
             {
-                _accumulator += Time.deltaTime;
+                _accumulator += dt;
                 var count = 0;
                 while (_accumulator >= 1f / 30f && count++ < 5)
                 {
@@ -518,8 +628,8 @@ namespace ImmunWar.UI
                     Tick();
                 }
             }
-            if (running) AnimateEnemies(Time.deltaTime);
-            AnimateDefenders(running ? Time.deltaTime : 0f);
+            if (running) AnimateEnemies(dt);
+            AnimateDefenders(running ? dt : 0f);
             AnimateCore();
         }
 
@@ -559,7 +669,17 @@ namespace ImmunWar.UI
                         if (enemy.Follower.Tick(1f / 30f * CombatStatus.MoveMultiplier(enemy.State.Effects)))
                         {
                             enemy.BasePoint = RuntimeUi.Point(enemy.Follower.Position);
+                            var isSuperPathogen = enemy.Config.Id == "ene_super_pathogen" || enemy.Config.skill == EnemySkill.CytokineStorm;
                             _battle.DamageOrgan(enemy.Config.organDamage);
+                            if (isSuperPathogen)
+                            {
+                                _defeatReason = "Super Pathogen đã chạm lõi cơ quan";
+                                _battle.ForceDefeat();
+                            }
+                            else if (_battle.State.Phase == BattlePhase.Defeat && string.IsNullOrEmpty(_defeatReason))
+                            {
+                                _defeatReason = "Vitality cơ quan về 0";
+                            }
                             if (_hudOrganHealth) _hudOrganHealth.SetValue(_battle.State.Vitality.Current, _battle.State.Vitality.Maximum);
                             _wave.NotifyTerminal();
                             StrikeOrgan(enemy);
@@ -590,8 +710,23 @@ namespace ImmunWar.UI
                 }
                 else 
                 {
-                    SetStatus("Wave clear! Next wave approaching...");
-                    StartCoroutine(AutoNextWaveRoutine(6f));
+                    _prepRemainingSeconds = InterWavePrepSeconds;
+                    SetStatus("Wave clear! Next wave in " + Mathf.CeilToInt(_prepRemainingSeconds) + "s...");
+                    RefreshStats();
+                }
+            }
+            else if (_wave != null)
+            {
+                if (_tick == WaveTimeoutWarningTicks)
+                {
+                    SetStatus("CẢNH BÁO: Còn 30 giây trước khi hết 180 giây giới hạn giao tranh của wave!");
+                }
+                else if (_tick >= MaxWaveCombatTicks)
+                {
+                    _defeatReason = "Hết 180 giây giao tranh mà wave chưa hoàn tất";
+                    _battle.ForceDefeat();
+                    ShowResult(false);
+                    return;
                 }
             }
             if (_tick % 10 == 0) RefreshStats();
@@ -1055,7 +1190,14 @@ namespace ImmunWar.UI
             if (_resultPanel.activeSelf) return;
             _resultPanel.SetActive(true);
             _resultText.text = victory ? "ORGAN DEFENDED" : "ORGAN OVERRUN";
+            if (_resultReasonText)
+            {
+                _resultReasonText.text = victory
+                    ? "Vitality còn lại: " + _battle.State.Vitality.Current + "/" + _battle.State.Vitality.Maximum
+                    : (!string.IsNullOrEmpty(_defeatReason) ? _defeatReason : "Vitality cơ quan về 0");
+            }
             HideGhost();
+            HideSkillPreview();
             _audio?.StopMusic();
             _audio?.Play(_art ? victory ? _art.atpGain : _art.organHit : null);
             if (victory && !_resultSaved && _session != null)
@@ -1064,7 +1206,17 @@ namespace ImmunWar.UI
                 var maps = _session.Catalogs.Catalog.maps;
                 var ids = Array.ConvertAll(maps, x => x.Id);
                 var progress = new CampaignProgressionService(ids, _session.Progress);
-                if (progress.CompleteMap(_map.Id)) _session.Saves.Save(progress.Data);
+                progress.CompleteMap(_map.Id);
+                var idx = Array.IndexOf(ids, _map.Id);
+                if (idx >= 0 && idx + 1 < ids.Length && progress.Data.unlockedMapIds.Contains(ids[idx + 1]))
+                {
+                    progress.SelectMap(ids[idx + 1]);
+                    _session.SelectMap(ids[idx + 1]);
+                    if (_resultReasonText)
+                        _resultReasonText.text = "Vitality còn lại: " + _battle.State.Vitality.Current + "/" + _battle.State.Vitality.Maximum + " — Đã mở khóa màn tiếp theo!";
+                }
+                var saved = _session.Saves.Save(progress.Data);
+                _session.ReplaceProgress(saved);
             }
             RefreshStats();
         }
@@ -1075,10 +1227,20 @@ namespace ImmunWar.UI
         private sealed class ArenaPointer : MonoBehaviour, IPointerClickHandler, IPointerMoveHandler, IPointerExitHandler
         {
             public event Action<Vector2> Clicked;
+            public event Action RightClicked;
             public event Action<Vector2> Moved;
             public event Action Exited;
 
-            public void OnPointerClick(PointerEventData eventData) { if (ToLocal(eventData, out var local)) Clicked?.Invoke(local); }
+            public void OnPointerClick(PointerEventData eventData)
+            {
+                if (eventData.button == PointerEventData.InputButton.Right)
+                {
+                    RightClicked?.Invoke();
+                    return;
+                }
+                if (eventData.button == PointerEventData.InputButton.Left && ToLocal(eventData, out var local))
+                    Clicked?.Invoke(local);
+            }
             public void OnPointerMove(PointerEventData eventData) { if (ToLocal(eventData, out var local)) Moved?.Invoke(local); }
             public void OnPointerExit(PointerEventData eventData) => Exited?.Invoke();
 
@@ -1090,8 +1252,17 @@ namespace ImmunWar.UI
         {
             if (!_battle || !_stats) return;
             var state = _battle.State;
-            _stats.text = "ATP  " + state.Economy.Atp;
-            _waveLabel.text = "WAVE " + Math.Max(0, _waveIndex + 1) + "/" + (_map.waveSet?.waves?.Length ?? 0);
+            var generatedWave = EconomyState.WaveBudgetMax - state.Economy.WaveBudgetRemaining;
+            var repairedWave = VitalityState.WaveRepairBudgetMax - state.Vitality.WaveRepairRemaining;
+            _stats.text = "ATP " + state.Economy.Atp + "/" + EconomyState.MaxAtp + " | Tạo: " + generatedWave + "/" + EconomyState.WaveBudgetMax + " | Hồi: " + repairedWave + "/" + VitalityState.WaveRepairBudgetMax;
+            var totalWaves = _map.waveSet?.waves?.Length ?? 0;
+            var displayWave = _wave != null ? (_waveIndex + 1) : Math.Min(totalWaves, _waveIndex + 2);
+            var timerSuffix = _wave != null
+                ? " (" + Mathf.Max(0, (MaxWaveCombatTicks - _tick) / 30) + "s)"
+                : (_prepRemainingSeconds > 0f ? " (Prep: " + Mathf.CeilToInt(_prepRemainingSeconds) + "s)" : "");
+            _waveLabel.text = "WAVE " + displayWave + "/" + totalWaves + timerSuffix;
+            if (_startWaveBtn)
+                _startWaveBtn.gameObject.SetActive(_wave == null && (_waveIndex + 1) < totalWaves && state.Phase is BattlePhase.Preparing or BattlePhase.Running);
             // (Floating organ health removed)
             if (_hudOrganHealth) _hudOrganHealth.SetValue(state.Vitality.Current, state.Vitality.Maximum);
         }

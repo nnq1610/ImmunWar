@@ -4,6 +4,7 @@ using ImmunWar.Battle.Placement;
 using ImmunWar.Core.Config;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace ImmunWar.UI
 {
@@ -129,9 +130,9 @@ namespace ImmunWar.UI
         /// </summary>
         private void HandleMouseInput()
         {
-            if (_gridSystem == null) return;
+            if (_gridSystem == null || Mouse.current == null) return;
 
-            var mousePosition = Input.mousePosition;
+            var mousePosition = Mouse.current.position.ReadValue();
             HandleMouseInput(mousePosition);
         }
 
@@ -172,11 +173,12 @@ namespace ImmunWar.UI
             }
 
             // Handle mouse clicks
-            if (Input.GetMouseButtonDown(0)) // Left click
+            var mouse = Mouse.current;
+            if (mouse != null && mouse.leftButton.wasPressedThisFrame) // Left click
             {
                 HandleGridClick(gridPosition);
             }
-            else if (Input.GetMouseButtonDown(1)) // Right click
+            else if (mouse != null && mouse.rightButton.wasPressedThisFrame) // Right click
             {
                 CancelSelection();
             }
@@ -187,8 +189,10 @@ namespace ImmunWar.UI
         /// </summary>
         private void HandleKeyboardInput()
         {
+            var kb = Keyboard.current;
+            if (kb == null) return;
             // Handle escape key to cancel selection
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (kb.escapeKey.wasPressedThisFrame)
             {
                 CancelSelection();
             }
@@ -197,10 +201,10 @@ namespace ImmunWar.UI
 
             // Handle grid navigation with arrow keys (Task 5.3)
             var direction = Vector2Int.zero;
-            if (Input.GetKeyDown(KeyCode.LeftArrow)) direction.x = -1;
-            if (Input.GetKeyDown(KeyCode.RightArrow)) direction.x = 1;
-            if (Input.GetKeyDown(KeyCode.UpArrow)) direction.y = 1;
-            if (Input.GetKeyDown(KeyCode.DownArrow)) direction.y = -1;
+            if (kb.leftArrowKey.wasPressedThisFrame) direction.x = -1;
+            if (kb.rightArrowKey.wasPressedThisFrame) direction.x = 1;
+            if (kb.upArrowKey.wasPressedThisFrame) direction.y = 1;
+            if (kb.downArrowKey.wasPressedThisFrame) direction.y = -1;
 
             if (direction != Vector2Int.zero)
             {

@@ -31,6 +31,13 @@ namespace ImmunWar.Core
         }
 
         public void ReplaceProgress(SaveData data) => Progress = data;
+
+        public void ResetProgress()
+        {
+            Progress = SaveData.CreateDefault();
+            if (Saves != null) Progress = Saves.Save(Progress);
+            SelectedMapId = "map_lung";
+        }
     }
 }
 

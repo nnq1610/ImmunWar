@@ -138,16 +138,19 @@ namespace ImmunWar.UI
         {
             var effects = enemy.State.Effects;
             var wasFrozen = CombatStatus.Has(effects, StatusIds.Freeze);
+            var hadResist = CombatStatus.Stacks(effects, StatusIds.FreezeResist) > 0;
             var outcome = CombatStatus.ApplyControl(_statusSystem, effects, spec, sourceId, enemy.Config.skill == EnemySkill.Adapt, durationTicks);
             if (outcome == ControlOutcome.Adapted)
             {
                 Adapted(enemy);
+                SetStatus("Miễn nhiễm: không áp dụng");
                 return false;
             }
             if (outcome != ControlOutcome.Applied) return false;
             if (spec.Id == StatusIds.Freeze)
             {
                 if (!wasFrozen) FloatText(enemy.BasePoint + new Vector2(0f, 85f), "FROZEN", IceColor, 22);
+                if (hadResist) SetStatus("Kháng: vẫn ngắt được");
                 if (enemy.Config.skill == EnemySkill.FrostSplit && !enemy.Budded) BudOff(enemy);
             }
             return true;
@@ -188,6 +191,7 @@ namespace ImmunWar.UI
                 if (enemy == dead || enemy.State.IsTerminal) continue;
                 var distance = Vector2.Distance(enemy.Follower.Position, dead.Follower.Position);
                 if (distance > best) continue;
+                if (nearest != null && Mathf.Approximately(distance, best) && string.CompareOrdinal(enemy.State.InstanceId, nearest.State.InstanceId) >= 0) continue;
                 best = distance;
                 nearest = enemy;
             }

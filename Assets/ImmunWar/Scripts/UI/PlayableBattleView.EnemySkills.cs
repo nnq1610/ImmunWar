@@ -16,7 +16,7 @@ namespace ImmunWar.UI
         private const float DashChance = 0.3f;
         private const int DashCheckTicks = 45;
         private const float DashDistance = 1.8f;
-        private const int StormChargeTicks = 45;
+        private const int StormChargeTicks = 60;
         private const int StormRechargeTicks = 450;
         private const int StormInterruptedTicks = 240;
         private const int StormFreezeTicks = 60;
@@ -208,6 +208,12 @@ namespace ImmunWar.UI
                 return;
             }
             if (boss.State.Health > boss.Config.maxHealth * (2f / 3f) || _clock < boss.NextSkillTick || _defenders.Count == 0) return;
+            if (CombatStatus.IsDisabled(boss.State.Effects))
+            {
+                boss.NextSkillTick = _clock + StormInterruptedTicks;
+                FloatText(boss.BasePoint + new Vector2(0f, 130f), "INTERRUPTED!", IceColor, 28);
+                return;
+            }
             boss.StormChargeAt = _clock + StormChargeTicks;
             StartCoroutine(StormTelegraph(boss));
             FloatText(boss.BasePoint + new Vector2(0f, 130f), "CYTOKINE STORM!", new Color(1f, 0.35f, 0.3f), 30);

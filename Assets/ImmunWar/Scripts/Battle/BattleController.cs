@@ -11,6 +11,7 @@ namespace ImmunWar.Battle
         private int _maximumVitality;
         private string _mapId;
         private int _attempt;
+        private BattlePhase _phaseBeforePause = BattlePhase.Running;
         private readonly FixedSimulationClock _clock = new FixedSimulationClock(30);
         public BattleState State { get; private set; }
         public event Action<BattlePhase, BattlePhase> PhaseChanged;
@@ -26,15 +27,32 @@ namespace ImmunWar.Battle
         public void Configure(string mapId, int startingAtp, int maximumVitality, int seed)
         {
             _mapId = mapId; _startingAtp = startingAtp; _maximumVitality = maximumVitality; _attempt++;
+            _phaseBeforePause = BattlePhase.Running;
             State = new BattleState($"{mapId}-attempt-{_attempt:D3}", mapId, seed, startingAtp, maximumVitality);
             _clock.Reset();
         }
 
         public void StartBattle() => ChangePhase(BattlePhase.Running);
-        public void Pause() { if (State.Phase == BattlePhase.Running) ChangePhase(BattlePhase.Paused); }
-        public void Resume() { if (State.Phase == BattlePhase.Paused) ChangePhase(BattlePhase.Running); }
+        public void Pause()
+        {
+            if (State.Phase is BattlePhase.Running or BattlePhase.Preparing)
+            {
+                _phaseBeforePause = State.Phase;
+                ChangePhase(BattlePhase.Paused);
+            }
+        }
+        public void Resume()
+        {
+            if (State.Phase == BattlePhase.Paused)
+                ChangePhase(_phaseBeforePause == BattlePhase.Preparing ? BattlePhase.Preparing : BattlePhase.Running);
+        }
         public void Restart() { var seed = State.Seed; Configure(_mapId, _startingAtp, _maximumVitality, seed); }
         public void CompleteAllWavesForTests() { State.Waves.Phase = WavePhase.AllComplete; ChangePhase(BattlePhase.Victory); }
+        public void ForceDefeat()
+        {
+            if (State.Phase is BattlePhase.Running or BattlePhase.Preparing)
+                ChangePhase(BattlePhase.Defeat);
+        }
         public void DamageOrgan(int amount)
         {
             if (State.Phase != BattlePhase.Running) return;

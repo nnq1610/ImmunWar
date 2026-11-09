@@ -10,9 +10,13 @@ namespace ImmunWar.Core
 
         private void Awake()
         {
-            var sessionObject = new GameObject("GameSession");
-            var session = sessionObject.AddComponent<GameSession>();
-            session.Initialize(catalog);
+            var session = FindFirstObjectByType<GameSession>();
+            if (!session)
+            {
+                var sessionObject = new GameObject("GameSession");
+                session = sessionObject.AddComponent<GameSession>();
+                session.Initialize(catalog);
+            }
             StartCoroutine(SceneFlowService.Load(firstScene));
         }
     }

@@ -16,13 +16,15 @@ MonoBehaviour:
   displayNameKey: ene_mutant
   maxHealth: 120
   moveSpeed: 0.7
-  organDamage: 20
-  atpReward: 13
+  organDamage: 15
+  atpReward: 7
   mutations:
   - {fileID: 11400000, guid: f29534b5f100103478211915baca3d02, type: 2}
   - {fileID: 11400000, guid: 28de73343a5dda549984e508152038ba, type: 2}
   bossPhases: []
   presentation: {fileID: 11400000, guid: 5e8293f5554ac98459895c48856bc073, type: 2}
   attackStyle: 6
+  attackDamage: 11
+  attackIntervalTicks: 26
   attackRange: 0
   skill: 5

@@ -15,7 +15,7 @@ MonoBehaviour:
   id: map_stomach
   displayNameKey: map.stomach
   nextMapId: 
-  startingAtp: 120
+  startingAtp: 210
   maximumVitality: 100
   routes:
   - {fileID: 11400000, guid: 00604994584e4dd4eae08c9a12c81ac1, type: 2}

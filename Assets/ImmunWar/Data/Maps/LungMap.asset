@@ -15,7 +15,7 @@ MonoBehaviour:
   id: map_lung
   displayNameKey: map.lung
   nextMapId: map_brain
-  startingAtp: 100
+  startingAtp: 150
   maximumVitality: 100
   routes:
   - {fileID: 11400000, guid: 08216557259c38d4eb982ddcb7b78104, type: 2}

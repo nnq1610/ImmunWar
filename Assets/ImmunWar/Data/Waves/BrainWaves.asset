@@ -17,56 +17,64 @@ MonoBehaviour:
   - groups:
     - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
       routeId: route_brain_main
-      count: 5
-      intervalTicks: 30
+      count: 4
+      intervalTicks: 36
     - enemy: {fileID: 11400000, guid: 5b5ca691a60216d27de6de42f2cc99a1, type: 2}
       routeId: route_brain_left
-      count: 6
-      intervalTicks: 20
+      count: 4
+      intervalTicks: 33
     - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
       routeId: route_brain_bot
       count: 4
-      intervalTicks: 32
+      intervalTicks: 36
   - groups:
     - enemy: {fileID: 11400000, guid: cc88d771de11d4c4884c4f500dc3cc8b, type: 2}
       routeId: route_brain_main
       count: 4
-      intervalTicks: 40
+      intervalTicks: 48
     - enemy: {fileID: 11400000, guid: e107e79a7b6dfc5ae5457f0cc51eec0c, type: 2}
       routeId: route_brain_left
-      count: 3
-      intervalTicks: 55
+      count: 2
+      intervalTicks: 60
     - enemy: {fileID: 11400000, guid: 001b065a50e59a50548320649c795cb4, type: 2}
       routeId: route_brain_bot
-      count: 3
-      intervalTicks: 45
+      count: 2
+      intervalTicks: 60
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_brain_left
+      count: 4
+      intervalTicks: 30
   - groups:
     - enemy: {fileID: 11400000, guid: b45df7382712928bf2c6a8aafbb4f089, type: 2}
       routeId: route_brain_main
-      count: 3
+      count: 2
       intervalTicks: 60
     - enemy: {fileID: 11400000, guid: 5b5ca691a60216d27de6de42f2cc99a1, type: 2}
       routeId: route_brain_left
       count: 8
-      intervalTicks: 18
+      intervalTicks: 27
     - enemy: {fileID: 11400000, guid: 7d1f9350886df399724b243289904bfc, type: 2}
       routeId: route_brain_bot
       count: 2
-      intervalTicks: 70
+      intervalTicks: 60
+    - enemy: {fileID: 11400000, guid: a2a43d8ea42ea5d45b178691bedc554f, type: 2}
+      routeId: route_brain_main
+      count: 2
+      intervalTicks: 30
   - groups:
     - enemy: {fileID: 11400000, guid: cdfddae1bbbe6d749991f956adc36904, type: 2}
       routeId: route_brain_main
-      count: 4
-      intervalTicks: 45
+      count: 3
+      intervalTicks: 54
     - enemy: {fileID: 11400000, guid: e107e79a7b6dfc5ae5457f0cc51eec0c, type: 2}
       routeId: route_brain_left
-      count: 3
-      intervalTicks: 50
+      count: 2
+      intervalTicks: 60
     - enemy: {fileID: 11400000, guid: b45df7382712928bf2c6a8aafbb4f089, type: 2}
       routeId: route_brain_bot
       count: 3
       intervalTicks: 60
     - enemy: {fileID: 11400000, guid: 5b5ca691a60216d27de6de42f2cc99a1, type: 2}
-      routeId: route_brain_main
+      routeId: route_brain_left
       count: 8
-      intervalTicks: 16
+      intervalTicks: 24

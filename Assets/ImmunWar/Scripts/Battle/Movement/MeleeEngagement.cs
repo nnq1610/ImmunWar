@@ -53,7 +53,7 @@ namespace ImmunWar.Battle.Movement
         public static Vector2 Step(Vector2 position, Vector2 goal, float speed, float seconds) =>
             Vector2.MoveTowards(position, goal, Mathf.Max(0f, speed) * Mathf.Max(0f, seconds));
 
-        /// <summary>A capacity of 0 or less means the defender can hold any number of enemies.</summary>
-        public static bool HasCapacity(int held, int capacity) => capacity <= 0 || held < capacity;
+        /// <summary>CB-01 3.1 & 3.6: Only defenders with positive blockCapacity (Macrophage=3, NK Cell=1) can block.</summary>
+        public static bool HasCapacity(int held, int capacity) => capacity > 0 && held < capacity;
     }
 }

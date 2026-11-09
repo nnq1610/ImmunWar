@@ -27,7 +27,7 @@ namespace ImmunWar.Tests.PlayMode
             var playButton = GameObject.Find("PlayButton")?.GetComponent<Button>();
             Assert.That(playButton, Is.Not.Null);
             Assert.That(playButton.interactable, Is.True);
-            Assert.That(GameObject.Find("LungBackdrop")?.GetComponent<Image>()?.sprite, Is.Not.Null);
+            Assert.That(GameObject.Find("Map_map_lung"), Is.Not.Null);
             Assert.That(playButton.GetComponent<Image>().sprite, Is.Not.Null);
             var art = Resources.Load<PlayableArtCatalog>("ImmuneWar/PlayableArtCatalog");
             Assert.That(art, Is.Not.Null);
@@ -36,7 +36,10 @@ namespace ImmunWar.Tests.PlayMode
             foreach (var defenderConfig in session.Catalogs.Catalog.defenders)
                 Assert.That(art.DefenderController(defenderConfig.Id), Is.Not.Null, defenderConfig.Id + " has no animation");
             foreach (var enemyConfig in session.Catalogs.Catalog.enemies)
-                Assert.That(art.EnemyController(enemyConfig.Id), Is.Not.Null, enemyConfig.Id + " has no animation");
+            {
+                var baseId = string.IsNullOrEmpty(enemyConfig.visualBaseId) ? enemyConfig.Id : enemyConfig.visualBaseId;
+                Assert.That(art.EnemyController(baseId) ?? art.EnemyController(enemyConfig.Id), Is.Not.Null, enemyConfig.Id + " has no animation");
+            }
             playButton.onClick.Invoke();
 
             for (var attempt = 0; attempt < 200 && SceneManager.GetActiveScene().name != "Battle"; attempt++)
@@ -46,10 +49,13 @@ namespace ImmunWar.Tests.PlayMode
             var battle = Object.FindFirstObjectByType<PlayableBattleView>();
             Assert.That(battle, Is.Not.Null);
             Assert.That(GameObject.Find("Arena"), Is.Not.Null);
-            Assert.That(GameObject.Find("LungMap")?.GetComponent<Image>()?.sprite, Is.Not.Null);
-            Assert.That(GameObject.Find("StartWave"), Is.Not.Null);
-            foreach (var buttonName in new[] { "StartWave", "Pause", "Restart", "Menu" })
-                Assert.That(GameObject.Find(buttonName)?.GetComponent<Image>()?.sprite, Is.Not.Null, buttonName + " has no themed sprite");
+            Assert.That(GameObject.Find("MapBg")?.GetComponent<Image>()?.sprite, Is.Not.Null);
+            Assert.That(GameObject.Find("BriefingPanel"), Is.Not.Null);
+            Assert.That(battle.IsBriefingOpen, Is.True);
+            battle.DismissBriefing();
+            Assert.That(battle.IsBriefingOpen, Is.False);
+            Assert.That(battle.Controller.State.Economy.Atp, Is.EqualTo(150));
+
             var defender = session.Catalogs.Catalog.defenders[0];
             battle.SelectDefender(defender);
             var node = session.Catalogs.Get<ImmunWar.Core.Config.OrganMapConfig>("map_lung").nodes[0];
@@ -63,7 +69,7 @@ namespace ImmunWar.Tests.PlayMode
             for (var attempt = 0; attempt < 12 && defenderImage.sprite == defenderFrame; attempt++)
                 yield return new WaitForSecondsRealtime(0.08f);
             Assert.That(defenderImage.sprite, Is.Not.EqualTo(defenderFrame), "Macrophage animation did not advance its sprite.");
-            GameObject.Find("StartWave").GetComponent<Button>().onClick.Invoke();
+            battle.StartNextWave();
             Assert.That(battle.Controller.State.Phase, Is.EqualTo(BattlePhase.Running));
             for (var attempt = 0; attempt < 60 && battle.VisibleEnemyCount == 0; attempt++) yield return new WaitForSecondsRealtime(0.1f);
             Assert.That(battle.VisibleEnemyCount, Is.GreaterThan(0));
@@ -78,9 +84,9 @@ namespace ImmunWar.Tests.PlayMode
             var progress = battle.FirstEnemyProgress;
             yield return new WaitForSecondsRealtime(0.5f);
             Assert.That(battle.FirstEnemyProgress, Is.GreaterThan(progress));
-            GameObject.Find("Pause").GetComponent<Button>().onClick.Invoke();
+            GameObject.Find("MenuToggle").GetComponent<Button>().onClick.Invoke();
             Assert.That(battle.Controller.State.Phase, Is.EqualTo(BattlePhase.Paused));
-            GameObject.Find("Pause").GetComponent<Button>().onClick.Invoke();
+            GameObject.Find("Resume").GetComponent<Button>().onClick.Invoke();
             Assert.That(battle.Controller.State.Phase, Is.EqualTo(BattlePhase.Running));
         }
 

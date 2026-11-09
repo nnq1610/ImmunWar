@@ -15,7 +15,7 @@ MonoBehaviour:
   id: def_energy
   displayNameKey: def_energy
   role: 5
-  atpCost: 35
+  atpCost: 40
   maxHealth: 80
   attackDamage: 0
   attackInterval: 1
