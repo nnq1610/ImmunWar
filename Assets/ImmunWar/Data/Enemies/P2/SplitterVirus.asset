@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
   id: ene_virus_splitter
   displayNameKey: ene_virus_splitter
-  maxHealth: 85
-  moveSpeed: 0.5
+  maxHealth: 110
+  moveSpeed: 0.55
   organDamage: 10
   atpReward: 4
   mutations: []
@@ -31,7 +31,7 @@ MonoBehaviour:
   visualScale: 1.4
   stretch: {x: 1, y: 1}
   attackStyle: 2
-  attackDamage: 4
-  attackIntervalTicks: 40
+  attackDamage: 6
+  attackIntervalTicks: 32
   attackRange: 0
   skill: 7

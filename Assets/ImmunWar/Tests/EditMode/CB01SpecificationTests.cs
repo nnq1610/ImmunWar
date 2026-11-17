@@ -94,16 +94,16 @@ namespace ImmunWar.Tests.EditMode
                 Assert.That(e.attackIntervalTicks, Is.EqualTo(atkTicks), id + " attackIntervalTicks");
             }
 
-            Check("ene_virus", 45f, 0.45f, 10, 3, 0f, 0f, 5f, 30);
-            Check("ene_virus_swift", 28f, 0.95f, 8, 3, 0f, 0f, 1.8f, 12);
-            Check("ene_virus_splitter", 85f, 0.50f, 10, 4, 0f, 0f, 4f, 40);
-            Check("ene_bacteria", 90f, 0.58f, 10, 5, 0f, 0f, 7.5f, 28);
-            Check("ene_bacteria_armored", 150f, 0.38f, 15, 7, 0.35f, 0f, 18f, 48);
-            Check("ene_bacteria_toxic", 100f, 0.50f, 10, 6, 0f, 0f, 7.5f, 50);
+            Check("ene_virus", 55f, 0.52f, 10, 3, 0f, 0f, 7f, 24);
+            Check("ene_virus_swift", 36f, 1.05f, 8, 3, 0f, 0f, 3.2f, 10);
+            Check("ene_virus_splitter", 110f, 0.55f, 10, 4, 0f, 0f, 6f, 32);
+            Check("ene_bacteria", 120f, 0.62f, 10, 5, 0f, 0f, 10f, 22);
+            Check("ene_bacteria_armored", 180f, 0.42f, 15, 7, 0.40f, 0f, 24f, 38);
+            Check("ene_bacteria_toxic", 130f, 0.55f, 10, 6, 0f, 0f, 11f, 36);
             Assert.That(enemies["ene_bacteria_toxic"].attackRange, Is.EqualTo(2.4f).Within(0.01f));
-            Check("ene_mutant", 120f, 0.70f, 15, 7, 0f, 0f, 11f, 26);
-            Check("ene_mutant_regen", 100f, 0.55f, 15, 7, 0f, 6f, 8f, 32);
-            Check("ene_super_pathogen", 1200f, 0.32f, 100, 30, 0.2f, 0f, 35f, 45);
+            Check("ene_mutant", 160f, 0.75f, 15, 7, 0f, 0f, 16f, 20);
+            Check("ene_mutant_regen", 140f, 0.60f, 15, 7, 0f, 10f, 13f, 25);
+            Check("ene_super_pathogen", 1600f, 0.36f, 100, 30, 0.25f, 0f, 48f, 36);
         }
 
         [Test]
@@ -115,19 +115,19 @@ namespace ImmunWar.Tests.EditMode
             Assert.That(lung.startingAtp, Is.EqualTo(150));
             Assert.That(lung.maximumVitality, Is.EqualTo(100));
             Assert.That(lung.waveSet.waves.Length, Is.EqualTo(3));
-            Assert.That(lung.waveSet.waves.SelectMany(w => w.groups).Sum(g => g.count), Is.EqualTo(38));
+            Assert.That(lung.waveSet.waves.SelectMany(w => w.groups).Sum(g => g.count), Is.EqualTo(49));
 
             var brain = maps["map_brain"];
             Assert.That(brain.startingAtp, Is.EqualTo(180));
             Assert.That(brain.maximumVitality, Is.EqualTo(100));
             Assert.That(brain.waveSet.waves.Length, Is.EqualTo(4));
-            Assert.That(brain.waveSet.waves.SelectMany(w => w.groups).Sum(g => g.count), Is.EqualTo(54));
+            Assert.That(brain.waveSet.waves.SelectMany(w => w.groups).Sum(g => g.count), Is.EqualTo(71));
 
             var stomach = maps["map_stomach"];
             Assert.That(stomach.startingAtp, Is.EqualTo(210));
             Assert.That(stomach.maximumVitality, Is.EqualTo(100));
             Assert.That(stomach.waveSet.waves.Length, Is.EqualTo(4));
-            Assert.That(stomach.waveSet.waves.SelectMany(w => w.groups).Sum(g => g.count), Is.EqualTo(58));
+            Assert.That(stomach.waveSet.waves.SelectMany(w => w.groups).Sum(g => g.count), Is.EqualTo(75));
             Assert.That(stomach.waveSet.waves[3].groups.Any(g => g.enemy && g.enemy.Id == "ene_super_pathogen" && g.count == 1), Is.True);
         }
 

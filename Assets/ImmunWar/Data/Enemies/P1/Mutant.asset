@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
   id: ene_mutant
   displayNameKey: ene_mutant
-  maxHealth: 120
-  moveSpeed: 0.7
+  maxHealth: 160
+  moveSpeed: 0.75
   organDamage: 15
   atpReward: 7
   mutations:
@@ -24,7 +24,7 @@ MonoBehaviour:
   bossPhases: []
   presentation: {fileID: 11400000, guid: 5e8293f5554ac98459895c48856bc073, type: 2}
   attackStyle: 6
-  attackDamage: 11
-  attackIntervalTicks: 26
+  attackDamage: 16
+  attackIntervalTicks: 20
   attackRange: 0
   skill: 5

@@ -659,7 +659,12 @@ namespace ImmunWar.UI
             }
         }
 
-        public void Restart() => StartCoroutine(SceneFlowService.Load("Battle"));
+        public void Restart()
+        {
+            if (_session != null && _map != null)
+                _session.SelectMap(_map.Id);
+            StartCoroutine(SceneFlowService.Load("Battle"));
+        }
         public void ReturnToMenu() => StartCoroutine(SceneFlowService.Load("MainMenu"));
 
         private static bool WasSlotKeyPressed(Keyboard kb, int index) => index switch
@@ -1353,7 +1358,8 @@ namespace ImmunWar.UI
                 if (idx >= 0 && idx + 1 < ids.Length && progress.Data.unlockedMapIds.Contains(ids[idx + 1]))
                 {
                     progress.SelectMap(ids[idx + 1]);
-                    _session.SelectMap(ids[idx + 1]);
+                    // Keep _session.SelectedMapId on _map.Id so "CHƠI LẠI" (Restart) replays current map.
+                    // Next map is selected when user explicitly clicks "MÀN TIẾP THEO".
                     if (_resultReasonText)
                         _resultReasonText.text = "Vitality còn lại: " + _battle.State.Vitality.Current + "/" + _battle.State.Vitality.Maximum + " — Đã mở khóa màn tiếp theo!";
                 }

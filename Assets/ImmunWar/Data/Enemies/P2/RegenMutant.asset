@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
   id: ene_mutant_regen
   displayNameKey: ene_mutant_regen
-  maxHealth: 100
-  moveSpeed: 0.55
+  maxHealth: 140
+  moveSpeed: 0.6
   organDamage: 15
   atpReward: 7
   mutations: []
   bossPhases: []
   presentation: {fileID: 11400000, guid: 5e8293f5554ac98459895c48856bc073, type: 2}
   armor: 0
-  regenPerSecond: 6
+  regenPerSecond: 10
   biteMultiplier: 1
   splitInto: {fileID: 0}
   splitCount: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   visualScale: 1.25
   stretch: {x: 1, y: 1}
   attackStyle: 7
-  attackDamage: 8
-  attackIntervalTicks: 32
+  attackDamage: 13
+  attackIntervalTicks: 25
   attackRange: 0
   skill: 6

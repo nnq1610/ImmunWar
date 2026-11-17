@@ -6,10 +6,10 @@ namespace ImmunWar.Combat
     /// <summary>Damage-path rules for enemy skills: biofilm shields, spiked shells and one-time revival.</summary>
     public static class EnemyTraits
     {
-        public const float BiofilmThreshold = 0.5f;
-        public const float BiofilmShieldFraction = 0.2f;
-        public const float SpikeReflectFraction = 0.1f;
-        public const float ReviveHealthFraction = 0.3f;
+        public const float BiofilmThreshold = 0.65f;
+        public const float BiofilmShieldFraction = 0.35f;
+        public const float SpikeReflectFraction = 0.25f;
+        public const float ReviveHealthFraction = 0.45f;
 
         /// <summary>Soaks damage into a shield first; returns the damage left for health.</summary>
         public static float Absorb(ref float shield, float damage)

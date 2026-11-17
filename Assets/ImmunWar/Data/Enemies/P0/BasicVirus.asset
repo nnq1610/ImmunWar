@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
   id: ene_virus
   displayNameKey: ene_virus
-  maxHealth: 45
-  moveSpeed: 0.45
+  maxHealth: 55
+  moveSpeed: 0.52
   organDamage: 10
   atpReward: 3
   mutations: []
   bossPhases: []
   presentation: {fileID: 11400000, guid: 4a6f0e6d5ec166a4685dc75f2ebb8465, type: 2}
   attackStyle: 0
-  attackDamage: 5
-  attackIntervalTicks: 30
+  attackDamage: 7
+  attackIntervalTicks: 24
   attackRange: 0

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
   id: ene_virus_swift
   displayNameKey: ene_virus_swift
-  maxHealth: 28
-  moveSpeed: 0.95
+  maxHealth: 36
+  moveSpeed: 1.05
   organDamage: 8
   atpReward: 3
   mutations: []
@@ -31,7 +31,7 @@ MonoBehaviour:
   visualScale: 1.05
   stretch: {x: 1, y: 1}
   attackStyle: 1
-  attackDamage: 1.8
-  attackIntervalTicks: 12
+  attackDamage: 3.2
+  attackIntervalTicks: 10
   attackRange: 0
   skill: 1

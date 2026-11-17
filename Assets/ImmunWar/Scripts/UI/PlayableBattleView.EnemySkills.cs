@@ -13,13 +13,13 @@ namespace ImmunWar.UI
     /// </summary>
     public sealed partial class PlayableBattleView
     {
-        private const float DashChance = 0.3f;
-        private const int DashCheckTicks = 45;
-        private const float DashDistance = 1.8f;
-        private const int StormChargeTicks = 60;
-        private const int StormRechargeTicks = 450;
-        private const int StormInterruptedTicks = 240;
-        private const int StormFreezeTicks = 60;
+        private const float DashChance = 0.5f;
+        private const int DashCheckTicks = 25;
+        private const float DashDistance = 2.2f;
+        private const int StormChargeTicks = 45;
+        private const int StormRechargeTicks = 270;
+        private const int StormInterruptedTicks = 180;
+        private const int StormFreezeTicks = 75;
 
         private readonly System.Random _skillRandom = new System.Random(7341);
 
@@ -207,7 +207,7 @@ namespace ImmunWar.UI
                 ReleaseStorm(boss);
                 return;
             }
-            if (boss.State.Health > boss.Config.maxHealth * (2f / 3f) || _clock < boss.NextSkillTick || _defenders.Count == 0) return;
+            if (boss.State.Health > boss.Config.maxHealth * 0.85f || _clock < boss.NextSkillTick || _defenders.Count == 0) return;
             if (CombatStatus.IsDisabled(boss.State.Effects))
             {
                 boss.NextSkillTick = _clock + StormInterruptedTicks;

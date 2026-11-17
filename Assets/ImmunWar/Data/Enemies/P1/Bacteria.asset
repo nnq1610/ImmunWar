@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: ImmunWar.Runtime::ImmunWar.Core.Config.EnemyConfig
   id: ene_bacteria
   displayNameKey: ene_bacteria
-  maxHealth: 90
-  moveSpeed: 0.58
+  maxHealth: 120
+  moveSpeed: 0.62
   organDamage: 10
   atpReward: 5
   mutations: []
   bossPhases: []
   presentation: {fileID: 11400000, guid: 77698e3701cd3624c897c72a79b4760e, type: 2}
   attackStyle: 3
-  attackDamage: 7.5
-  attackIntervalTicks: 28
+  attackDamage: 10
+  attackIntervalTicks: 22
   attackRange: 0
   skill: 2
