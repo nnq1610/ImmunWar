@@ -16,6 +16,28 @@ namespace ImmunWar.UI
         private readonly float _musicVolume;
         private readonly float _sfxVolume;
         private readonly Dictionary<AudioClip, float> _lastPlayed = new Dictionary<AudioClip, float>();
+        private bool _isMuted;
+
+        public bool IsMuted => _isMuted;
+
+        public bool ToggleMute()
+        {
+            _isMuted = !_isMuted;
+            ApplyMute();
+            return _isMuted;
+        }
+
+        public void SetMute(bool muted)
+        {
+            _isMuted = muted;
+            ApplyMute();
+        }
+
+        private void ApplyMute()
+        {
+            if (_music) _music.mute = _isMuted;
+            if (_sfx) _sfx.mute = _isMuted;
+        }
 
         private BattleAudio(AudioSource music, AudioSource sfx, float musicVolume, float sfxVolume)
         {
@@ -40,6 +62,7 @@ namespace ImmunWar.UI
             if (!clip || !_music) return;
             _music.clip = clip;
             _music.volume = MusicLevel * _musicVolume;
+            _music.mute = _isMuted;
             _music.Play();
         }
 
@@ -50,7 +73,7 @@ namespace ImmunWar.UI
 
         public void Play(AudioClip clip, float volume = 1f, float minInterval = 0.05f)
         {
-            if (!clip || !_sfx || _sfxVolume <= 0f) return;
+            if (_isMuted || !clip || !_sfx || _sfxVolume <= 0f) return;
             var now = Time.unscaledTime;
             if (_lastPlayed.TryGetValue(clip, out var last) && now - last < minInterval) return;
             _lastPlayed[clip] = now;

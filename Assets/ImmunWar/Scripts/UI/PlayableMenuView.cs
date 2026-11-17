@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ImmunWar.Core;
 using ImmunWar.Core.Config;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace ImmunWar.UI
@@ -14,8 +15,10 @@ namespace ImmunWar.UI
         private Text _selectionLabel;
         private PlayableArtCatalog _art;
         private BattleAudio _audio;
+        private Text _muteBtnText;
         private readonly Dictionary<string, Button> _mapButtons = new Dictionary<string, Button>();
         private readonly Dictionary<string, Image> _mapCardImages = new Dictionary<string, Image>();
+        private readonly Dictionary<string, Image> _mapCardBorders = new Dictionary<string, Image>();
 
         private void Start()
         {
@@ -36,30 +39,57 @@ namespace ImmunWar.UI
             _art = Resources.Load<PlayableArtCatalog>("ImmuneWar/PlayableArtCatalog");
             _audio = BattleAudio.Create(gameObject, _art, _session ? _session.Progress : null);
             _audio.PlayMusic(_art ? _art.menuMusic : null);
+
             if (_session != null && !string.IsNullOrEmpty(_session.SelectedMapId) && IsMapUnlocked(_session.SelectedMapId))
                 _selectedMap = _session.SelectedMapId;
             else
                 _selectedMap = "map_lung";
+
             var root = RuntimeUi.Root("PlayableMenu");
 
-            // === FIXED BACKGROUND ===
+            // === FIXED BACKGROUND WITH HIGH-TECH VIGNETTE ===
             var bgSprite = Resources.Load<Sprite>("ImmuneWar/menu_bg");
             var bgImg = RuntimeUi.Image(root, "Background", Vector2.zero, new Vector2(1920, 1080), Color.white);
             if (bgSprite) { bgImg.sprite = bgSprite; bgImg.preserveAspect = false; }
             else bgImg.color = RuntimeUi.Background;
 
-            // Dark overlay for readability
-            RuntimeUi.Image(root, "Overlay", Vector2.zero, new Vector2(1920, 1080), new Color(0f, 0f, 0.05f, 0.42f));
+            // Deep cyber-overlay to make UI pop
+            RuntimeUi.Image(root, "Overlay", Vector2.zero, new Vector2(1920, 1080), new Color(0.02f, 0.04f, 0.08f, 0.55f));
 
-            // === TITLE (top, y: 340-410) ===
-            RuntimeUi.Image(root, "TitleBg", new Vector2(0, 375), new Vector2(820, 120), new Color(0.12f, 0.18f, 0.28f, 0.65f));
-            RuntimeUi.Text(root, "Title", "IMMUNE WAR", new Vector2(0, 385), new Vector2(1100, 130), 88, RuntimeUi.Accent);
-            RuntimeUi.Text(root, "Subtitle", "DEFEND THE BODY", new Vector2(0, 315), new Vector2(900, 55), 30, new Color(1f, 0.96f, 0.82f, 0.95f));
+            // === TOP AUDIO & SETTINGS BAR (Top Left / Right) ===
+            var muteBtn = RuntimeUi.Button(root, "MuteButton", "", new Vector2(820, 485), new Vector2(220, 46),
+                new Color(0.08f, 0.14f, 0.22f, 0.9f), ToggleMuteAudio, 16);
+            _muteBtnText = muteBtn.GetComponentInChildren<Text>();
+            UpdateMuteUi();
 
-            // === CHOOSE LABEL (y: 230) — well above cards ===
-            RuntimeUi.Text(root, "Prompt", "— CHỌN MÀN CHƠI THEO TRÌNH TỰ (PHỔI → NÃO → DẠ DÀY) —", new Vector2(0, 235), new Vector2(1100, 50), 26, new Color(0.95f, 0.88f, 0.55f));
+            // Hotkey guide badge (Top Left)
+            var hotkeyPill = RuntimeUi.Image(root, "HotkeyPill", new Vector2(-740, 485), new Vector2(360, 42),
+                new Color(0.06f, 0.1f, 0.18f, 0.85f));
+            RuntimeUi.Text(hotkeyPill.transform, "HotkeyText", "PHÍM TẮT: [1-3] Chọn màn | [SPACE] Chơi | [M] Âm thanh",
+                Vector2.zero, new Vector2(350, 36), 14, new Color(0.7f, 0.85f, 1f));
 
-            // === ORGAN CARDS (y: 40, height 260 → spans -90 to +170) ===
+            // === TITLE SECTION (Top Center) ===
+            // Backplate glow
+            RuntimeUi.Image(root, "TitleBackplate", new Vector2(0, 385), new Vector2(920, 120),
+                new Color(0.05f, 0.12f, 0.22f, 0.85f));
+            // Title border lines
+            RuntimeUi.Image(root, "TitleLineTop", new Vector2(0, 445), new Vector2(900, 3), new Color(0.25f, 0.85f, 0.95f, 0.8f));
+            RuntimeUi.Image(root, "TitleLineBottom", new Vector2(0, 325), new Vector2(900, 3), new Color(0.25f, 0.85f, 0.95f, 0.8f));
+
+            var titleText = RuntimeUi.Text(root, "Title", "IMMUNE WAR", new Vector2(0, 395), new Vector2(1100, 85), 78,
+                new Color(0.35f, 1f, 0.75f));
+            titleText.fontStyle = FontStyle.Bold;
+
+            RuntimeUi.Text(root, "Subtitle", "— HỆ THỐNG PHÒNG THỦ KHÁNG THỂ TẾ BÀO —", new Vector2(0, 345),
+                new Vector2(900, 40), 22, new Color(1f, 0.92f, 0.7f));
+
+            // === PROMPT BAR (y: 245) ===
+            var promptPill = RuntimeUi.Image(root, "PromptPill", new Vector2(0, 245), new Vector2(800, 42),
+                new Color(0.08f, 0.15f, 0.24f, 0.92f));
+            RuntimeUi.Text(promptPill.transform, "PromptText", "CHỌN CHIẾN TRƯỜNG CƠ QUAN THEO TRÌNH TỰ",
+                Vector2.zero, new Vector2(780, 36), 20, new Color(1f, 0.88f, 0.45f)).fontStyle = FontStyle.Bold;
+
+            // === ORGAN CARDS (y: 35, width 280, height 330) ===
             var maps = catalog ? catalog.maps : null;
             if (maps != null)
             {
@@ -78,51 +108,96 @@ namespace ImmunWar.UI
                     var unlocked = IsMapUnlocked(mapId);
                     var completed = IsMapCompleted(mapId);
 
-                    float xPos = (i - (maps.Length - 1) * 0.5f) * 320f;
-                    var cardSize = new Vector2(260, 260); // square cards
-                    var btn = RuntimeUi.Button(root, "Map_" + mapId, "", new Vector2(xPos, 40), cardSize,
+                    float xPos = (i - (maps.Length - 1) * 0.5f) * 370f;
+                    var cardSize = new Vector2(300, 340);
+
+                    // Outer Card Button
+                    var btn = RuntimeUi.Button(root, "Map_" + mapId, "", new Vector2(xPos, 35), cardSize,
                         Color.clear, () => SelectMap(mapId), 0);
                     btn.GetComponent<Image>().color = Color.clear;
-
                     var cardRect = btn.GetComponent<RectTransform>();
+
+                    // Card Outer Frame / Shadow
+                    RuntimeUi.Image(cardRect, "OuterFrame", Vector2.zero, cardSize,
+                        new Color(0.04f, 0.08f, 0.15f, 0.95f));
+
+                    // Glowing Selection Border
+                    var border = RuntimeUi.Image(cardRect, "BorderGlow", Vector2.zero, cardSize + new Vector2(8, 8),
+                        new Color(0.2f, 0.85f, 0.95f, 0f));
+                    _mapCardBorders[mapId] = border;
+
+                    // Inner Organ Image Viewport
                     cardSprites.TryGetValue(mapId, out var cardSpr);
-                    var cardImg = RuntimeUi.Image(cardRect, "CardImg", Vector2.zero, cardSize, Color.white);
-                    if (cardSpr) { cardImg.sprite = cardSpr; cardImg.preserveAspect = true; }
+                    var cardImg = RuntimeUi.Image(cardRect, "CardImg", new Vector2(0, 20), new Vector2(276, 220), Color.white);
+                    if (cardSpr)
+                    {
+                        cardImg.sprite = cardSpr;
+                        cardImg.preserveAspect = true;
+                    }
                     else
                     {
-                        var fc = mapId switch
+                        cardImg.color = mapId switch
                         {
                             "map_brain"   => new Color(0.55f, 0.4f, 0.9f),
                             "map_stomach" => new Color(0.35f, 0.75f, 0.35f),
                             _             => new Color(0.9f, 0.45f, 0.55f)
                         };
-                        cardImg.color = fc;
-                        RuntimeUi.Text(cardRect, "CardText", mapId.Replace("map_", "").ToUpperInvariant(),
-                            Vector2.zero, cardSize, 36, Color.white);
                     }
 
-                    // Stage number badge at top of card
-                    var stageBadge = RuntimeUi.Image(cardRect, "StageBadge", new Vector2(0, 112), new Vector2(220, 32),
-                        completed ? new Color(0.12f, 0.55f, 0.25f, 0.92f) : new Color(0.08f, 0.12f, 0.2f, 0.88f));
+                    // Header Status Badge (Top of card)
+                    var badgeColor = completed
+                        ? new Color(0.12f, 0.58f, 0.28f, 0.96f)
+                        : (unlocked ? new Color(0.12f, 0.36f, 0.65f, 0.96f) : new Color(0.35f, 0.12f, 0.14f, 0.96f));
+                    var stageBadge = RuntimeUi.Image(cardRect, "StageBadge", new Vector2(0, 142), new Vector2(280, 36), badgeColor);
                     stageBadge.raycastTarget = false;
-                    var stageTitle = completed
-                        ? "MÀN " + (i + 1) + " — ĐÃ HOÀN THÀNH"
-                        : "MÀN " + (i + 1) + ": " + OrganDisplayName(mapId);
-                    var stageTxt = RuntimeUi.Text(cardRect, "StageText", stageTitle, new Vector2(0, 112), new Vector2(216, 30), 15,
-                        completed ? new Color(0.65f, 1f, 0.75f) : new Color(0.95f, 0.92f, 0.75f));
+
+                    var badgeTitle = completed
+                        ? "✓ ĐÃ HOÀN THÀNH"
+                        : (unlocked ? ("MÀN " + (i + 1) + " — SẴN SÀNG") : ("MÀN " + (i + 1) + " — ĐÃ KHÓA"));
+                    var stageTxt = RuntimeUi.Text(cardRect, "StageText", badgeTitle, new Vector2(0, 142), new Vector2(270, 30), 16,
+                        completed ? new Color(0.7f, 1f, 0.75f) : (unlocked ? Color.white : new Color(1f, 0.5f, 0.5f)));
                     stageTxt.fontStyle = FontStyle.Bold;
 
+                    // Bottom info strip (Organ title + Map info)
+                    var infoStrip = RuntimeUi.Image(cardRect, "InfoStrip", new Vector2(0, -120), new Vector2(280, 68),
+                        new Color(0.06f, 0.1f, 0.18f, 0.96f));
+                    infoStrip.raycastTarget = false;
+
+                    var organName = OrganDisplayName(mapId);
+                    var organTxt = RuntimeUi.Text(cardRect, "OrganName", organName, new Vector2(0, -104), new Vector2(270, 30), 18,
+                        new Color(1f, 0.92f, 0.6f));
+                    organTxt.fontStyle = FontStyle.Bold;
+
+                    var waveInfo = mapId switch
+                    {
+                        "map_brain"   => "4 Waves | 180 ATP | 2 Tuyến",
+                        "map_stomach" => "4 Waves | 210 ATP | 3 Tuyến",
+                        _             => "3 Waves | 150 ATP | 1 Tuyến"
+                    };
+                    RuntimeUi.Text(cardRect, "MapDetails", waveInfo, new Vector2(0, -134), new Vector2(270, 24), 14,
+                        new Color(0.75f, 0.85f, 0.95f));
+
+                    // Lock Overlay if not unlocked
                     if (!unlocked)
                     {
-                        cardImg.color = new Color(0.22f, 0.22f, 0.26f, 0.85f);
-                        var lockOverlay = RuntimeUi.Image(cardRect, "LockOverlay", Vector2.zero, cardSize, new Color(0.02f, 0.03f, 0.07f, 0.72f));
+                        cardImg.color = new Color(0.2f, 0.22f, 0.28f, 0.75f);
+                        var lockOverlay = RuntimeUi.Image(cardRect, "LockOverlay", Vector2.zero, cardSize,
+                            new Color(0.02f, 0.04f, 0.08f, 0.82f));
                         lockOverlay.raycastTarget = false;
-                        var lockBanner = RuntimeUi.Image(cardRect, "LockBanner", new Vector2(0, -10), new Vector2(244, 88), new Color(0.16f, 0.06f, 0.08f, 0.95f));
+
+                        // Warning banner
+                        var lockBanner = RuntimeUi.Image(cardRect, "LockBanner", new Vector2(0, 10), new Vector2(270, 110),
+                            new Color(0.18f, 0.06f, 0.08f, 0.95f));
                         lockBanner.raycastTarget = false;
-                        var lockTitle = RuntimeUi.Text(cardRect, "Locked", "CHƯA MỞ KHÓA", new Vector2(0, 8), new Vector2(236, 36), 22, new Color(1f, 0.38f, 0.38f));
-                        lockTitle.fontStyle = FontStyle.Bold;
+
+                        var lockIcon = RuntimeUi.Text(cardRect, "LockIcon", "⛔ KHÓA AN NINH", new Vector2(0, 42),
+                            new Vector2(260, 32), 18, new Color(1f, 0.35f, 0.35f));
+                        lockIcon.fontStyle = FontStyle.Bold;
+
                         var prevOrgan = i > 0 && maps[i - 1] ? OrganDisplayName(maps[i - 1].Id) : "MÀN TRƯỚC";
-                        RuntimeUi.Text(cardRect, "LockedHint", "Qua màn " + prevOrgan + " để mở", new Vector2(0, -24), new Vector2(236, 32), 16, new Color(0.92f, 0.92f, 0.92f));
+                        var lockHint = RuntimeUi.Text(cardRect, "LockedHint", "Yêu cầu phòng thủ:\nHoàn thành màn " + prevOrgan,
+                            new Vector2(0, -6), new Vector2(250, 52), 14, new Color(0.92f, 0.88f, 0.88f));
+                        lockHint.fontStyle = FontStyle.Normal;
                     }
 
                     _mapButtons[mapId] = btn;
@@ -131,44 +206,97 @@ namespace ImmunWar.UI
                 }
             }
 
-            // === SELECTION LABEL (y: -145) ===
-            _selectionLabel = RuntimeUi.Text(root, "SelectedMap", "ĐANG CHỌN: " + OrganDisplayName(_selectedMap),
-                new Vector2(0, -145), new Vector2(800, 50), 26, RuntimeUi.Accent);
+            // === SELECTION BAR (y: -175) ===
+            var selBar = RuntimeUi.Image(root, "SelBar", new Vector2(0, -175), new Vector2(760, 46),
+                new Color(0.06f, 0.12f, 0.22f, 0.9f));
+            _selectionLabel = RuntimeUi.Text(selBar.transform, "SelectedMap", "ĐANG CHỌN: " + OrganDisplayName(_selectedMap),
+                Vector2.zero, new Vector2(740, 40), 22, new Color(0.35f, 1f, 0.8f));
+            _selectionLabel.fontStyle = FontStyle.Bold;
 
-            // === PLAY BUTTON (y: -240) ===
-            var play = RuntimeUi.Button(root, "PlayButton", "", new Vector2(0, -240), new Vector2(340, 120), Color.white, Play, 48);
-            RuntimeUi.Skin(play, _art, UiButtonRole.Primary);
-            // Ensure play button doesn't squish by preserving aspect
-            var pi = play.GetComponent<Image>();
-            pi.type = Image.Type.Simple;
-            pi.preserveAspect = true;
+            // === MAIN BUTTONS (y: -270 to -420) ===
 
-            // === QUIT BUTTON — plain red, no sprite dependency (y: -380) ===
-            var quitSprite = Resources.Load<Sprite>("ImmuneWar/btn_quit");
-            var quit = RuntimeUi.Button(root, "QuitButton", quitSprite ? "" : "QUIT", new Vector2(0, -380), new Vector2(300, 110),
-                quitSprite ? Color.white : new Color(0.78f, 0.18f, 0.18f), () => _menu?.Quit(), 32);
-            var quitImg = quit.GetComponent<Image>();
-            if (quitSprite)
-            {
-                quitImg.sprite = quitSprite;
-                quitImg.type = Image.Type.Simple;
-                quitImg.preserveAspect = true;
-            }
-            else
-            {
-                quitImg.sprite = null;
-                var qc = quit.colors;
-                qc.normalColor      = new Color(0.78f, 0.18f, 0.18f);
-                qc.highlightedColor = new Color(0.9f,  0.3f,  0.3f);
-                qc.pressedColor     = new Color(0.55f, 0.1f,  0.1f);
-                quit.colors = qc;
-            }
+            // 1. PLAY BUTTON (Hero Action Button)
+            var playBtnContainer = RuntimeUi.Rect(root, "PlayContainer", new Vector2(0, -270), new Vector2(460, 84));
+            // Outer glow border
+            RuntimeUi.Image(playBtnContainer, "PlayGlow", Vector2.zero, new Vector2(468, 92),
+                new Color(0.2f, 0.95f, 0.55f, 0.6f));
+            var playBtn = RuntimeUi.Button(playBtnContainer, "PlayButton", "⚔ BẮT ĐẦU CHIẾN ĐẤU ⚔",
+                Vector2.zero, new Vector2(460, 84), new Color(0.12f, 0.65f, 0.36f, 0.98f), Play, 28);
+            var playLabel = playBtn.GetComponentInChildren<Text>();
+            if (playLabel) playLabel.fontStyle = FontStyle.Bold;
 
-            // === RESET PROGRESS BUTTON (bottom right, allows resetting to Lung-only anytime) ===
-            RuntimeUi.Button(root, "ResetProgressButton", "CHƠI MỚI (RESET TIẾN ĐỘ)", new Vector2(720, -450), new Vector2(340, 60),
-                new Color(0.28f, 0.22f, 0.36f, 0.92f), ResetProgress, 20);
+            // 2. QUIT BUTTON
+            var quitBtnContainer = RuntimeUi.Rect(root, "QuitContainer", new Vector2(0, -380), new Vector2(300, 56));
+            RuntimeUi.Image(quitBtnContainer, "QuitGlow", Vector2.zero, new Vector2(306, 62),
+                new Color(0.85f, 0.25f, 0.25f, 0.45f));
+            var quitBtn = RuntimeUi.Button(quitBtnContainer, "QuitButton", "✕ THOÁT GAME",
+                Vector2.zero, new Vector2(300, 56), new Color(0.55f, 0.15f, 0.18f, 0.95f), () => _menu?.Quit(), 22);
+            var quitLabel = quitBtn.GetComponentInChildren<Text>();
+            if (quitLabel) quitLabel.fontStyle = FontStyle.Bold;
+
+            // 3. RESET PROGRESS (Bottom Right)
+            var resetContainer = RuntimeUi.Rect(root, "ResetContainer", new Vector2(720, -485), new Vector2(320, 48));
+            var resetBtn = RuntimeUi.Button(resetContainer, "ResetProgressButton", "↺ CHƠI LẠI TỪ ĐẦU (RESET)",
+                Vector2.zero, new Vector2(320, 48), new Color(0.24f, 0.18f, 0.32f, 0.95f), ResetProgress, 16);
+            var resetLabel = resetBtn.GetComponentInChildren<Text>();
+            if (resetLabel) resetLabel.color = new Color(0.85f, 0.8f, 0.95f);
 
             UpdateSelectedMapArt();
+        }
+
+        private void Update()
+        {
+            var kb = Keyboard.current;
+            if (kb == null) return;
+
+            // Shortcut M to toggle mute
+            if (kb.mKey.wasPressedThisFrame)
+            {
+                ToggleMuteAudio();
+            }
+
+            // Shortcut Space or Enter to play
+            if (kb.spaceKey.wasPressedThisFrame || kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame)
+            {
+                Play();
+            }
+
+            // Shortcut 1, 2, 3 to select maps
+            if (kb.digit1Key.wasPressedThisFrame || kb.numpad1Key.wasPressedThisFrame)
+            {
+                SelectMap("map_lung");
+            }
+            else if (kb.digit2Key.wasPressedThisFrame || kb.numpad2Key.wasPressedThisFrame)
+            {
+                if (IsMapUnlocked("map_brain")) SelectMap("map_brain");
+            }
+            else if (kb.digit3Key.wasPressedThisFrame || kb.numpad3Key.wasPressedThisFrame)
+            {
+                if (IsMapUnlocked("map_stomach")) SelectMap("map_stomach");
+            }
+
+            // Shortcut Escape to quit
+            if (kb.escapeKey.wasPressedThisFrame)
+            {
+                _menu?.Quit();
+            }
+        }
+
+        private void ToggleMuteAudio()
+        {
+            if (_audio != null)
+            {
+                _audio.ToggleMute();
+                UpdateMuteUi();
+            }
+        }
+
+        private void UpdateMuteUi()
+        {
+            if (_muteBtnText == null) return;
+            bool muted = _audio != null && _audio.IsMuted;
+            _muteBtnText.text = muted ? "🔇 ÂM THANH: TẮT [M]" : "🔊 ÂM THANH: BẬT [M]";
+            _muteBtnText.color = muted ? new Color(1f, 0.5f, 0.5f) : new Color(0.6f, 1f, 0.7f);
         }
 
         private bool IsMapUnlocked(string mapId) =>
@@ -197,7 +325,16 @@ namespace ImmunWar.UI
 
         private void SelectMap(string mapId)
         {
-            if (_session != null && !_session.SelectMap(mapId)) { _audio?.Play(_art ? _art.uiError : null); return; }
+            if (!IsMapUnlocked(mapId))
+            {
+                _audio?.Play(_art ? _art.uiError : null);
+                return;
+            }
+            if (_session != null && !_session.SelectMap(mapId))
+            {
+                _audio?.Play(_art ? _art.uiError : null);
+                return;
+            }
             _audio?.Play(_art ? _art.uiClick : null);
             _selectedMap = mapId;
             if (_selectionLabel) _selectionLabel.text = "ĐANG CHỌN: " + OrganDisplayName(mapId);
@@ -212,15 +349,22 @@ namespace ImmunWar.UI
                 var unlocked = IsMapUnlocked(pair.Key);
                 if (!unlocked)
                 {
-                    pair.Value.color = new Color(0.22f, 0.22f, 0.26f, 0.85f);
+                    pair.Value.color = new Color(0.2f, 0.22f, 0.28f, 0.75f);
                     if (_mapButtons.TryGetValue(pair.Key, out var lockedBtn) && lockedBtn)
                         lockedBtn.transform.localScale = Vector3.one;
+                    if (_mapCardBorders.TryGetValue(pair.Key, out var lBorder) && lBorder)
+                        lBorder.color = Color.clear;
                     continue;
                 }
                 bool isSelected = pair.Key == _selectedMap;
-                pair.Value.color = isSelected ? Color.white : new Color(0.72f, 0.72f, 0.72f, 0.82f);
+                pair.Value.color = isSelected ? Color.white : new Color(0.75f, 0.75f, 0.8f, 0.88f);
                 if (_mapButtons.TryGetValue(pair.Key, out var btn) && btn)
-                    btn.transform.localScale = isSelected ? new Vector3(1.1f, 1.1f, 1f) : Vector3.one;
+                    btn.transform.localScale = isSelected ? new Vector3(1.06f, 1.06f, 1f) : Vector3.one;
+
+                if (_mapCardBorders.TryGetValue(pair.Key, out var border) && border)
+                {
+                    border.color = isSelected ? new Color(0.25f, 0.95f, 0.85f, 0.95f) : Color.clear;
+                }
             }
         }
 

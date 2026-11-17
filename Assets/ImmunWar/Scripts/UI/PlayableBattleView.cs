@@ -91,6 +91,20 @@ namespace ImmunWar.UI
         private GameObject _briefingPanel;
         private Text _resultText;
         private Text _resultReasonText;
+        private Button _btnPlayAgain;
+        private Button _btnBackToMenu;
+        private Button _btnNextStage;
+
+        private GameObject _defenderTooltip;
+        private Image _tooltipIcon;
+        private Text _tooltipName;
+        private Text _tooltipRole;
+        private Text _tooltipCost;
+        private Text _tooltipStats;
+        private Text _tooltipSkillName;
+        private Text _tooltipSkillDesc;
+        private Text _tooltipTrait;
+
         private DefenderConfig _selectedDefender;
         private WaveSystem _wave;
         private int _waveIndex = -1;
@@ -282,10 +296,65 @@ namespace ImmunWar.UI
                 // Shortcut number
                 RuntimeUi.Text(rt, "Shortcut", (i+1).ToString(), new Vector2(-40, 35), new Vector2(30, 30), 18, new Color(0.7f, 0.7f, 0.7f));
 
+                var hover = button.gameObject.AddComponent<DefenderHoverTrigger>();
+                var capturedDefender = defender;
+                var capturedY = yPos;
+                hover.OnEnter = () => ShowDefenderTooltip(capturedDefender, capturedY);
+                hover.OnExit = HideDefenderTooltip;
+
                 _defenderButtons[defender.Id] = button;
             }
             _selection = RuntimeUi.Text(root, "Selection", "",
                 new Vector2(-890, -420), new Vector2(130, 30), 14, RuntimeUi.Accent);
+
+            // === DEFENDER TOOLTIP CARD (LoL-Style Hover Card) ===
+            var tooltipRoot = RuntimeUi.Rect(root, "DefenderTooltip", new Vector2(-590, 0), new Vector2(460, 360));
+            _defenderTooltip = tooltipRoot.gameObject;
+            RuntimeUi.Image(tooltipRoot, "Bg", Vector2.zero, new Vector2(460, 360),
+                new Color(0.04f, 0.07f, 0.13f, 0.98f));
+            RuntimeUi.Image(tooltipRoot, "BorderGlow", Vector2.zero, new Vector2(466, 366),
+                new Color(0.22f, 0.82f, 0.98f, 0.85f));
+
+            _tooltipIcon = RuntimeUi.Image(tooltipRoot, "Icon", new Vector2(-180, 132), new Vector2(56, 56), Color.white, true);
+            _tooltipIcon.preserveAspect = true;
+
+            _tooltipName = RuntimeUi.Text(tooltipRoot, "Name", "", new Vector2(30, 146), new Vector2(330, 32), 20,
+                new Color(0.35f, 1f, 0.8f), TextAnchor.MiddleLeft);
+            _tooltipName.fontStyle = FontStyle.Bold;
+
+            _tooltipRole = RuntimeUi.Text(tooltipRoot, "Role", "", new Vector2(-20, 120), new Vector2(230, 24), 15,
+                new Color(0.8f, 0.9f, 1f), TextAnchor.MiddleLeft);
+            _tooltipRole.fontStyle = FontStyle.Bold;
+
+            _tooltipCost = RuntimeUi.Text(tooltipRoot, "Cost", "", new Vector2(145, 120), new Vector2(100, 24), 17,
+                new Color(1f, 0.88f, 0.25f), TextAnchor.MiddleRight);
+            _tooltipCost.fontStyle = FontStyle.Bold;
+
+            RuntimeUi.Image(tooltipRoot, "Div1", new Vector2(0, 94), new Vector2(420, 2),
+                new Color(0.25f, 0.5f, 0.75f, 0.6f));
+
+            _tooltipStats = RuntimeUi.Text(tooltipRoot, "Stats", "", new Vector2(0, 52), new Vector2(420, 72), 15,
+                new Color(0.92f, 0.95f, 0.98f), TextAnchor.MiddleLeft);
+
+            RuntimeUi.Image(tooltipRoot, "Div2", new Vector2(0, 10), new Vector2(420, 2),
+                new Color(0.25f, 0.5f, 0.75f, 0.6f));
+
+            var skillBox = RuntimeUi.Image(tooltipRoot, "SkillBox", new Vector2(0, -56), new Vector2(430, 114),
+                new Color(0.08f, 0.14f, 0.24f, 0.95f));
+            RuntimeUi.Image(skillBox.transform, "SkillBorder", Vector2.zero, new Vector2(434, 118),
+                new Color(0.18f, 0.45f, 0.75f, 0.7f));
+
+            _tooltipSkillName = RuntimeUi.Text(tooltipRoot, "SkillName", "", new Vector2(0, -16), new Vector2(410, 26), 16,
+                new Color(1f, 0.85f, 0.35f), TextAnchor.MiddleLeft);
+            _tooltipSkillName.fontStyle = FontStyle.Bold;
+
+            _tooltipSkillDesc = RuntimeUi.Text(tooltipRoot, "SkillDesc", "", new Vector2(0, -66), new Vector2(410, 64), 14,
+                new Color(0.95f, 0.95f, 0.95f), TextAnchor.UpperLeft);
+
+            _tooltipTrait = RuntimeUi.Text(tooltipRoot, "Trait", "", new Vector2(0, -145), new Vector2(420, 48), 13,
+                new Color(0.4f, 1f, 0.65f), TextAnchor.UpperLeft);
+
+            _defenderTooltip.SetActive(false);
 
             // === TOP HUD BAR (full width strip, y: 510) ===
             // Background strip - use a softer blue-ish tint instead of harsh black
@@ -368,31 +437,49 @@ namespace ImmunWar.UI
 
             _pausePanel.SetActive(false);
 
-            // Status text (bottom centre)
+            // Status text (bottom centre with sleek tactical background bar)
+            var statusPanel = RuntimeUi.Image(root, "StatusPanel", new Vector2(0, -495), new Vector2(1160, 52),
+                new Color(0.05f, 0.08f, 0.15f, 0.92f));
+            RuntimeUi.Image(statusPanel.transform, "StatusBorderTop", new Vector2(0, 25), new Vector2(1150, 2),
+                new Color(0.25f, 0.8f, 0.95f, 0.75f));
+            RuntimeUi.Image(statusPanel.transform, "StatusBorderBottom", new Vector2(0, -25), new Vector2(1150, 2),
+                new Color(0.25f, 0.8f, 0.95f, 0.75f));
 
-            _status = RuntimeUi.Text(root, "Status", "",
-                new Vector2(0, -510), new Vector2(960, 40), 18, new Color(1f, 0.96f, 0.82f));
+            _status = RuntimeUi.Text(statusPanel.transform, "Status", "", Vector2.zero, new Vector2(1120, 46), 24,
+                new Color(1f, 0.96f, 0.84f));
+            _status.fontStyle = FontStyle.Bold;
 
             // === RESULT PANEL ===
-            var result = RuntimeUi.Rect(root, "ResultPanel", Vector2.zero, new Vector2(700, 450));
+            var result = RuntimeUi.Rect(root, "ResultPanel", Vector2.zero, new Vector2(760, 460));
             _resultPanel = result.gameObject;
             
             // Background
-            var resultBg = RuntimeUi.Image(result, "Shade", Vector2.zero, new Vector2(700, 450), new Color(0.08f, 0.12f, 0.2f, 0.98f));
+            var resultBg = RuntimeUi.Image(result, "Shade", Vector2.zero, new Vector2(760, 460), new Color(0.06f, 0.1f, 0.18f, 0.98f));
             if (panelSprite) { resultBg.sprite = panelSprite; resultBg.type = UnityEngine.UI.Image.Type.Sliced; }
+            RuntimeUi.Image(result, "ResultBorder", Vector2.zero, new Vector2(766, 466), new Color(0.2f, 0.75f, 0.95f, 0.7f));
             
             // Text
-            _resultText = RuntimeUi.Text(result, "ResultText", "", new Vector2(0, 120), new Vector2(600, 110), 58, Color.white);
+            _resultText = RuntimeUi.Text(result, "ResultText", "", new Vector2(0, 130), new Vector2(720, 95), 50, Color.white);
             _resultText.fontStyle = FontStyle.Bold;
-            _resultReasonText = RuntimeUi.Text(result, "ResultReason", "", new Vector2(0, 20), new Vector2(620, 70), 22, new Color(1f, 0.9f, 0.75f));
+            _resultReasonText = RuntimeUi.Text(result, "ResultReason", "", new Vector2(0, 30), new Vector2(700, 75), 22, new Color(1f, 0.92f, 0.75f));
             
+            // Next Stage Button (for victory when next map exists)
+            _btnNextStage = RuntimeUi.Button(result, "NextStage", "MÀN TIẾP THEO ➔", new Vector2(-230, -110), new Vector2(215, 72),
+                new Color(0.15f, 0.75f, 0.35f, 0.98f), OnNextStageClicked, 24);
+            var nst = _btnNextStage.GetComponentInChildren<Text>();
+            if (nst) nst.fontStyle = FontStyle.Bold;
+
             // Restart Button
-            var btnRe = RuntimeUi.Button(result, "PlayAgain", "PLAY AGAIN", new Vector2(-170, -100), new Vector2(260, 80), new Color(0.2f, 0.7f, 0.3f), Restart, 28);
-            if (panelSprite) { var img = btnRe.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+            _btnPlayAgain = RuntimeUi.Button(result, "PlayAgain", "CHƠI LẠI", new Vector2(0, -110), new Vector2(205, 72),
+                new Color(0.25f, 0.55f, 0.8f, 0.98f), Restart, 24);
+            var rst = _btnPlayAgain.GetComponentInChildren<Text>();
+            if (rst) rst.fontStyle = FontStyle.Bold;
             
             // Menu Button
-            var btnMenu2 = RuntimeUi.Button(result, "BackToMenu", "MAIN MENU", new Vector2(170, -100), new Vector2(260, 80), new Color(0.8f, 0.5f, 0.2f), ReturnToMenu, 28);
-            if (panelSprite) { var img = btnMenu2.GetComponent<Image>(); img.sprite = panelSprite; img.type = Image.Type.Sliced; }
+            _btnBackToMenu = RuntimeUi.Button(result, "BackToMenu", "MENU CHÍNH", new Vector2(230, -110), new Vector2(205, 72),
+                new Color(0.75f, 0.45f, 0.18f, 0.98f), ReturnToMenu, 24);
+            var mnt = _btnBackToMenu.GetComponentInChildren<Text>();
+            if (mnt) mnt.fontStyle = FontStyle.Bold;
             
             _resultPanel.SetActive(false);
         }
@@ -489,6 +576,7 @@ namespace ImmunWar.UI
         private void UpdateGhost(Vector2 world)
         {
             if (!_selectedDefender) { HideGhost(); return; }
+            HideDefenderTooltip();
             if (!_ghost)
             {
                 _ghostRange = RuntimeUi.Image(_arena, "GhostRange", Vector2.zero, Vector2.one, Color.white);
@@ -500,15 +588,17 @@ namespace ImmunWar.UI
             var point = RuntimeUi.Point(world);
             var icon = _selectedDefender.presentation ? _selectedDefender.presentation.icon : null;
             if (icon) _ghost.sprite = icon;
-            _ghost.color = ok ? new Color(0.7f, 1f, 0.75f, 0.6f) : new Color(1f, 0.35f, 0.35f, 0.55f);
+            var pulse = 0.5f + 0.45f * Mathf.Sin(Time.unscaledTime * 9f);
+            _ghost.color = ok ? new Color(0.5f, 1f, 0.65f, Mathf.Lerp(0.35f, 0.95f, pulse)) : new Color(1f, 0.3f, 0.3f, Mathf.Lerp(0.35f, 0.85f, pulse));
             _ghost.rectTransform.anchoredPosition = point;
+            _ghost.rectTransform.localScale = Vector3.one * (1.0f + 0.08f * pulse);
             // Range ring shows attack range (or the guard circle of mobile melee cells); for non-attackers it shows the blocking radius.
             var reach = Mathf.Max(_selectedDefender.attackDamage > 0f ? _selectedDefender.range : 0f, BlockRadius);
             if (_selectedDefender.mobile) reach = Mathf.Max(reach, _selectedDefender.engageRadius);
             var radius = reach * 76f;
             _ghostRange.rectTransform.anchoredPosition = point;
             _ghostRange.rectTransform.sizeDelta = Vector2.one * (radius * 2f / 0.85f);
-            _ghostRange.color = ok ? new Color(0.5f, 1f, 0.6f, 0.55f) : new Color(1f, 0.35f, 0.35f, 0.45f);
+            _ghostRange.color = ok ? new Color(0.4f, 1f, 0.6f, Mathf.Lerp(0.25f, 0.75f, pulse)) : new Color(1f, 0.3f, 0.3f, Mathf.Lerp(0.25f, 0.65f, pulse));
             _ghost.gameObject.SetActive(true);
             _ghostRange.gameObject.SetActive(true);
             _ghostRange.transform.SetAsLastSibling();
@@ -587,12 +677,35 @@ namespace ImmunWar.UI
         {
             if (!_battle || !_map) return;
             var kb = Keyboard.current;
-            if (kb != null && (kb.escapeKey.wasPressedThisFrame || kb.pKey.wasPressedThisFrame))
+            if (kb != null)
             {
-                TogglePauseMenu();
-                return;
+                if (kb.escapeKey.wasPressedThisFrame || kb.pKey.wasPressedThisFrame)
+                {
+                    TogglePauseMenu();
+                    return;
+                }
+                if (kb.mKey.wasPressedThisFrame)
+                {
+                    ToggleMute();
+                }
             }
             if (_battle.State.Phase == BattlePhase.Paused) return;
+
+            // Ghost placement pulse / blink
+            if (_selectedDefender != null && _ghost != null && _ghost.gameObject.activeSelf)
+            {
+                var pulse = 0.5f + 0.45f * Mathf.Sin(Time.unscaledTime * 9f);
+                _ghost.rectTransform.localScale = Vector3.one * (1.0f + 0.08f * pulse);
+                var gc = _ghost.color;
+                gc.a = Mathf.Lerp(0.35f, 0.95f, pulse);
+                _ghost.color = gc;
+                if (_ghostRange)
+                {
+                    var rc = _ghostRange.color;
+                    rc.a = Mathf.Lerp(0.25f, 0.75f, pulse);
+                    _ghostRange.color = rc;
+                }
+            }
             if (_briefingOpen && kb != null && (kb.spaceKey.wasPressedThisFrame || kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame))
             {
                 DismissBriefing();
@@ -1189,7 +1302,35 @@ namespace ImmunWar.UI
         {
             if (_resultPanel.activeSelf) return;
             _resultPanel.SetActive(true);
-            _resultText.text = victory ? "ORGAN DEFENDED" : "ORGAN OVERRUN";
+
+            var nextMapId = GetNextMapId();
+            bool hasNext = victory && !string.IsNullOrEmpty(nextMapId);
+
+            if (_btnNextStage) _btnNextStage.gameObject.SetActive(hasNext);
+
+            if (hasNext)
+            {
+                if (_btnNextStage) _btnNextStage.GetComponent<RectTransform>().anchoredPosition = new Vector2(-230, -110);
+                if (_btnPlayAgain) _btnPlayAgain.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -110);
+                if (_btnBackToMenu) _btnBackToMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(230, -110);
+            }
+            else
+            {
+                if (_btnPlayAgain) _btnPlayAgain.GetComponent<RectTransform>().anchoredPosition = new Vector2(-140, -110);
+                if (_btnBackToMenu) _btnBackToMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(140, -110);
+            }
+
+            if (victory)
+            {
+                _resultText.text = string.IsNullOrEmpty(nextMapId) ? "CHIẾN DỊCH HOÀN TẤT!" : "CƠ QUAN ĐÃ ĐƯỢC BẢO VỆ!";
+                _resultText.color = new Color(0.35f, 1f, 0.65f);
+            }
+            else
+            {
+                _resultText.text = "CƠ QUAN BỊ XÂM NHIỆM!";
+                _resultText.color = new Color(1f, 0.35f, 0.35f);
+            }
+
             if (_resultReasonText)
             {
                 _resultReasonText.text = victory
@@ -1198,6 +1339,7 @@ namespace ImmunWar.UI
             }
             HideGhost();
             HideSkillPreview();
+            HideDefenderTooltip();
             _audio?.StopMusic();
             _audio?.Play(_art ? victory ? _art.atpGain : _art.organHit : null);
             if (victory && !_resultSaved && _session != null)
@@ -1219,6 +1361,158 @@ namespace ImmunWar.UI
                 _session.ReplaceProgress(saved);
             }
             RefreshStats();
+        }
+
+        private void OnNextStageClicked()
+        {
+            var nextMapId = GetNextMapId();
+            if (!string.IsNullOrEmpty(nextMapId) && _session != null)
+            {
+                _session.SelectMap(nextMapId);
+                StartCoroutine(SceneFlowService.Load("Battle"));
+            }
+            else
+            {
+                ReturnToMenu();
+            }
+        }
+
+        private string GetNextMapId()
+        {
+            var maps = _session != null && _session.Catalogs != null && _session.Catalogs.Catalog != null
+                ? _session.Catalogs.Catalog.maps
+                : null;
+            if (maps == null || _map == null) return null;
+            for (var i = 0; i < maps.Length - 1; i++)
+            {
+                if (maps[i] && maps[i].Id == _map.Id && maps[i + 1])
+                {
+                    return maps[i + 1].Id;
+                }
+            }
+            return null;
+        }
+
+        public void ToggleMute()
+        {
+            if (_audio == null) return;
+            var muted = _audio.ToggleMute();
+            SetStatus(muted ? "🔇 ÂM THANH ĐÃ TẮT [M]" : "🔊 ÂM THANH ĐÃ BẬT [M]");
+        }
+
+        private void ShowDefenderTooltip(DefenderConfig defender, float yPos)
+        {
+            if (!_defenderTooltip || !defender) return;
+            var info = GetDefenderDetails(defender);
+            if (_tooltipIcon)
+            {
+                var icon = defender.presentation ? defender.presentation.icon : null;
+                if (icon) { _tooltipIcon.sprite = icon; _tooltipIcon.color = Color.white; }
+                else { _tooltipIcon.sprite = null; _tooltipIcon.color = DefenderColor(defender.role); }
+            }
+            if (_tooltipName) _tooltipName.text = info.name;
+            if (_tooltipRole)
+            {
+                _tooltipRole.text = info.roleText;
+                _tooltipRole.color = info.roleColor;
+            }
+            if (_tooltipCost) _tooltipCost.text = defender.atpCost + " ATP";
+            if (_tooltipStats) _tooltipStats.text = info.statsText;
+            if (_tooltipSkillName) _tooltipSkillName.text = info.skillName;
+            if (_tooltipSkillDesc) _tooltipSkillDesc.text = info.skillDesc;
+            if (_tooltipTrait) _tooltipTrait.text = info.trait;
+
+            var rt = _defenderTooltip.GetComponent<RectTransform>();
+            if (rt)
+            {
+                rt.anchoredPosition = new Vector2(-590, Mathf.Clamp(yPos, -260f, 260f));
+            }
+            _defenderTooltip.transform.SetAsLastSibling();
+            _defenderTooltip.SetActive(true);
+        }
+
+        private void HideDefenderTooltip()
+        {
+            if (_defenderTooltip) _defenderTooltip.SetActive(false);
+        }
+
+        private static (string name, string roleText, Color roleColor, string statsText, string skillName, string skillDesc, string trait) GetDefenderDetails(DefenderConfig def)
+        {
+            var id = def.Id;
+            return id switch
+            {
+                "def_macrophage" => (
+                    "ĐẠI THỰC BÀO (MACROPHAGE)",
+                    "[ĐỠ ĐÒN / CHẶN TUYẾN]",
+                    new Color(0.3f, 0.85f, 1f),
+                    "Máu: 240 HP  |  Sát thương: 8 DMG\nTốc đánh: 0.91 đòn/s  |  Tầm đánh: 1.2u\nChặn tối đa: 3 Địch  |  Bán kính di chuyển: 2.2u",
+                    "CHIÊU THỨC: NUỐT CHỬNG (ENGULF)  •  20 ATP  |  12s CD",
+                    "Nuốt trọn ngay 1 kẻ địch thường có máu ≤35% trong cự ly 1.3u. Hồi phục 10% HP cho bản thân và tiêu hóa trong 3s.",
+                    "★ Đặc điểm: Di chuyển tự do trong bán kính 2.2u, chặn cùng lúc tới 3 kẻ địch."
+                ),
+                "def_tcell" => (
+                    "TẾ BÀO T (T CELL)",
+                    "[XẠ THỦ SÁT THƯƠNG]",
+                    new Color(1f, 0.45f, 0.4f),
+                    "Máu: 90 HP  |  Sát thương: 14 DMG\nTốc đánh: 1.25 đòn/s  |  Tầm bắn: 3.2u (Xa)\nVị trí: Cố định trên tuyến",
+                    "CHIÊU THỨC: QUÁ TẢI NHIỆT (FEVER RUSH)  •  10 ATP  |  14s CD",
+                    "Tăng gấp đôi tốc độ bắn và đòn bắn gây hiệu ứng Thiêu Đốt (Burn) liên tục trong 5s (tự tiêu hao 2% HP/s).",
+                    "★ Đặc điểm: Đạn bắn xuyên mọi mục tiêu trên đường bay, sát thương diện rộng cực mạnh."
+                ),
+                "def_energy" => (
+                    "TẾ BÀO NĂNG LƯỢNG (ENERGY CELL)",
+                    "[KINH TẾ / SẢN XUẤT]",
+                    new Color(1f, 0.85f, 0.25f),
+                    "Máu: 80 HP  |  Sát thương: 0 (Không tấn công)\nNội tại: Tự động sản xuất +5 ATP mỗi 4 giây\nVị trí: Hậu phương an toàn",
+                    "CHIÊU THỨC: BÙNG NỔ NĂNG LƯỢNG (ATP SURGE)  •  0 ATP  |  25s CD",
+                    "Bơm ngay +20 ATP lập tức cho ngân sách trận chiến. Sau khi dùng sẽ bị Kiệt sức (Exhausted) không tạo ATP trong 6s.",
+                    "★ Đặc điểm: Trụ cột kinh tế, đảm bảo nguồn năng lượng dồi dào để triển khai quân."
+                ),
+                "def_bcell" => (
+                    "TẾ BÀO B (B CELL)",
+                    "[HỖ TRỢ / KHỐNG CHẾ]",
+                    new Color(0.45f, 0.75f, 1f),
+                    "Máu: 95 HP  |  Sát thương: 6 DMG\nTốc đánh: 0.91 đòn/s  |  Tầm bắn: 3.0u\nNội tại: Đòn bắn găm Dấu Ấn Kháng Thể giảm 25% Giáp địch trong 5s",
+                    "CHIÊU THỨC: ĐÓNG BĂNG KHÁNG THỂ (FREEZE)  •  25 ATP  |  16s CD",
+                    "Đóng băng toàn bộ kẻ địch trong bán kính 1.5u trong 2s (ngắt chiêu boss gồng), tiếp nối hiệu ứng Làm chậm và Dấu ấn trong 5s.",
+                    "★ Đặc điểm: Khống chế diện rộng, giải giáp địch bọc giáp nặng và ngắt chiêu nguy hiểm của Trùm."
+                ),
+                "def_nk" => (
+                    "TẾ BÀO NK (NATURAL KILLER)",
+                    "[SÁT THỦ / TRẢM SÁT]",
+                    new Color(0.95f, 0.35f, 0.85f),
+                    "Máu: 120 HP  |  Sát thương: 24 DMG\nTốc đánh: 0.77 đòn/s  |  Tầm đánh: 2.5u\nChặn: 1 Địch  |  Bán kính cơ động: 2.8u",
+                    "CHIÊU THỨC: TRẢM SÁT KẾT LIỄU (EXECUTE)  •  20 ATP  |  12s CD",
+                    "Bổ kích đòn đánh x4 sát thương (96 DMG), xuyên thủng khả năng Hồi sinh (Revive). Nếu hạ gục mục tiêu, hoàn lại 50% hồi chiêu.",
+                    "★ Đặc điểm: Sát thương đơn mục tiêu cực khủng, chuyên trị thể đột biến và quái hồi sinh."
+                ),
+                "def_platelet" => (
+                    "TIỂU CẦU (PLATELET)",
+                    "[SỬA CHỮA / BẢO VỆ]",
+                    new Color(0.45f, 0.95f, 0.55f),
+                    "Máu: 130 HP  |  Sát thương: 4 DMG\nTốc đánh: 0.71 đòn/s  |  Tầm tác dụng: 2.2u\nNội tại: Tự động hồi phục +3 Vitality cho Cơ quan mỗi 5 giây",
+                    "CHIÊU THỨC: KHIÊN HUYẾT KHỐI (CLOT SHIELD)  •  20 ATP  |  18s CD",
+                    "Giải trừ toàn bộ hiệu ứng Băng / Choáng / Độc cho đồng minh trong bán kính 2.2u, tạo khiên chắn 2s và hồi 10% HP tối đa.",
+                    "★ Đặc điểm: Trực tiếp sửa chữa Vitality cơ quan, hóa giải độc tố và bảo hộ toàn đội."
+                ),
+                _ => (
+                    def.Id.Replace("def_", "").ToUpperInvariant(),
+                    "[" + def.role.ToString().ToUpperInvariant() + "]",
+                    Color.white,
+                    "Máu: " + def.maxHealth + " HP  |  Sát thương: " + def.attackDamage + " DMG\nTốc đánh: " + (1f / Mathf.Max(0.1f, def.attackInterval)).ToString("0.0") + " đòn/s  |  Tầm: " + def.range,
+                    "CHIÊU THỨC: KÍCH HOẠT",
+                    "Kỹ năng đặc biệt của nhân vật phòng thủ.",
+                    "★ Đơn vị bảo vệ cơ thể."
+                )
+            };
+        }
+
+        private sealed class DefenderHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+        {
+            public Action OnEnter;
+            public Action OnExit;
+            public void OnPointerEnter(PointerEventData eventData) => OnEnter?.Invoke();
+            public void OnPointerExit(PointerEventData eventData) => OnExit?.Invoke();
         }
 
         private void SetStatus(string text) { if (_status) _status.text = text; }
